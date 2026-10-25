@@ -10,40 +10,24 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 /* === ГЛОБАЛЬНЫЙ ФИКС ШРИФТА === */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
-}
-input, button, select, textarea, optgroup, option {
-  font-family: inherit !important;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; }
+input, button, select, textarea, optgroup, option { font-family: inherit !important; }
 
 :root{
-  --bg:#070a12; --bg2:#0f172a;
-  --surface:rgba(15,23,42,.85); --surface-solid:#111827;
+  --bg:#070a12; --bg2:#0f172a; --surface:rgba(15,23,42,.85); --surface-solid:#111827;
   --border:rgba(56,189,248,.12); --border-strong:rgba(56,189,248,.3);
-  --text:#f8fafc; --muted:#94a3b8;
-  --accent:#38bdf8; --accent-deep:#0ea5e9;
-  --accent2:#06b6d4; --accent2-deep:#0891b2;
-  --gold:#fbbf24; --gold-dim:#f59e0b;
-  --green:#34d399; --red:#f87171; --pink:#f472b6;
-  --purple:#a78bfa;
+  --text:#f8fafc; --muted:#94a3b8; --accent:#38bdf8; --accent-deep:#0ea5e9;
+  --accent2:#06b6d4; --accent2-deep:#0891b2; --gold:#fbbf24; --gold-dim:#f59e0b;
+  --green:#34d399; --red:#f87171; --pink:#f472b6; --purple:#a78bfa;
   --ease:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.56,.64,1);
-  --radius:20px; --radius-sm:12px;
-  --glow-blue:0 0 40px rgba(56,189,248,.25); --glow-cyan:0 0 40px rgba(34,211,238,.2);
+  --radius:20px; --radius-sm:12px; --glow-blue:0 0 40px rgba(56,189,248,.25); --glow-cyan:0 0 40px rgba(34,211,238,.2);
   --shadow-lg:0 20px 40px -10px rgba(0,0,0,.6);
 }
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield;appearance:textfield}
 html{scroll-behavior:smooth;background-color:var(--bg)}
 body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#334155;border-radius:10px}
-::-webkit-scrollbar-thumb:hover{background:#475569}
+::-webkit-scrollbar{width:6px;height:6px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#334155;border-radius:10px} ::-webkit-scrollbar-thumb:hover{background:#475569}
 #bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;pointer-events:none;opacity:.4}
 .bg-layer{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(56,189,248,.15),transparent 55%),radial-gradient(ellipse 60% 40% at 85% 10%,rgba(34,211,238,.1),transparent 50%),linear-gradient(to bottom,rgba(7,10,18,.3) 0%,rgba(7,10,18,.9) 100%)}
 .cursor-glow{position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(56,189,248,.15),transparent 60%);transform:translate(-50%,-50%);transition:opacity .3s;mix-blend-mode:screen}
@@ -62,7 +46,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .login-title{font-size:34px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,#fff 0%,#bae6fd 25%,#38bdf8 50%,#bae6fd 75%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;animation:shine 4s linear infinite}
 @keyframes shine{to{background-position:200% center}}
 .login-sub{color:var(--muted);font-size:15px;margin-bottom:28px;line-height:1.5}
-.login-bonus{background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(56,189,248,.04));border:1px solid rgba(56,189,248,.28);border-radius:14px;padding:12px 18px;margin-bottom:24px;font-size:14px;color:var(--accent);font-weight:700}
 .btn-tg{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;width:100%;padding:16px;font-size:16px;font-weight:700;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 8px 24px rgba(14,165,233,.3)}
 .btn-tg:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(14,165,233,.4)}
 
@@ -117,10 +100,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .hero h1{font-size:42px;font-weight:900;margin-bottom:12px;letter-spacing:-.03em;line-height:1.15;max-width:700px;color:#fff;text-shadow:0 4px 15px rgba(0,0,0,.5)}
 .hero p{color:#cbd5e1;font-size:16px;max-width:500px;line-height:1.6;margin-bottom:24px;text-shadow:0 2px 5px rgba(0,0,0,.5)}
 
-.daily-bonus-banner{background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.03));border:1px solid rgba(251,191,36,.35);border-radius:20px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,.3);flex-wrap:wrap;gap:16px}
-.daily-bonus-icon{font-size:44px;filter:drop-shadow(0 0 20px rgba(251,191,36,.6));animation:cw 3s ease-in-out infinite}
-.daily-bonus-info{flex:1;min-width:180px}
-
 .top-drop-banner{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(0,0,0,.4));border:1px solid rgba(251,191,36,.3);border-radius:24px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;box-shadow:0 10px 30px rgba(0,0,0,.4),inset 0 0 20px rgba(251,191,36,.05);position:relative;overflow:hidden;cursor:pointer;transition:all .3s}
 .top-drop-banner:hover{border-color:rgba(251,191,36,.6);transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,0,0,.5),inset 0 0 30px rgba(251,191,36,.1)}
 .top-drop-content{display:flex;align-items:center;gap:20px;z-index:1}
@@ -171,7 +150,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .case-desc-long{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.15);border-left:4px solid var(--accent);border-radius:16px;padding:24px;font-size:16px;color:#cbd5e1;line-height:1.6;margin-bottom:32px}
 .case-open-panel{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:36px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 
-/* === РУЛЕТКА (ИСПРАВЛЕНО ДЛЯ ALL IN И КЕЙСОВ) === */
+/* === РУЛЕТКА === */
 .all-in-stage{position:relative;width:100%;min-height:75vh;background:#000;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(56,189,248,.3);box-shadow:inset 0 0 100px rgba(56,189,248,.1);padding:20px;box-sizing:border-box}
 .all-in-bg-text{position:absolute;top:15%;left:50%;transform:translateX(-50%);font-size:140px;font-weight:900;color:rgba(255,255,255,0.02);text-transform:uppercase;letter-spacing:20px;pointer-events:none;user-select:none;z-index:1;white-space:nowrap}
 .roulette-wrap{position:relative;overflow:hidden;background:#0a0e17;border:3px solid var(--border-strong);border-radius:20px;box-shadow:inset 0 0 50px rgba(0,0,0,.8);width:100%;box-sizing:border-box}
@@ -286,29 +265,14 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .modal-close{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);width:36px;height:36px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:all .2s;position:absolute;right:0;top:0;font-size:18px}
 .modal-close:hover{background:rgba(255,255,255,.1);color:#fff;transform:scale(1.05)}
 
-/* === TOAST (ИСПРАВЛЕНО: полностью скрыт, когда пуст) === */
-.toast{
-  display: none; /* Полностью убирает элемент, когда он не нужен */
-  position:fixed; bottom:100px; left:50%; 
-  transform:translateX(-50%) translateY(20px); 
-  opacity:0;
-  background:rgba(15,23,42,.95); border:1px solid rgba(255,255,255,.1); 
-  color:#fff; padding:16px 28px; border-radius:16px; 
-  font-size:15px; font-weight:700; z-index:99999;
-  box-shadow:0 20px 40px rgba(0,0,0,.6); 
-  transition:all .3s ease;
-  max-width:90vw; text-align:center;
-}
-.toast.show{ 
-  display: block; /* Появляется только когда есть класс show */
-  transform:translateX(-50%) translateY(0); 
-  opacity:1;
-}
+/* TOAST */
+.toast{ display: none; position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0; background:rgba(15,23,42,.95); border:1px solid rgba(255,255,255,.1); color:#fff; padding:16px 28px; border-radius:16px; font-size:15px; font-weight:700; z-index:99999; box-shadow:0 20px 40px rgba(0,0,0,.6); transition:all .3s ease; max-width:90vw; text-align:center; }
+.toast.show{ display: block; transform:translateX(-50%) translateY(0); opacity:1; }
 .toast.ok{border-color:rgba(52,211,153,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(52,211,153,.2)}
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* === ДЕПОЗИТ === */
+/* ДЕПОЗИТ */
 .dep-tabs { display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 20px; }
 .dep-tab { flex: 1; text-align: center; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; }
 .dep-tab.active { background: #ea580c; color: #fff; box-shadow: 0 4px 15px rgba(234,88,12,0.4); }
@@ -415,35 +379,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .bet-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
 .bet-input::placeholder{color:var(--muted)}
 
-/* WEEKLY */
-.weekly-container{max-width:1200px;margin:0 auto;text-align:center;padding:20px 0}
-.weekly-timer-box{background:rgba(15,23,42,.8);border:1px solid var(--border-strong);border-radius:20px;padding:24px;display:inline-block;margin-bottom:32px;box-shadow:var(--shadow-lg)}
-.weekly-timer-title{font-size:14px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px}
-.weekly-timer{font-size:32px;font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums;text-shadow:0 0 20px rgba(56,189,248,.4);display:flex;justify-content:center;align-items:center;gap:10px}
-.weekly-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-bottom:40px}
-.weekly-card{background:rgba(15,23,42,.9);border:2px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;position:relative;cursor:pointer;transition:all .3s var(--spring);display:flex;flex-direction:column;align-items:center}
-.weekly-card:hover{border-color:rgba(56,189,248,.4);transform:translateY(-5px)}
-.weekly-card.selected{border-color:var(--accent);box-shadow:0 0 30px rgba(56,189,248,.25);background:linear-gradient(180deg,rgba(56,189,248,.1),rgba(15,23,42,.95))}
-.weekly-card.selected::after{content:'✓';position:absolute;top:16px;right:16px;width:28px;height:28px;background:var(--accent);color:#000;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:900;box-shadow:0 0 15px var(--accent);z-index:5}
-.weekly-card.disabled{opacity:0.5;pointer-events:none;filter:grayscale(1)}
-.weekly-card-img{height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;width:100%}
-.weekly-card-img img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 10px 20px rgba(0,0,0,.5))}
-.weekly-card-badge{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:12px;margin-bottom:12px}
-.weekly-badge-item{background:rgba(56,189,248,.15);color:var(--accent);border:1px solid rgba(56,189,248,.3)}
-.weekly-badge-bonus{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid rgba(251,191,36,.3)}
-.weekly-card-name{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;text-align:center;line-height:1.3}
-.weekly-card-price{font-size:18px;font-weight:900;color:var(--gold);margin-top:auto;display:flex;align-items:center;justify-content:center;gap:6px}
-.weekly-claim-box{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.05);border-radius:24px;padding:32px;max-width:600px;margin:0 auto}
-.weekly-claim-condition{font-size:15px;color:#cbd5e1;margin-bottom:20px;line-height:1.6}
-.weekly-deposit-progress{background:rgba(255,255,255,.05);border-radius:12px;height:16px;overflow:hidden;margin-bottom:8px;position:relative}
-.weekly-deposit-fill{background:linear-gradient(90deg,var(--accent-deep),var(--accent));height:100%;border-radius:12px;transition:width .4s var(--ease)}
-.weekly-deposit-text{font-size:13px;color:var(--muted);font-weight:700;display:flex;justify-content:space-between}
-.weekly-btn{width:100%;padding:18px;font-size:18px;font-weight:900;border-radius:16px;cursor:pointer;transition:all .3s;margin-top:24px;text-transform:uppercase;letter-spacing:1px}
-.weekly-btn.ready{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;box-shadow:0 8px 30px rgba(14,165,233,.4);border:none}
-.weekly-btn.ready:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(14,165,233,.6)}
-.weekly-btn.locked{background:#334155;color:#94a3b8;border:none;cursor:not-allowed}
-.weekly-btn.claimed{background:rgba(52,211,153,.15);color:var(--green);border:1px solid rgba(52,211,153,.4);cursor:not-allowed}
-
 .empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
 .es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
@@ -488,7 +423,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
     <div class="login-logo"><img src="logo-badge.png" alt="BR" onerror="this.parentElement.textContent='🧠'"></div>
     <div class="login-title">Brainrot Rush</div>
     <div class="login-sub">Войди, чтобы начать играть</div>
-    <div class="login-bonus">🎁 Стартовый бонус: 5 000 монет</div>
     <div id="telegramFallbackBtn" style="display:none;margin-top:20px;">
       <button class="btn-tg" onclick="mockLogin()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2L2 10.5l6 2.5 2 7 4-4 6 2 1.5-16z"/></svg>
@@ -527,7 +461,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 <div class="toast" id="toast"></div>
 <script>
 /* ===== CONFIG ===== */
-const ADMIN_MODE = true;
+const ADMIN_TG_ID = '8921286864'; // Ваш ID
 
 /* Snow */
 (function(){
@@ -574,11 +508,8 @@ function sndWin(){sndWinRarity('epic');}
 function sndWinRarity(rarity){
   if(!audioCtx||isMuted)return;
   const tones={
-    common:[523.25,659.25],
-    rare:[523.25,659.25,783.99],
-    epic:[523.25,659.25,783.99,1046.50],
-    legendary:[523.25,659.25,783.99,1046.50,1318.51],
-    mythic:[523.25,659.25,783.99,1046.50,1318.51,1567.98],
+    common:[523.25,659.25], rare:[523.25,659.25,783.99], epic:[523.25,659.25,783.99,1046.50],
+    legendary:[523.25,659.25,783.99,1046.50,1318.51], mythic:[523.25,659.25,783.99,1046.50,1318.51,1567.98],
     god:[261.63,523.25,659.25,783.99,1046.50,1318.51,1567.98,2093.00]
   };
   const freqs=tones[rarity]||tones.common;
@@ -604,7 +535,7 @@ document.addEventListener('keydown',e=>{
 /* Ripple */
 document.addEventListener('click',e=>{
   initAudio();
-  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.weekly-card,.weekly-btn,.inv-sort-btn,.daily-bonus-banner');
+  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn');
   if(!btn)return;
   if(!e.target.closest('.btn-ghost')||e.target.closest('.btn-ghost').id!=='soundToggle')sndClick();
   const r=btn.getBoundingClientRect();
@@ -797,13 +728,11 @@ const state={
   settings:{multipliers:[2,5,10],percentages:[5,33,75],upgradeSound:true,spinType:'normal'},
   inventorySort:'price_desc',
   inventoryFilter:'all',
-  dailyBonus:{lastClaimed:0},
   deposit:{step:1,selected:new Set(),searchQuery:'',sort:'asc',minPrice:'',maxPrice:'',robloxUsername:'',promo:'',timer:null,timerLeft:0},
   pendingWithdrawals:[],
   topDropDayCache:{date:'',itemId:'',user:'',price:0},
   adminTab:'users',
-  fairness:{serverSeed:'',serverSeedHash:'',clientSeed:'',nonce:1,history:[],prevSeeds:[]},
-  weeklySet:{generatedAt:0,rewards:[],selected:new Set(),requiredDeposit:0,depositProgress:0,isClaimed:false}
+  fairness:{serverSeed:'',serverSeedHash:'',clientSeed:'',nonce:1,history:[],prevSeeds:[]}
 };
 
 /* ===== SHA-256 & HMAC ===== */
@@ -830,13 +759,11 @@ function loadSavedState(){
     if(typeof s.vipMode!=='undefined')state.vipMode=s.vipMode;
     if(s.inventorySort)state.inventorySort=s.inventorySort;
     if(s.inventoryFilter)state.inventoryFilter=s.inventoryFilter;
-    if(s.dailyBonus)state.dailyBonus=s.dailyBonus;
     if(s.mines){
       state.mines={active:!!s.mines.active,bet:Number(s.mines.bet)||0,mines:Number(s.mines.mines)||3,revealed:new Set(s.mines.revealed||[]),mineSet:new Set(s.mines.mineSet||[]),multiplier:Number(s.mines.multiplier)||1,exploded:!!s.mines.exploded};
     }
     if(s.fairness)state.fairness={...state.fairness,...s.fairness};
-    if(s.weeklySet){state.weeklySet={...state.weeklySet,...s.weeklySet,selected:new Set(s.weeklySet.selected||[])};}
-    initFairness();initWeeklySet();return true;
+    initFairness();return true;
   }catch(e){console.error('Save load error:',e);return false;}
 }
 function saveState(){
@@ -846,14 +773,13 @@ function saveState(){
       refCode:state.refCode,user:state.user,settings:state.settings,
       pendingWithdrawals:state.pendingWithdrawals,topDropDayCache:state.topDropDayCache,
       vipMode:state.vipMode,fairness:state.fairness,
-      inventorySort:state.inventorySort,inventoryFilter:state.inventoryFilter,dailyBonus:state.dailyBonus,
-      mines:{active:state.mines.active,bet:state.mines.bet,mines:state.mines.mines,revealed:Array.from(state.mines.revealed),mineSet:Array.from(state.mines.mineSet),multiplier:state.mines.multiplier,exploded:state.mines.exploded},
-      weeklySet:{generatedAt:state.weeklySet.generatedAt,rewards:state.weeklySet.rewards,selected:Array.from(state.weeklySet.selected),requiredDeposit:state.weeklySet.requiredDeposit,depositProgress:state.weeklySet.depositProgress,isClaimed:state.weeklySet.isClaimed}
+      inventorySort:state.inventorySort,inventoryFilter:state.inventoryFilter,
+      mines:{active:state.mines.active,bet:state.mines.bet,mines:state.mines.mines,revealed:Array.from(state.mines.revealed),mineSet:Array.from(state.mines.mineSet),multiplier:state.mines.multiplier,exploded:state.mines.exploded}
     }));
   }catch(e){}
 }
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function isAdmin(){return ADMIN_MODE && state.user !== null;}
+function isAdmin(){return state.user && String(state.user.id) === ADMIN_TG_ID;}
 
 const uuid=()=>'u'+Math.random().toString(36).slice(2)+Date.now().toString(36);
 const itemById=id=>ITEMS.find(i=>i.id===id);
@@ -920,7 +846,6 @@ function itemIcon(it,size=48){
 
 let __caseTimers=[],__caseFinish=null,__upgTimers=[],__upgFinish=null,__pendingCase=null,__upgTimer=null,__upgTargetRot=0;
 let __allInTimerInt,__allInSoundInt,__caseTickInt,__upgTickTimer=null,__upgSkipTimeout=null;
-let __weeklyTimerInt = null;
 let __depositTimerInt = null;
 
 function settlePendingCase(){
@@ -957,7 +882,6 @@ function cancelAnimations(){
   if(__allInTimerInt)clearTimeout(__allInTimerInt);
   if(__allInSoundInt)clearInterval(__allInSoundInt);
   if(__caseTickInt)clearInterval(__caseTickInt);
-  if(__weeklyTimerInt)clearInterval(__weeklyTimerInt);
   if(__depositTimerInt)clearInterval(__depositTimerInt);
   __caseFinish=null;__upgFinish=null;__upgTimer=null;
 }
@@ -976,7 +900,7 @@ function getNavGroups(){
   const groups=[
     {section:'Игры',items:[{id:'cases',label:'Кейсы',ico:'📦'},{id:'mines',label:'Мины',ico:'💣'}]},
     {section:'Механики',items:[{id:'fuse',label:'Фьюз',ico:'✨'},{id:'upgrade',label:'Апгрейд',ico:'📈'},{id:'inventory',label:'Инвентарь',ico:'🎒'}]},
-    {section:'Прогресс',items:[{id:'weekly',label:'Еженедельный набор',ico:'🎁'},{id:'profile',label:'Профиль',ico:'👤'}]}
+    {section:'Прогресс',items:[{id:'profile',label:'Профиль',ico:'👤'}]}
   ];
   if(isAdmin())groups.push({section:'Управление',items:[{id:'admin',label:'Админ-панель',ico:'🛠️'}]});
   return groups;
@@ -1000,30 +924,6 @@ function setTab(t){
 }
 function openCase(id){cancelAnimations();state.currentCase=id;state.caseOpens=1;state.openingView=null;state.tab='cases';renderNav();render(true);window.scrollTo({top:0,behavior:'smooth'});}
 function backToCases(){cancelAnimations();state.currentCase=null;state.caseOpens=1;state.openingView=null;render(true);window.scrollTo({top:0,behavior:'smooth'});}
-
-/* === Daily bonus === */
-function getDailyBonusInfo(){
-  const now = Date.now();
-  const last = state.dailyBonus?.lastClaimed || 0;
-  const canClaim = (now - last) >= 24*60*60*1000;
-  const nextAt = last + 24*60*60*1000;
-  const hoursLeft = canClaim ? 0 : Math.ceil((nextAt - now) / (1000*60*60));
-  return { canClaim, hoursLeft };
-}
-function claimDailyBonus(){
-  const info = getDailyBonusInfo();
-  if(!info.canClaim){ toast(`Бонус доступен через ${info.hoursLeft}ч`, 'err'); haptic('error'); return; }
-  const amount = 200 + Math.floor(Math.random() * 301);
-  state.balance += amount;
-  state.dailyBonus = { lastClaimed: Date.now() };
-  state.history.push({ type: 'promo', amount, date: Date.now() });
-  saveState();
-  renderHeader();
-  sndCash();
-  haptic('success');
-  toast(`🎁 Ежедневный бонус: +${fmt(amount)} ${coin(16)}`, 'ok');
-  render(false);
-}
 
 /* === Show profile === */
 function showProfile(username, itemId){
@@ -1114,7 +1014,7 @@ function initTelegramLogin(){
 function onTelegramAuth(user){
   const userData={id:user.id,name:user.first_name||'User',username:user.username||('user'+user.id),avatar:user.photo_url||null,joined:new Date().toLocaleDateString('ru-RU')};
   const isNew=state.balance===0&&state.history.length===0&&state.inventory.length===0;
-  if(isNew){state.balance=5000;state.history.push({type:'promo',amount:5000,date:Date.now()});}
+  if(isNew){ state.balance=0; } // Бонус убран
   state.user=userData;
   const nameEl=document.getElementById('profileName');
   const avatarEl=document.getElementById('profileAvatar');
@@ -1123,7 +1023,6 @@ function onTelegramAuth(user){
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('app').classList.add('logged-in');
   saveState();renderNav();render(true);
-  if(isNew)setTimeout(()=>toast(`🎁 Стартовый бонус +5 000 ${coin(16)}`,'ok'),400);
   haptic('success');
 }
 document.addEventListener('DOMContentLoaded',initTelegramLogin);
@@ -1311,7 +1210,6 @@ function render(fresh){
     else if(state.tab==='fuse')el.innerHTML=renderFuse();
     else if(state.tab==='upgrade')el.innerHTML=renderUpgrade();
     else if(state.tab==='inventory')el.innerHTML=renderInventory();
-    else if(state.tab==='weekly')el.innerHTML=renderWeeklySet();
     else if(state.tab==='profile')el.innerHTML=renderProfile();
     else if(state.tab==='admin')el.innerHTML=isAdmin()?renderAdmin():'<div class="empty-state">Доступ только для админов</div>';
     saveState();
@@ -1359,24 +1257,11 @@ function renderCases(){
   const drops=state.history.filter(h=>h.type==='case').slice(-8).reverse();
   const live=drops.length?drops.map(h=>{const it=itemById(h.itemId);if(!it)return '';const fakeUser='user_***'+Math.random().toString(36).slice(2,4);return `<div class="live-item" onclick="showProfile('${fakeUser}','${it.id}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${fakeUser}</div></div></div>`;}).join(''):'<div style="color:var(--muted);font-size:14px;padding:10px 16px">Дропов пока нет</div>';
 
-  const bonusInfo = getDailyBonusInfo();
-  const dailyBonusHtml = `<div class="daily-bonus-banner">
-    <div style="display:flex;align-items:center;gap:16px;">
-      <div class="daily-bonus-icon">🎁</div>
-      <div class="daily-bonus-info">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);font-weight:800;margin-bottom:4px;">Ежедневный бонус</div>
-        <div style="font-size:15px;color:#fff;font-weight:700;">${bonusInfo.canClaim ? 'Заберите бесплатные монеты!' : `Следующий через ${bonusInfo.hoursLeft}ч`}</div>
-      </div>
-    </div>
-    <button class="btn ${bonusInfo.canClaim?'btn-accent':'btn-ghost'}" onclick="claimDailyBonus()" ${!bonusInfo.canClaim?'disabled':''}>${bonusInfo.canClaim ? '🎁 Забрать 200–500' : '⏳ Уже получен'}</button>
-  </div>`;
-
   return `<div class="hero">
     <h1>Открывай кейсы. Собирай брейнротов. Забирай банк.</h1>
     <p>Открывай кейсы, собирай редких брейнротов и выводи средства на реальный аккаунт.</p>
     <button class="btn btn-danger btn-lg" onclick="openCase('all_in')">ALL IN 🎰</button>
   </div>
-  ${dailyBonusHtml}
   <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id}')">
     <div><div class="top-drop-title">🏆 Топ дроп дня</div>
       <div class="top-drop-content">
@@ -1684,8 +1569,12 @@ function startRoulette(c,results){
   });
   html+=`</div><div style="text-align:center;color:var(--muted);font-size:16px;font-weight:700;margin-bottom:16px">${state.settings.spinType==='fast'?'':'Крутим...'}</div><div style="text-align:center"><button class="btn btn-ghost" onclick="skipCaseAnim()">⏩ Пропустить</button></div>`;
   state.openingView=html;render(false);
-  const animTime=state.settings.spinType==='fast'?300:3500;
-  const easing = state.settings.spinType==='fast' ? 'cubic-bezier(0.12,0.7,0.15,1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
+  
+  // 30% шанс на долгую/плавную анимацию
+  const isSpecialSpin = Math.random() < 0.3; 
+  let animTime = state.settings.spinType==='fast' ? 300 : (isSpecialSpin ? 5500 : 3500);
+  let easing = isSpecialSpin ? 'cubic-bezier(0.05, 1, 0.1, 1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
+  
   requestAnimationFrame(()=>{requestAnimationFrame(()=>{
     results.forEach((win,idx)=>{
       const wrap=document.getElementById(`rouletteWrap_${idx}`);
@@ -2444,171 +2333,6 @@ function upgDo(){
   __upgFinish = () => finishUpgradeSpin({win, cp, roll, totalRotation, fromItems, toItem, froms, nonce, serverSeed, clientSeed});
 }
 
-/* === WEEKLY SET === */
-function getLastWednesday3AM() {
-  const now = new Date();
-  let lastWed = new Date(now);
-  lastWed.setHours(3, 0, 0, 0);
-  const day = now.getDay();
-  let daysSinceWed = (day - 3 + 7) % 7;
-  if (daysSinceWed === 0 && now.getHours() < 3) daysSinceWed = 7;
-  lastWed.setDate(now.getDate() - daysSinceWed);
-  return lastWed;
-}
-function getNextWednesday3AM() {
-  const now = new Date();
-  const nextWed = new Date(now);
-  nextWed.setHours(3, 0, 0, 0);
-  const day = now.getDay();
-  let daysUntilWed = (3 - day + 7) % 7;
-  if (daysUntilWed === 0 && now.getHours() >= 3) daysUntilWed = 7;
-  nextWed.setDate(now.getDate() + daysUntilWed);
-  return nextWed;
-}
-function initWeeklySet() {
-  const lastWed = getLastWednesday3AM();
-  if (!state.weeklySet.generatedAt || state.weeklySet.generatedAt < lastWed.getTime()) {
-    const lastWeek = Date.now() - 7*24*60*60*1000;
-    const history = state.history.filter(h => h.date > lastWeek);
-    const cases = history.filter(h => h.type === 'case').length;
-    const upgrades = history.filter(h => h.type === 'upgrade_win' || h.type === 'upgrade_lose').length;
-    const activity = cases + (upgrades * 2);
-    const requiredDeposit = Math.min(5000, Math.max(500, Math.floor(activity * 50)));
-    let maxPrice = 1000;
-    if (activity > 10) maxPrice = 5000;
-    if (activity > 30) maxPrice = 20000;
-    if (activity > 50) maxPrice = 50000;
-    const pool = ITEMS.filter(i => !i.id.startsWith('coin_') && i.price <= maxPrice);
-    const shuffled = [...pool].sort(() => 0.5 - Math.random());
-    const rewards = [];
-    for(let i=0; i<3; i++) {
-      if (shuffled[i]) rewards.push({ id: 'r_' + i, type: 'brainrot', itemId: shuffled[i].id, name: shuffled[i].name, price: shuffled[i].price });
-    }
-    const bonuses = [
-      { name: '+20% к депозиту', value: 20 },
-      { name: '+10% к депозиту', value: 10 },
-      { name: 'Бесплатный кейс Bronze', value: 'case_bronze' },
-      { name: 'Бесплатный кейс Silver', value: 'case_silver' }
-    ];
-    const bonus = bonuses[Math.floor(Math.random() * bonuses.length)];
-    rewards.push({ id: 'r_bonus', type: 'bonus', name: bonus.name, value: bonus.value, price: 0 });
-    rewards.sort(() => 0.5 - Math.random());
-    state.weeklySet = { generatedAt: Date.now(), rewards, selected: new Set(), requiredDeposit, depositProgress: 0, isClaimed: false };
-    saveState();
-  }
-}
-
-function renderWeeklySet() {
-  initWeeklySet();
-  if (!state.weeklySet.rewards || !Array.isArray(state.weeklySet.rewards) || state.weeklySet.rewards.length === 0) initWeeklySet();
-  const ws = state.weeklySet;
-  const claimed = ws.isClaimed;
-  const depositMet = ws.depositProgress >= ws.requiredDeposit;
-  const cardsHtml = ws.rewards.map((r, idx) => {
-    const isSelected = ws.selected.has(r.id);
-    let icon = '', title = '', priceStr = '', badge = '';
-    if (r.type === 'brainrot') {
-      const it = itemById(r.itemId);
-      if (!it) return '';
-      icon = `<img src="${it.img}" onerror="this.style.display='none';this.parentElement.innerHTML='${it.icon}'">`;
-      title = it.name;
-      priceStr = `${fmt(it.price)} ${coin(18)}`;
-      badge = `<div class="weekly-card-badge weekly-badge-item">Скин</div>`;
-    } else {
-      icon = `<div style="font-size:80px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.5));">🎁</div>`;
-      title = r.name;
-      priceStr = `<span style="color:var(--green);">Бонус</span>`;
-      badge = `<div class="weekly-card-badge weekly-badge-bonus">Бонус</div>`;
-    }
-    return `<div class="weekly-card ${isSelected ? 'selected' : ''} ${claimed ? 'disabled' : ''}" onclick="toggleWeeklyReward('${r.id}')">
-      ${badge}<div class="weekly-card-img">${icon}</div><div class="weekly-card-name">${title}</div><div class="weekly-card-price">${priceStr}</div>
-    </div>`;
-  }).join('');
-  const canClaim = !claimed && depositMet && ws.selected.size === 2;
-  let btnText = 'Забрать награды';
-  let btnClass = 'locked';
-  let btnAction = '';
-  if (claimed) { btnText = 'Награды получены'; btnClass = 'claimed'; }
-  else if (canClaim) { btnText = 'Забрать награды'; btnClass = 'ready'; btnAction = 'onclick="claimWeeklyRewards()"'; }
-  else if (!depositMet) { btnText = 'Пополнить баланс'; btnClass = 'ready'; btnAction = 'onclick="openDepositModal()"'; }
-  else if (ws.selected.size !== 2) { btnText = 'Выберите 2 награды'; btnClass = 'locked'; btnAction = `onclick="toast('Выберите 2 награды из 4','err')"`; }
-  return `<div class="weekly-container">
-    <div class="page-title" style="font-size:42px;">🎁 Еженедельный набор</div>
-    <div class="page-sub">Выберите 2 награды из 4. Набор обновляется каждую среду в 03:00.</div>
-    <div class="weekly-timer-box">
-      <div class="weekly-timer-title">До следующего обновления:</div>
-      <div class="weekly-timer" id="weeklyCountdown">00д : 00ч : 00м : 00с</div>
-    </div>
-    <div class="weekly-grid">${cardsHtml}</div>
-    <div class="weekly-claim-box">
-      <div class="weekly-claim-condition">Чтобы забрать награды, пополните баланс на <b style="color:var(--gold);">${fmt(ws.requiredDeposit)}</b> монет на этой неделе.<br><span style="font-size:13px;color:var(--muted);margin-top:4px;display:inline-block;">(На основе вашей активности)</span></div>
-      <div class="weekly-deposit-progress"><div class="weekly-deposit-fill" style="width:${Math.min(100,(ws.depositProgress/ws.requiredDeposit)*100)}%"></div></div>
-      <div class="weekly-deposit-text"><span>Прогресс депозита</span><span>${fmt(ws.depositProgress)} / ${fmt(ws.requiredDeposit)}</span></div>
-      <button class="weekly-btn ${btnClass}" ${btnAction}>${btnText}</button>
-    </div>
-  </div>`;
-}
-function toggleWeeklyReward(id) {
-  if (state.weeklySet.isClaimed) return;
-  const sel = state.weeklySet.selected;
-  if (sel.has(id)) sel.delete(id);
-  else {
-    if (sel.size >= 2) { toast('Можно выбрать только 2 награды', 'err'); return; }
-    sel.add(id);
-  }
-  sndClick();
-  render(false);
-}
-function claimWeeklyRewards() {
-  const ws = state.weeklySet;
-  if (ws.isClaimed) return;
-  if (ws.selected.size !== 2) { toast('Выберите ровно 2 награды', 'err'); return; }
-  if (ws.depositProgress < ws.requiredDeposit) { toast('Недостаточная сумма пополнения', 'err'); return; }
-  ws.isClaimed = true;
-  ws.selected.forEach(id => {
-    const reward = ws.rewards.find(r => r.id === id);
-    if (!reward) return;
-    if (reward.type === 'brainrot') {
-      state.inventory.push({uid: uuid(), itemId: reward.itemId, date: Date.now()});
-      state.history.push({type: 'case', caseId: 'weekly', itemId: reward.itemId, date: Date.now()});
-    } else if (reward.type === 'bonus') {
-      if (typeof reward.value === 'number') toast(`Бонус +${reward.value}% к депозиту активирован!`, 'ok');
-      else if (reward.value.startsWith('case_')) {
-        const caseId = reward.value.replace('case_', '');
-        const c = CASES.find(x => x.id === caseId);
-        if (c) { toast(`Выдан кейс ${c.name}!`, 'ok'); state.balance += c.price; }
-      }
-    }
-  });
-  saveState(); sndWin(); haptic('success');
-  toast('Награды успешно получены!', 'ok');
-  render(false);
-}
-function startWeeklyTimer() {
-  if (__weeklyTimerInt) clearInterval(__weeklyTimerInt);
-  const update = () => {
-    const el = document.getElementById('weeklyCountdown');
-    if (!el) return;
-    const nextWed = getNextWednesday3AM();
-    const now = Date.now();
-    let diff = Math.max(0, nextWed.getTime() - now);
-    if (diff === 0) { initWeeklySet(); render(false); return; }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24)); diff -= days * 86400000;
-    const hours = Math.floor(diff / (1000 * 60 * 60)); diff -= hours * 3600000;
-    const mins = Math.floor(diff / (1000 * 60)); diff -= mins * 60000;
-    const secs = Math.floor(diff / 1000);
-    el.innerHTML = `${days}д : ${String(hours).padStart(2,'0')}ч : ${String(mins).padStart(2,'0')}м : ${String(secs).padStart(2,'0')}с`;
-  };
-  update();
-  __weeklyTimerInt = setInterval(update, 1000);
-}
-const originalRender = render;
-render = function(fresh) {
-  originalRender(fresh);
-  if (state.tab === 'weekly') startWeeklyTimer();
-  else if (__weeklyTimerInt) { clearInterval(__weeklyTimerInt); __weeklyTimerInt = null; }
-};
-
 /* === INVENTORY === */
 function setInventorySort(s){ state.inventorySort = s; saveState(); render(false); }
 function setInventoryFilter(f){ state.inventoryFilter = f; saveState(); render(false); }
@@ -2900,7 +2624,7 @@ async function submitDeposit() {
   const btn = document.getElementById('depSubmitBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'СОЗДАНИЕ...'; }
 
-  // ⚠️ ВСТАВЬ СЮДА ССЫЛКУ ИЗ BONTO ⚠️
+  // ⚠️ ССЫЛКА НА ВАШ СЕРВЕР (Замените если нужно)
   const SERVER_URL = 'https://brainrot-server.bonto.run'; 
 
   let totalAmount = 0;
@@ -2944,7 +2668,7 @@ async function submitDeposit() {
 
   } catch (error) {
     console.error(error);
-    toast('Ошибка связи с сервером!', 'err');
+    toast('Ошибка связи с сервером! Проверьте, запущен ли бэкенд.', 'err');
     haptic('error');
     if (btn) { btn.disabled = false; btn.textContent = 'СОЗДАТЬ ЗАЯВКУ'; }
   }
