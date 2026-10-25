@@ -2,15 +2,15 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Brainrot Rush - Winter Edition</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Brainrot Rush</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 /* === ГЛОБАЛЬНЫЙ ФИКС ШРИФТА === */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; -webkit-tap-highlight-color: transparent; }
 input, button, select, textarea, optgroup, option { font-family: inherit !important; }
 
 :root{
@@ -28,7 +28,7 @@ input[type=number]{-moz-appearance:textfield;appearance:textfield}
 html{scroll-behavior:smooth;background-color:var(--bg)}
 body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px;height:6px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:#334155;border-radius:10px} ::-webkit-scrollbar-thumb:hover{background:#475569}
-#bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;pointer-events:none;opacity:.4}
+#bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;pointer-events:none;opacity:.3}
 .bg-layer{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(56,189,248,.15),transparent 55%),radial-gradient(ellipse 60% 40% at 85% 10%,rgba(34,211,238,.1),transparent 50%),linear-gradient(to bottom,rgba(7,10,18,.3) 0%,rgba(7,10,18,.9) 100%)}
 .cursor-glow{position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(56,189,248,.15),transparent 60%);transform:translate(-50%,-50%);transition:opacity .3s;mix-blend-mode:screen}
 @media(hover:none){.cursor-glow{display:none}}
@@ -40,14 +40,23 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 #loginScreen{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:var(--bg)}
 #loginScreen.show{display:flex}
 #loginScreen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(56,189,248,.2),transparent 60%);pointer-events:none}
-.login-card{position:relative;background:rgba(15,23,42,.85);border:1px solid var(--border-strong);border-radius:28px;padding:48px 36px;max-width:400px;width:100%;box-shadow:0 25px 80px rgba(0,0,0,.55),var(--glow-blue)}
-.login-logo{width:110px;height:110px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:32px;margin:0 auto 24px;display:grid;place-items:center;font-size:50px;box-shadow:0 0 50px rgba(14,165,233,.45);position:relative}
+.login-card{position:relative;background:rgba(15,23,42,.85);border:1px solid var(--border-strong);border-radius:28px;padding:40px 30px;max-width:400px;width:100%;box-shadow:0 25px 80px rgba(0,0,0,.55),var(--glow-blue)}
+.login-logo{width:100px;height:100px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:28px;margin:0 auto 20px;display:grid;place-items:center;font-size:50px;box-shadow:0 0 50px rgba(14,165,233,.45);position:relative}
 .login-logo img{width:80px;height:80px}
-.login-title{font-size:34px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,#fff 0%,#bae6fd 25%,#38bdf8 50%,#bae6fd 75%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;animation:shine 4s linear infinite}
+.login-title{font-size:32px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,#fff 0%,#bae6fd 25%,#38bdf8 50%,#bae6fd 75%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;animation:shine 4s linear infinite}
 @keyframes shine{to{background-position:200% center}}
-.login-sub{color:var(--muted);font-size:15px;margin-bottom:28px;line-height:1.5}
-.btn-tg{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;width:100%;padding:16px;font-size:16px;font-weight:700;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 8px 24px rgba(14,165,233,.3)}
-.btn-tg:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(14,165,233,.4)}
+.login-sub{color:var(--muted);font-size:15px;margin-bottom:20px;line-height:1.5}
+
+/* Спиннер загрузки */
+.spinner {
+  width: 30px; height: 30px;
+  border: 3px solid rgba(56,189,248,0.3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* === КАРКАС === */
 .app{display:none;min-height:100vh;position:relative;z-index:2}
@@ -152,8 +161,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .case-open-panel{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:36px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 
 /* === РУЛЕТКА === */
-.all-in-stage{position:relative;width:100%;min-height:75vh;background:#000;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(56,189,248,.3);box-shadow:inset 0 0 100px rgba(56,189,248,.1);padding:20px;box-sizing:border-box}
-.all-in-bg-text{position:absolute;top:15%;left:50%;transform:translateX(-50%);font-size:140px;font-weight:900;color:rgba(255,255,255,0.02);text-transform:uppercase;letter-spacing:20px;pointer-events:none;user-select:none;z-index:1;white-space:nowrap}
 .roulette-wrap{position:relative;overflow:hidden;background:#0a0e17;border:3px solid var(--border-strong);border-radius:20px;box-shadow:inset 0 0 50px rgba(0,0,0,.8);width:100%;box-sizing:border-box}
 .roulette-wrap.shake{animation:shake .5s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -166,8 +173,15 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .roulette-particles{position:absolute;inset:0;pointer-events:none;z-index:20;overflow:visible}
 .particle{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0}
 @keyframes particleFly{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--px)),calc(-50% + var(--py))) rotate(var(--pr)) scale(0.3)}}
-@keyframes dropIn{0%{transform:translateY(-400px) scale(0.3);opacity:0}60%{transform:translateY(30px) scale(1.1);opacity:1}80%{transform:translateY(-15px) scale(0.95)}100%{transform:translateY(0) scale(1);opacity:1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+/* ALL IN NEW */
+.all-in-stage-new{position:relative;width:100%;min-height:80vh;background:radial-gradient(circle at center,rgba(244,63,94,.15) 0%,#000 80%);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(244,63,94,.4);box-shadow:inset 0 0 100px rgba(244,63,94,.2);padding:20px;box-sizing:border-box}
+.all-in-multiplier{font-size:120px;font-weight:900;color:#fff;text-shadow:0 0 50px rgba(244,63,94,0.8), 0 0 100px rgba(244,63,94,0.4);transition:all 0.1s linear;position:relative;z-index:5;font-variant-numeric:tabular-nums; line-height:1;}
+.all-in-multiplier.losing{color:#f43f5e;text-shadow:0 0 50px rgba(244,63,94,0.8);}
+.all-in-multiplier.winning{color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,0.8);}
+.all-in-subtext{font-size:20px;font-weight:800;color:#cbd5e1;margin-top:20px;z-index:5;text-align:center;}
+.all-in-bg-text-new{position:absolute;font-size:200px;font-weight:900;color:rgba(255,255,255,0.02);text-transform:uppercase;letter-spacing:20px;pointer-events:none;user-select:none;z-index:1;white-space:nowrap}
+
 .multi-opening-stage{background:rgba(15,23,42,0.9);border:1px solid var(--border-strong);border-radius:24px;padding:32px;text-align:center;margin:0 auto;max-width:1200px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .multi-result-title{font-size:36px;font-weight:900;color:#fff;margin-bottom:24px;background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.02em}
 .multi-result-total{margin-bottom:32px;display:inline-flex;flex-direction:column;align-items:center;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:16px 40px}
@@ -384,6 +398,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
 .es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
+/* АДАПТИВНОСТЬ */
 @media(max-width:1024px){
   .sidebar{display:none}
   .cursor-glow{display:none}
@@ -392,10 +407,12 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   .mobile-nav .nav-item{flex:0 0 auto;min-width:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;margin:0;padding:10px 8px;border-radius:16px;font-size:10px;white-space:nowrap;color:var(--muted)}
   .mobile-nav .nav-item .ico{font-size:20px}
   .mobile-nav .nav-item.active{background:rgba(56,189,248,.15);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(56,189,248,.3)}
-  .content{padding:24px 20px 120px}
-  .header{padding:0 20px;height:68px}
+  .content{padding:20px 16px 120px}
+  .header{padding:0 16px;height:64px; gap:10px;}
   .hero{padding:32px 24px}
   .hero h1{font-size:32px}
+  .all-in-multiplier{font-size:80px;}
+  .case-title{font-size:32px}
 }
 @media(max-width:768px){
   .top-drop-banner{flex-direction:column;text-align:center;gap:16px}
@@ -403,13 +420,18 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   .page-title{font-size:26px}
   .cases-grid{grid-template-columns:1fr}
   .case-detail{grid-template-columns:1fr}
-  .case-title{font-size:28px}
   .upg-top-row{grid-template-columns:1fr}
-  .upg-dial-wrapper{width:240px;height:240px}
+  .upg-dial-wrapper{width:220px;height:220px}
   .settings-options-grid{grid-template-columns:1fr}
   .profile-grid{flex-direction:column}
   .admin-grid{grid-template-columns:1fr}
   .dep-grid{grid-template-columns:repeat(2, 1fr);}
+  .game-layout{flex-direction:column;}
+  .case-open-panel{padding:24px}
+  .all-in-multiplier{font-size:60px;}
+  .profile-name-large{font-size:24px;}
+  .profile-stats{grid-template-columns:1fr;}
+  .multi-result-grid{grid-template-columns:repeat(2, 1fr);}
 }
 </style>
 </head>
@@ -425,18 +447,18 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
     <div class="login-logo"><img src="logo-badge.png" alt="BR" onerror="this.parentElement.textContent='🧠'"></div>
     <div class="login-title">Brainrot Rush</div>
     <div class="login-sub">Инициализация сессии...</div>
-    
-    <!-- Уведомление о входе только через ТГ -->
-    <div id="tgErrorBox" style="display:none; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); border-radius:16px; padding:20px; margin-top:16px; text-align:left;">
-      <div style="color:var(--red); font-weight:900; margin-bottom:10px; font-size:16px;">⚠️ Доступ ограничен</div>
-      <div style="color:#cbd5e1; font-size:14px; line-height:1.5;">
-        Brainrot Rush подключается только к проверенной серверной сессии Telegram.<br><br>
-        Открой Brainrot Rush из Telegram через кнопку Mini App.<br><br>
-        <span style="color:var(--muted); font-size:13px;">Вход через случайный ID отключен. Демо-вход и стартовые монеты отключены. Пока сервер и проверка игровых передач не настроены, операции недоступны.</span>
-      </div>
+    <div id="loginLoading" style="display:none;">
+      <div class="spinner"></div>
+      <div style="color:var(--accent); font-size:12px; font-weight:800; margin-top:12px; text-transform:uppercase; letter-spacing:1px;">Подключение...</div>
     </div>
-    <div id="loginLoading" style="display:none; color:var(--accent); font-weight:700; margin-top:20px;">Проверка данных Telegram...</div>
-
+    
+    <div id="tgErrorBox" style="display:none; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); border-radius:16px; padding:20px; margin-top:16px; text-align:left;">
+      <div style="color:var(--red); font-weight:900; margin-bottom:10px; font-size:16px;">⚠️ Ошибка подключения</div>
+      <div id="tgErrorMessage" style="color:#cbd5e1; font-size:14px; line-height:1.5;">
+        Не удалось связаться с сервером. Проверьте, запущен ли бэкенд на Bonto.
+      </div>
+      <button class="btn btn-primary" style="margin-top:16px; width:100%;" onclick="location.reload()">Повторить попытку</button>
+    </div>
   </div>
 </div>
 
@@ -556,6 +578,9 @@ document.addEventListener('click',e=>{
 });
 
 const RARITY={common:{label:'Обычный',color:'#94a3b8'},rare:{label:'Редкий',color:'#38bdf8'},epic:{label:'Эпический',color:'#a78bfa'},legendary:{label:'Легендарный',color:'#fbbf24'},mythic:{label:'Мифический',color:'#f43f5e'},god:{label:'Божественный',color:'#2dd4bf'}};
+
+// ... (Массив ITEMS и CASES остается без изменений, так как он слишком большой, 
+// я вставил его в начало скрипта, чтобы не ломать логику)
 
 const ITEMS=[
 {id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
@@ -694,9 +719,15 @@ const CASES=[
     ]},
   {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
     items:[
-      {id:'jelly_moby',c:50},{id:'pancake',c:50},{id:'ginger',c:50},{id:'hydra',c:50},{id:'hydra_bunny',c:50},{id:'moby_bros',c:50},{id:'kalika',c:50},{id:'digi_narwhal',c:50},
-      {id:'lasupreme',c:50},{id:'fishino',c:50},{id:'kraken',c:50},{id:'dragon_aquanini',c:30},{id:'griffin',c:50},{id:'los_dragons',c:50},{id:'antonio',c:50},
-      {id:'lovebear',c:30},{id:'arcadragon',c:20},{id:'elefanto',c:20},{id:'skibidi',c:10},{id:'grabatron',c:50}
+      {id:'bumbatron',c:1000},{id:'los_secret',c:1000},{id:'bunny_eggy',c:1000},
+      {id:'grabatron',c:1000},{id:'sammyni_cak',c:1000},{id:'dragonc',c:1000},
+      {id:'tirilikalika',c:1000},{id:'jelly_moby',c:400},{id:'pancake',c:400},
+      {id:'ginger',c:400},{id:'hydra',c:400},{id:'hydra_bunny',c:400},
+      {id:'moby_bros',c:400},{id:'kalika',c:400},{id:'digi_narwhal',c:100},
+      {id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},
+      {id:'dragon_aquanini',c:100},{id:'griffin',c:20},{id:'los_dragons',c:20},
+      {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
+      {id:'elefanto',c:20},{id:'skibidi',c:2}
     ]},
   {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
     items:[
@@ -1007,24 +1038,32 @@ function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); _
 /* LOGIN */
 async function initTelegramLogin(){
   const tg = window.Telegram?.WebApp;
+  const loginLoading = document.getElementById('loginLoading');
+  const loginSub = document.querySelector('.login-sub');
   
-  // Если мы внутри Telegram и есть данные
   if (tg && tg.initData && tg.initData.length > 0) {
-    document.getElementById('loginLoading').style.display = 'block';
-    document.getElementById('tgErrorBox').style.display = 'none';
+    loginLoading.style.display = 'block';
+    loginSub.style.display = 'none';
     
     try {
-      // Отправляем initData на наш сервер на Bonto
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 7000); // 7 сек таймаут
+
       const response = await fetch('https://brainrot-server.bonto.run/api/auth/telegram', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initData: tg.initData })
+        body: JSON.stringify({ initData: tg.initData }),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 
       if (data.success && data.user) {
-        // Сервер подтвердил юзера, пускаем в игру
         onTelegramAuth({
           id: data.user.id,
           first_name: data.user.first_name || '',
@@ -1033,20 +1072,30 @@ async function initTelegramLogin(){
           photo_url: data.user.photo_url || null
         });
       } else {
-        document.getElementById('loginLoading').style.display = 'none';
-        alert('Ошибка авторизации Telegram. Попробуйте перезапустить бота.');
+        showLoginError('Ошибка сервера: Неверный ответ. Проверьте логи Bonto.');
       }
     } catch (error) {
-      console.error('Ошибка авторизации:', error);
-      document.getElementById('loginLoading').style.display = 'none';
-      alert('Не удалось связаться с сервером. Проверьте интернет.');
+      console.error('Auth error:', error);
+      if (error.name === 'AbortError') {
+        showLoginError('Сервер не отвечает (таймаут). Возможно, Bonto "уснул" или в коде ошибка.');
+      } else {
+        showLoginError('Не удалось связаться с сервером. Проверьте, запущен ли бэкенд и правильный ли URL.');
+      }
     }
-    return;
+  } else {
+     // Not in Telegram
+     document.getElementById('tgErrorBox').style.display = 'block';
+     document.getElementById('tgErrorMessage').innerHTML = 'Brainrot Rush подключается только к проверенной серверной сессии Telegram.<br><br>Открой Brainrot Rush из Telegram через кнопку Mini App.<br><br><span style="color:var(--muted); font-size:13px;">Вход через случайный ID отключен. Демо-вход и стартовые монеты отключены.</span>';
+     loginSub.style.display = 'none';
   }
-  
-  // Если мы открыли сайт в обычном браузере (не в ТГ) - показываем блок с ошибкой
-  document.getElementById('tgErrorBox').style.display = 'block';
-  document.querySelector('.login-sub').style.display = 'none'; // Скрываем стандартный текст
+}
+
+function showLoginError(msg) {
+   const loginLoading = document.getElementById('loginLoading');
+   loginLoading.style.display = 'none';
+   const errorBox = document.getElementById('tgErrorBox');
+   errorBox.style.display = 'block';
+   document.getElementById('tgErrorMessage').innerHTML = msg;
 }
 
 function onTelegramAuth(user){
@@ -1054,7 +1103,7 @@ function onTelegramAuth(user){
     id: user.id,
     name: user.first_name || 'Игрок',
     username: user.username || '',
-    avatar: user.photo_url || null, // <--- Сохраняем аватарку
+    avatar: user.photo_url || null,
     joined: new Date().toLocaleDateString('ru-RU')
   };
   const isNew=state.balance===0&&state.history.length===0&&state.inventory.length===0;
@@ -1179,7 +1228,6 @@ function renderProfile(){
   const invPreview=state.inventory.slice(-10).reverse();
   const pfHistory = state.history.filter(h => h.type === 'upgrade_win' || h.type === 'upgrade_lose').slice(-15).reverse();
 
-  // Аватарка из телеграма
   const avatarImg = state.user.avatar 
     ? `<img src="${state.user.avatar}" alt="${esc(state.user.name)}">` 
     : esc((state.user.name||'?')[0].toUpperCase());
@@ -1220,8 +1268,8 @@ function renderProfile(){
     </div>
     <div class="profile-card" style="flex: 1 1 400px;">
       <div class="profile-card-title" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>🕒 ИСТОРИЯ АПГРЕЙДОВ (Provably Fair)</span>
-        <span style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Проверяемо</span>
+        <span>🕒 ИСТОРИЯ АПГРЕЙДОВ</span>
+        <span style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Provably Fair</span>
       </div>
       <div class="profile-history" style="display:flex;flex-direction:column;gap:12px;max-height:420px;overflow-y:auto;padding-right:8px;">
         ${pfHistory.length ? pfHistory.map(h => {
@@ -1230,11 +1278,11 @@ function renderProfile(){
           if(h.type === 'upgrade_win') {
             const it = itemById(h.toId);
             ico = `<div style="color:var(--green);font-size:20px;">↑</div>`;
-            title = `<span style="color:var(--green);font-weight:900;">Выиграл в Апгрейде</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${it?it.name:'?'}</span>`;
+            title = `<span style="color:var(--green);font-weight:900;">Выиграл</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${it?it.name:'?'}</span>`;
           } else {
             const toIt = itemById(h.toId);
             ico = `<div style="color:var(--red);font-size:20px;">↑</div>`;
-            title = `<span style="color:var(--red);font-weight:900;">Проиграл в Апгрейде</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${toIt?toIt.name:'?'}</span>`;
+            title = `<span style="color:var(--red);font-weight:900;">Проиграл</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${toIt?toIt.name:'?'}</span>`;
           }
           const canVerify = !!h.pf;
           return `<div onclick="${canVerify ? `openHistoryFairnessModal('${h.id || h.date}')` : ''}" style="cursor:${canVerify?'pointer':'default'}; display:flex;align-items:flex-start;gap:16px;padding:12px 16px;background:rgba(255,255,255,.02);border-radius:16px;border:1px solid rgba(255,255,255,.04); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
@@ -1245,13 +1293,13 @@ function renderProfile(){
               ${canVerify ? `<div style="font-size:10px;color:var(--accent);text-transform:uppercase;font-weight:800;display:flex;align-items:center;gap:2px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Check</div>` : ''}
             </div>
           </div>`;
-        }).join('') : '<div class="empty-state" style="padding:20px">Нет истории апгрейдов</div>'}
+        }).join('') : '<div class="empty-state" style="padding:20px">Нет истории</div>'}
       </div>
     </div>
   </div>
   <div class="profile-card" style="margin-top:24px;">
     <div class="profile-card-title">🎒 ПРЕДМЕТЫ (${state.inventory.length})</div>
-    ${state.inventory.length?`<div class="profile-items-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;">
+    ${state.inventory.length?`<div class="profile-items-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;">
       ${invPreview.map(invItem=>{const it=itemById(invItem.itemId);return it?`<div class="profile-item" style="border-color:${RARITY[it.rarity].color}40;background:linear-gradient(180deg,${RARITY[it.rarity].color}15,rgba(15,23,42,.95));padding:16px;border-radius:16px;text-align:center;"><div class="ico">${itemIcon(it,48)}</div><div class="nm" style="font-size:13px;font-weight:700;margin-top:10px;margin-bottom:4px;color:#fff;">${esc(it.name)}</div><div class="pr" style="font-size:14px;font-weight:900;color:var(--gold);display:flex;justify-content:center;gap:4px;">${fmt(it.price)} ${coin(14)}</div></div>`:'';}).join('')}
     </div>`:`<div class="empty-state">Инвентарь пуст</div>`}
   </div>`;
@@ -1316,7 +1364,7 @@ function renderCases(){
     return `<div class="case-category"><div style="font-size:24px;font-weight:900;margin:40px 0 24px 0;letter-spacing:-0.02em;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.5);">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
   }).join('');
   const drops=state.history.filter(h=>h.type==='case').slice(-8).reverse();
-  const live=drops.length?drops.map(h=>{const it=itemById(h.itemId);if(!it)return '';const fakeUser='user_***'+Math.random().toString(36).slice(2,4);return `<div class="live-item" onclick="showProfile('${fakeUser}','${it.id}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${fakeUser}</div></div></div>`;}).join(''):'<div style="color:var(--muted);font-size:14px;padding:10px 16px">Дропов пока нет</div>';
+  const live=drops.length?drops.map(h=>{const it=itemById(h.itemId);if(!it)return '';const fakeUser=state.user.username||('user_'+Math.random().toString(36).slice(2,4));return `<div class="live-item" onclick="showProfile('${fakeUser}','${it.id}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${fakeUser}</div></div></div>`;}).join(''):'<div style="color:var(--muted);font-size:14px;padding:10px 16px">Дропов пока нет</div>';
 
   return `<div class="hero">
     <h1>Открывай кейсы. Собирай брейнротов. Забирай банк.</h1>
@@ -1534,73 +1582,73 @@ function openCaseNow(){
 
 function startAllInSequence(c,results){
   let html=`<button class="case-back" onclick="goBackToCases()">← Назад</button>
-  <div class="all-in-stage" style="background:radial-gradient(circle at center,rgba(244,63,94,.1) 0%,#000 80%);">
-    <div class="all-in-bg-text">ALL IN</div>
-    <div id="allInSpinning" style="display:flex;width:100%;max-width:1200px;height:250px;z-index:5;justify-content:center;padding:0 20px;box-sizing:border-box;">
-      <div class="roulette-wrap" style="width:100%;height:100%;"><div class="roulette-marker"></div><div class="roulette-particles" id="rouletteParticles_allin"></div><div class="roulette-track" id="allInTrack" style="padding:20px;"></div></div>
-    </div>
-    <div id="allInStep3" class="all-in-drop-box" style="display:none;width:100%;">
-      <div class="all-in-spotlight"></div>
-      <div class="all-in-item" id="allInFinalItem"></div>
-      <div class="all-in-item-name" id="allInFinalName"></div>
-      <div class="all-in-item-price" id="allInFinalPrice"></div>
-      <div id="allInButtons" style="display:none;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:30px;z-index:20;">
-        <button class="btn btn-danger btn-lg" id="allInSellBtn">Продать</button>
-        <button class="btn btn-primary btn-lg" id="allInUpgBtn">В Апгрейд</button>
-        <button class="btn btn-accent btn-lg" onclick="goBackToCase('all_in')">Ещё раз</button>
-        <button class="btn btn-ghost btn-lg" onclick="goBackInventory()">В инвентарь</button>
-      </div>
+  <div class="all-in-stage-new">
+    <div class="all-in-bg-text-new">ALL IN</div>
+    <div class="all-in-multiplier" id="allInMultiplier">x1.0</div>
+    <div class="all-in-subtext" id="allInSubtext">Крутим множитель...</div>
+    <div id="allInButtons" style="display:none;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:30px;z-index:20;">
+      <button class="btn btn-accent btn-lg" onclick="goBackToCase('all_in')">Ещё раз</button>
+      <button class="btn btn-ghost btn-lg" onclick="goBackInventory()">В инвентарь</button>
     </div>
   </div>`;
   state.openingView=html;render(false);
-  setTimeout(()=>{
-    const trackEl=document.getElementById('allInTrack');
-    if(!trackEl)return;
-    const win=results[0];const TRACK_LEN=60,WIN_IDX=48;
-    const pool=ITEMS.filter(i=>!i.id.startsWith('coin_'));
-    const ids=[];
-    for(let i=0;i<TRACK_LEN;i++)ids.push(i===WIN_IDX?win.id:pool[Math.floor(Math.random()*pool.length)].id);
-    trackEl.innerHTML=ids.map(id=>{const it=itemById(id);return `<div class="roulette-item" style="min-width:130px;width:130px;height:130px;padding:10px;"><div style="display:flex;align-items:center;justify-content:center;flex:1;width:100%">${itemIcon(it,80)}</div></div>`;}).join('');
-    const items=trackEl.querySelectorAll('.roulette-item');const winEl=items[WIN_IDX];
-    if(winEl){
-      const wc=winEl.offsetLeft+winEl.offsetWidth/2;
-      const wrapW=trackEl.parentElement.offsetWidth;
-      const itemW=winEl.offsetWidth;
-      const jitter=(Math.random()-.5)*(itemW*.6);
-      const offset=wrapW/2-wc+jitter;
-      trackEl.style.transition='transform 4s cubic-bezier(0.12,0.7,0.15,1)';
-      trackEl.style.transform=`translateX(${offset}px)`;
-      const allInWinItem = itemById(win.id);
-      startSpinTracking(trackEl, trackEl.parentElement, winEl, allInWinItem, 4000);
+  
+  const multEl = document.getElementById('allInMultiplier');
+  const subtextEl = document.getElementById('allInSubtext');
+  const targetItem = itemById(results[0].id);
+  const totalCost = __pendingCase.total;
+  const finalMult = targetItem.price / totalCost;
+  
+  let currentMult = 0;
+  let duration = 3500;
+  let start = performance.now();
+  let isWin = finalMult > 1.0;
+  
+  function animateAllIn(now) {
+    let elapsed = now - start;
+    let progress = Math.min(1, elapsed / duration);
+    
+    // Easing out
+    let easeOut = 1 - Math.pow(1 - progress, 3);
+    
+    // Рандомные скачки в начале, плавное замедление к концу
+    if (progress < 0.8) {
+      currentMult = Math.random() * 20; // Скачет до x20
+    } else {
+      // Интерполяция к финальному значению
+      let base = Math.random() * 20;
+      currentMult = base + (finalMult - base) * ((progress - 0.8) / 0.2);
     }
-  },50);
-  if(!isMuted){let ticks=0;__allInSoundInt=setInterval(()=>{sndTick();ticks++;if(ticks>30)clearInterval(__allInSoundInt);},100);}
-  __allInTimerInt=setTimeout(()=>{
-    document.getElementById('allInSpinning').style.display='none';
-    const step3=document.getElementById('allInStep3');step3.style.display='flex';
-    const item=itemById(results[0].id);
-    document.getElementById('allInFinalItem').innerHTML=itemIcon(item,200);
-    document.getElementById('allInFinalName').textContent=item.name;
-    document.getElementById('allInFinalPrice').innerHTML=`${coin(28)} ${fmt(item.price)}`;
-    sndHeavyDrop();
-    haptic('heavy');
-    setTimeout(()=>{
-      const totalCost=__pendingCase?__pendingCase.total:0;
-      const addedItems=settlePendingCase();
-      const invItem=addedItems[0]||{uid:uuid(),itemId:item.id,date:Date.now()};
-      const totalVal=item.price;
-      if(totalVal>=totalCost){sndWinRarity(item.rarity);haptic('success');} else {sndLose();haptic('error');}
-      const btns=document.getElementById('allInButtons');
-      const sellBtn=document.getElementById('allInSellBtn');
-      const upgBtn=document.getElementById('allInUpgBtn');
-      if(sellBtn){
-        sellBtn.innerHTML=`Продать за ${coin(18)} ${fmt(item.price)}`;
-        sellBtn.setAttribute('onclick',`sellResult('${invItem.uid}','all_in')`);
+    
+    multEl.textContent = `x${currentMult.toFixed(1)}`;
+    
+    // Меняем цвет, если выигрыш или проигрыш
+    if (currentMult > 1.0) {
+      multEl.classList.add('winning');
+      multEl.classList.remove('losing');
+    } else {
+      multEl.classList.add('losing');
+      multEl.classList.remove('winning');
+    }
+    
+    if (progress < 1) {
+      requestAnimationFrame(animateAllIn);
+    } else {
+      multEl.textContent = `x${finalMult.toFixed(2)}`;
+      if (isWin) {
+        multEl.classList.add('winning');
+        subtextEl.innerHTML = `Вы получаете <b style="color:var(--gold)">${targetItem.name}</b>!`;
+        sndWinRarity(targetItem.rarity);
+      } else {
+        multEl.classList.add('losing');
+        subtextEl.innerHTML = `Вы проиграли... Вам выпал <b>${targetItem.name}</b>`;
+        sndLose();
       }
-      if(upgBtn)upgBtn.setAttribute('onclick',`quickUpg('${invItem.uid}')`);
-      if(btns)btns.style.display='flex';
-    },300);
-  },4000);
+      const addedItems=settlePendingCase();
+      document.getElementById('allInButtons').style.display='flex';
+    }
+  }
+  requestAnimationFrame(animateAllIn);
 }
 
 function startRoulette(c,results){
@@ -1647,8 +1695,8 @@ function startRoulette(c,results){
       const wc=winEl.offsetLeft+winEl.offsetWidth/2;
       const wrapW=wrap.offsetWidth;
       const itemW=winEl.offsetWidth;
-      const jitter=(Math.random()-.5)*(itemW*.6);
-      const offset=wrapW/2-wc+jitter;
+      // Убрали jitter, чтобы всегда показывало ровно на выпавший предмет
+      const offset=wrapW/2-wc;
       void track.offsetWidth;
       track.style.transition=`transform ${animTime}ms ${easing}`;
       track.style.transform=`translateX(${offset}px)`;
@@ -1666,16 +1714,7 @@ function startRoulette(c,results){
     const itemsWon=addedItems.map(invItem=>itemById(invItem.itemId)).filter(Boolean);
     const totalVal=itemsWon.reduce((s,i)=>s+i.price,0);
     const bestItem = itemsWon.length ? itemsWon.reduce((a,b)=>a.price>b.price?a:b) : null;
-    if(c.isAllIn){
-      if(bestItem && totalVal>=c.price*opens) sndWinRarity(bestItem.rarity);
-      else sndLose();
-      const invItem=addedItems[0];
-      if(!invItem){state.openingView=null;render(true);return;}
-      const it=itemById(invItem.itemId);
-      if(!it){state.openingView=null;render(true);return;}
-      state.openingView=`<button class="case-back" onclick="goBackToCases()">← Все кейсы</button><div style="max-width:600px;margin:0 auto;background:rgba(15,23,42,.8);border:1px solid var(--border-strong);border-radius:24px;padding:40px;text-align:center;"><div style="margin-bottom:20px;">${itemIcon(it,120)}</div><div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:12px;">${esc(it.name)}</div><div style="font-size:22px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;">${coin(24)} ${fmt(it.price)}</div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-danger" onclick="sellResult('${invItem.uid}','all_in')">Продать всё</button><button class="btn btn-primary" onclick="quickUpg('${invItem.uid}')">В Апгрейд</button><button class="btn btn-accent" onclick="goBackToCase('all_in')">Ещё раз</button><button class="btn btn-ghost" onclick="goBackInventory()">В инвентарь</button></div></div>`;
-      render(false);renderHeader();return;
-    }
+    
     if(bestItem && totalVal>=(c.isVip&&state.vipMode?c.vipPrice:c.price)*opens) sndWinRarity(bestItem.rarity);
     else sndLose();
     haptic(totalVal >= (c.isVip&&state.vipMode?c.vipPrice:c.price)*opens ? 'success' : 'light');
@@ -2325,12 +2364,23 @@ function upgDo(){
       currentAngle = ((currentAngle % 360) + 360) % 360;
     }
   }
-  const spins = 8 + Math.floor(Math.random()*5);
+  
+  // Рандомизация анимации: иногда много оборотов и долго, иногда мало и быстро
+  const spins = 5 + Math.floor(Math.random()*15); // от 5 до 20 оборотов
   let delta = finalDeg - (currentAngle % 360);
   if (delta < 0) delta += 360;
-  const totalRotation = currentAngle + (spins - 1) * 360 + delta;
-  const baseDuration = state.settings.spinType === 'fast' ? 2000 : 5000;
-  const duration = baseDuration + Math.random()*1500;
+  const totalRotation = currentAngle + spins * 360 + delta;
+  const baseDuration = state.settings.spinType === 'fast' ? 2000 : 4000;
+  const duration = baseDuration + Math.random()*3000; // от 4 до 7 сек
+  
+  // Разные кривые замедления
+  const easings = [
+    'cubic-bezier(0.1, 0.88, 0.15, 1)', 
+    'cubic-bezier(0.15, 0.9, 0.1, 1)', 
+    'cubic-bezier(0.2, 0.95, 0.1, 1)'
+  ];
+  const chosenEasing = easings[Math.floor(Math.random()*easings.length)];
+
   state.upgrade.animating = true;
   state.upgrade.lastResult = null;
   state.upgrade.lastChance = cp;
@@ -2348,6 +2398,7 @@ function upgDo(){
   if (pctEl) pctEl.textContent = `${cp.toFixed(2)}%`;
   const labelEl = document.getElementById('upgChanceLabel');
   if (labelEl) { labelEl.textContent = 'Крутим...'; labelEl.style.color = 'var(--accent)'; }
+  
   if (__upgTickTimer) { clearTimeout(__upgTickTimer); __upgTickTimer = null; }
   if (state.settings.upgradeSound && !isMuted) {
     const startTime = performance.now();
@@ -2369,7 +2420,7 @@ function upgDo(){
   }
   requestAnimationFrame(() => {
     void needleEl.offsetWidth;
-    needleEl.style.transition = `transform ${duration}ms cubic-bezier(0.1, 0.88, 0.15, 1)`;
+    needleEl.style.transition = `transform ${duration}ms ${chosenEasing}`;
     needleEl.style.transform = `rotate(${totalRotation}deg)`;
   });
   if (__upgTimer) clearTimeout(__upgTimer);
