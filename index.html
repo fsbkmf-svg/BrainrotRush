@@ -67,6 +67,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .sidebar-profile{padding:20px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .3s;background:rgba(0,0,0,.1)}
 .sidebar-profile:hover{background:rgba(56,189,248,.15)}
 .profile-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);display:grid;place-items:center;font-size:18px;font-weight:800;overflow:hidden;box-shadow:0 0 20px rgba(14,165,233,.4)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;}
 .profile-info{flex:1;min-width:0}
 .profile-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
 .profile-status{font-size:12px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:4px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
@@ -348,7 +349,8 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 
 /* PROFILE */
 .profile-header{display:flex;align-items:center;gap:24px;margin-bottom:32px;background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(15,23,42,.8));border:1px solid rgba(56,189,248,.2);border-radius:28px;padding:32px;flex-wrap:wrap}
-.profile-avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff}
+.profile-avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff;overflow:hidden;position:relative;}
+.profile-avatar-large img{width:100%;height:100%;object-fit:cover;}
 .profile-name-large{font-size:32px;font-weight:900;color:#fff;margin-bottom:6px}
 .profile-joined{color:var(--muted);font-size:15px;font-weight:600}
 .profile-grid{display:flex;gap:24px;margin-bottom:24px;align-items:stretch;flex-wrap:wrap}
@@ -422,13 +424,19 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   <div class="login-card">
     <div class="login-logo"><img src="logo-badge.png" alt="BR" onerror="this.parentElement.textContent='🧠'"></div>
     <div class="login-title">Brainrot Rush</div>
-    <div class="login-sub">Войди, чтобы начать играть</div>
-    <div id="telegramFallbackBtn" style="display:none;margin-top:20px;">
-      <button class="btn-tg" onclick="mockLogin()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2L2 10.5l6 2.5 2 7 4-4 6 2 1.5-16z"/></svg>
-        Войти в игру (Демо)
-      </button>
+    <div class="login-sub">Инициализация сессии...</div>
+    
+    <!-- Уведомление о входе только через ТГ -->
+    <div id="tgErrorBox" style="display:none; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); border-radius:16px; padding:20px; margin-top:16px; text-align:left;">
+      <div style="color:var(--red); font-weight:900; margin-bottom:10px; font-size:16px;">⚠️ Доступ ограничен</div>
+      <div style="color:#cbd5e1; font-size:14px; line-height:1.5;">
+        Brainrot Rush подключается только к проверенной серверной сессии Telegram.<br><br>
+        Открой Brainrot Rush из Telegram через кнопку Mini App.<br><br>
+        <span style="color:var(--muted); font-size:13px;">Вход через случайный ID отключен. Демо-вход и стартовые монеты отключены. Пока сервер и проверка игровых передач не настроены, операции недоступны.</span>
+      </div>
     </div>
+    <div id="loginLoading" style="display:none; color:var(--accent); font-weight:700; margin-top:20px;">Проверка данных Telegram...</div>
+
   </div>
 </div>
 
@@ -997,29 +1005,74 @@ function saveSettingsAndClose(){saveState();closeModal();if(state.tab==='upgrade
 function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); __depositTimerInt=null;} if(__depositPollingInterval){clearInterval(__depositPollingInterval); __depositPollingInterval=null;} $('#overlay').classList.remove('open'); }
 
 /* LOGIN */
-function mockLogin(){
-  const randomId=Math.floor(Math.random()*1000000);
-  onTelegramAuth({id:randomId,first_name:'Игрок',username:'player_'+randomId,photo_url:null});
-}
-function initTelegramLogin(){
-  const tg=window.Telegram?.WebApp;
-  if(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user){
-    const u=tg.initDataUnsafe.user;
-    onTelegramAuth({id:u.id,first_name:u.first_name||'',last_name:u.last_name||'',username:u.username||('user'+u.id),photo_url:u.photo_url||null});
+async function initTelegramLogin(){
+  const tg = window.Telegram?.WebApp;
+  
+  // Если мы внутри Telegram и есть данные
+  if (tg && tg.initData && tg.initData.length > 0) {
+    document.getElementById('loginLoading').style.display = 'block';
+    document.getElementById('tgErrorBox').style.display = 'none';
+    
+    try {
+      // Отправляем initData на наш сервер на Bonto
+      const response = await fetch('https://brainrot-server.bonto.run/api/auth/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: tg.initData })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.user) {
+        // Сервер подтвердил юзера, пускаем в игру
+        onTelegramAuth({
+          id: data.user.id,
+          first_name: data.user.first_name || '',
+          last_name: data.user.last_name || '',
+          username: data.user.username || ('user' + data.user.id),
+          photo_url: data.user.photo_url || null
+        });
+      } else {
+        document.getElementById('loginLoading').style.display = 'none';
+        alert('Ошибка авторизации Telegram. Попробуйте перезапустить бота.');
+      }
+    } catch (error) {
+      console.error('Ошибка авторизации:', error);
+      document.getElementById('loginLoading').style.display = 'none';
+      alert('Не удалось связаться с сервером. Проверьте интернет.');
+    }
     return;
   }
-  const fallbackBtn = document.getElementById('telegramFallbackBtn');
-  if(fallbackBtn) fallbackBtn.style.display='block';
+  
+  // Если мы открыли сайт в обычном браузере (не в ТГ) - показываем блок с ошибкой
+  document.getElementById('tgErrorBox').style.display = 'block';
+  document.querySelector('.login-sub').style.display = 'none'; // Скрываем стандартный текст
 }
+
 function onTelegramAuth(user){
-  const userData={id:user.id,name:user.first_name||'User',username:user.username||('user'+user.id),avatar:user.photo_url||null,joined:new Date().toLocaleDateString('ru-RU')};
+  const userData = {
+    id: user.id,
+    name: user.first_name || 'Игрок',
+    username: user.username || '',
+    avatar: user.photo_url || null, // <--- Сохраняем аватарку
+    joined: new Date().toLocaleDateString('ru-RU')
+  };
   const isNew=state.balance===0&&state.history.length===0&&state.inventory.length===0;
-  if(isNew){ state.balance=0; } // Бонус убран
+  if(isNew){ state.balance=0; } 
   state.user=userData;
+  
   const nameEl=document.getElementById('profileName');
   const avatarEl=document.getElementById('profileAvatar');
-  if(nameEl)nameEl.textContent=state.user.username;
-  if(avatarEl)avatarEl.textContent=(state.user.name||'?')[0];
+  
+  if(nameEl)nameEl.textContent=state.user.name;
+  if(avatarEl) {
+    if(state.user.avatar) {
+      avatarEl.innerHTML = `<img src="${state.user.avatar}" alt="ava">`;
+    } else {
+      avatarEl.textContent=(state.user.name||'?')[0].toUpperCase();
+    }
+  }
+  
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('app').classList.add('logged-in');
   saveState();renderNav();render(true);
@@ -1126,12 +1179,20 @@ function renderProfile(){
   const invPreview=state.inventory.slice(-10).reverse();
   const pfHistory = state.history.filter(h => h.type === 'upgrade_win' || h.type === 'upgrade_lose').slice(-15).reverse();
 
+  // Аватарка из телеграма
+  const avatarImg = state.user.avatar 
+    ? `<img src="${state.user.avatar}" alt="${esc(state.user.name)}">` 
+    : esc((state.user.name||'?')[0].toUpperCase());
+
   return `<div class="profile-header">
     <button class="profile-back" onclick="setTab('cases')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .2s;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <div class="profile-avatar-large">${esc((state.user.name||'?')[0])}</div>
+    <div class="profile-avatar-large">${avatarImg}</div>
     <div>
-      <div class="profile-name-large">${esc(state.user.name||'User')} <span style="font-size:18px;color:var(--muted);font-weight:600;margin-left:8px;">@${esc(state.user.username||'anon')}</span></div>
-      <div class="profile-joined">С нами с ${esc(state.user.joined||'—')}</div>
+      <div class="profile-name-large">
+        ${esc(state.user.name)} 
+        ${state.user.username ? `<span style="font-size:18px;color:var(--muted);font-weight:600;margin-left:8px;">@${esc(state.user.username)}</span>` : ''}
+      </div>
+      <div class="profile-joined">Telegram ID: <b style="color:#fff;">${esc(state.user.id)}</b> · С нами с ${esc(state.user.joined||'—')}</div>
     </div>
   </div>
   <div class="profile-grid">
@@ -2625,7 +2686,7 @@ async function submitDeposit() {
   if (btn) { btn.disabled = true; btn.textContent = 'СОЗДАНИЕ...'; }
 
   // ⚠️ ССЫЛКА НА ВАШ СЕРВЕР (Замените если нужно)
-  const SERVER_URL = 'https://brainrot-server.bonto.run'; 
+  const SERVER_URL = 'https://brainrot-server.bonto.run/'; 
 
   let totalAmount = 0;
   const itemsPayload = [];
@@ -2811,8 +2872,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app').classList.add('logged-in');
     const nameEl=document.getElementById('profileName');
     const avatarEl=document.getElementById('profileAvatar');
-    if(nameEl)nameEl.textContent=state.user.username||'User';
-    if(avatarEl)avatarEl.textContent=(state.user.name||'?')[0];
+    if(nameEl)nameEl.textContent=state.user.name||'User';
+    if(avatarEl) {
+      if(state.user.avatar) {
+        avatarEl.innerHTML = `<img src="${state.user.avatar}" alt="ava">`;
+      } else {
+        avatarEl.textContent=(state.user.name||'?')[0].toUpperCase();
+      }
+    }
     renderNav();
     render(true);
   }
