@@ -318,42 +318,11 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .dep-copy-btn:hover { background:#6d28d9;}
 .dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top:20px;}
 
-/* ИСПРАВЛЕНО: Список выбранных предметов */
-.dep-sum-item { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  background: rgba(255,255,255,0.03); 
-  padding: 12px 16px; 
-  border-radius: 16px; 
-  margin-bottom: 10px; 
-  border: 1px solid rgba(255,255,255,0.05); 
-}
-.dep-sum-left { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
-  flex: 1; 
-  min-width: 0; 
-}
-.dep-sum-remove { 
-  background: rgba(244,63,94,0.15); 
-  color: #f43f5e; 
-  border: none; 
-  width: 32px; 
-  height: 32px; 
-  border-radius: 10px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  cursor: pointer; 
-  transition: all 0.2s; 
-  flex-shrink: 0;
-}
-.dep-sum-remove:hover { 
-  background: rgba(244,63,94,0.25); 
-  transform: scale(1.05); 
-}
+/* Список выбранных предметов (ИСПРАВЛЕНО) */
+.dep-sum-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+.dep-sum-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.dep-sum-remove { background: rgba(244,63,94,0.15); color: #f43f5e; border: none; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+.dep-sum-remove:hover { background: rgba(244,63,94,0.25); transform: scale(1.05); }
 
 /* INVENTORY & PROFILE */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
@@ -398,6 +367,31 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .best-drop-item .result-ico{font-size:90px;margin-bottom:16px;filter:drop-shadow(0 15px 30px rgba(0,0,0,.6))}
 .best-drop-item .name{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px}
 .best-drop-item .price{font-size:26px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px}
+
+/* HISTORY */
+.history-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; scrollbar-width: none; padding-bottom: 8px; }
+.history-tabs::-webkit-scrollbar { display: none; }
+.history-tab { padding: 10px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: var(--muted); font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.history-tab:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.history-tab.active { background: #1e293b; color: #fff; border-color: #334155; }
+
+.history-day-group { margin-bottom: 32px; }
+.history-day-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 16px; }
+.history-day-title { font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+.history-day-profit { font-size: 14px; font-weight: 800; }
+.history-day-profit.pos { color: var(--green); }
+.history-day-profit.neg { color: var(--red); }
+
+.history-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 16px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
+.history-item:hover { background: rgba(255,255,255,0.05); }
+.history-item-left { display: flex; align-items: center; gap: 16px; }
+.history-item-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(0,0,0,0.3); display: grid; place-items: center; font-size: 24px; }
+.history-item-info { display: flex; flex-direction: column; gap: 4px; }
+.history-item-title { font-size: 15px; font-weight: 700; color: #fff; }
+.history-item-sub { font-size: 12px; color: var(--muted); }
+.history-item-amount { font-size: 16px; font-weight: 900; }
+.history-item-amount.pos { color: var(--green); }
+.history-item-amount.neg { color: var(--red); }
 
 /* ADMIN */
 .admin-tabs{display:flex;gap:12px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:16px;flex-wrap:wrap}
@@ -510,6 +504,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 const ADMIN_TG_ID = '8921286864'; 
 const SERVER_URL = 'https://brainrot-server.bonto.run'; 
 const BOT_ROBLOX_NAME = 'daveminioniscool';
+const MAX_UPG = 6; // УВЕЛИЧЕНО ДО 6
 
 (function(){
   const c=document.getElementById('snowContainer');if(!c)return;
@@ -574,7 +569,7 @@ document.addEventListener('keydown',e=>{
 
 document.addEventListener('click',e=>{
   initAudio();
-  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn,.dep-sum-remove');
+  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn,.dep-sum-remove,.history-tab');
   if(!btn)return;
   if(!e.target.closest('.btn-ghost')||e.target.closest('.btn-ghost').id!=='soundToggle')sndClick();
   const r=btn.getBoundingClientRect();
@@ -787,7 +782,10 @@ async function apiSync() {
     const res = await fetch(`${SERVER_URL}/api/state/${state.user.id}`);
     if (res.ok) {
       const data = await res.json();
-      state.balance = data.balance;
+      // Защита от обнуления баланса при сбоях сервера
+      if (data.balance > 0 || state.balance === 0) {
+        state.balance = data.balance;
+      }
       state.inventory = data.inventory || [];
       saveLocalState();
       updateBalance(state.balance);
@@ -796,9 +794,9 @@ async function apiSync() {
   } catch(e) { console.log('Ошибка синхронизации', e); }
 }
 
-// ИСПРАВЛЕНО: Добавлен keepalive: true для надежности при перезагрузке
 async function pushBalance(delta) {
   if (!state.user) return;
+  saveLocalState(); // Сохраняем локально до отправки
   try {
     await fetch(`${SERVER_URL}/api/balance`, {
       method: 'POST',
@@ -809,9 +807,9 @@ async function pushBalance(delta) {
   } catch(e) {}
 }
 
-// ИСПРАВЛЕНО: Добавлен keepalive: true
 async function pushInventoryAdd(itemId, uid, date) {
   if (!state.user) return null;
+  saveLocalState();
   try {
     const res = await fetch(`${SERVER_URL}/api/inventory/add`, {
       method: 'POST',
@@ -827,9 +825,9 @@ async function pushInventoryAdd(itemId, uid, date) {
   return null;
 }
 
-// ИСПРАВЛЕНО: Добавлен keepalive: true
 async function pushInventoryRemove(uids) {
   if (!state.user || !uids || !uids.length) return;
+  saveLocalState();
   try {
     await fetch(`${SERVER_URL}/api/inventory/remove`, {
       method: 'POST',
@@ -1059,7 +1057,7 @@ function getNavGroups(){
   const groups=[
     {section:'Игры',items:[{id:'cases',label:'Кейсы',ico:'📦'},{id:'mines',label:'Мины',ico:'💣'}]},
     {section:'Механики',items:[{id:'fuse',label:'Фьюз',ico:'✨'},{id:'upgrade',label:'Апгрейд',ico:'📈'},{id:'inventory',label:'Инвентарь',ico:'🎒'}]},
-    {section:'Прогресс',items:[{id:'profile',label:'Профиль',ico:'👤'}]}
+    {section:'Прогресс',items:[{id:'history',label:'История',ico:'📜'},{id:'profile',label:'Профиль',ico:'👤'}]}
   ];
   if(isAdmin())groups.push({section:'Управление',items:[{id:'admin',label:'Админ-панель',ico:'🛠️'}]});
   return groups;
@@ -1242,10 +1240,12 @@ async function onTelegramAuth(user){
     avatar: user.photo_url || null,
     joined: new Date().toLocaleDateString('ru-RU')
   };
-  const isNew=state.balance===0&&state.history.length===0&&state.inventory.length===0;
-  if(isNew){ state.balance=0; } 
   state.user=userData;
   
+  // Загружаем локальный кэш перед синхронизацией
+  loadSavedState();
+  
+  // Синхронизация с сервером
   await apiSync();
 
   const nameEl=document.getElementById('profileName');
@@ -1264,6 +1264,20 @@ async function onTelegramAuth(user){
   document.getElementById('app').classList.add('logged-in');
   saveLocalState();renderNav();render(true);
   haptic('success');
+
+  // Запуск автообновления дропов
+  setInterval(() => {
+    fetchGlobalDrops().then(() => {
+      if (state.tab === 'cases') {
+        const el = document.getElementById('live-drops-container');
+        if (el) {
+          el.innerHTML = renderLiveDrops(); // Обновляем только ленту
+        } else {
+          render(false);
+        }
+      }
+    });
+  }, 10000); // Каждые 10 сек
 }
 document.addEventListener('DOMContentLoaded',initTelegramLogin);
 
@@ -1445,6 +1459,157 @@ function renderProfile(){
   </div>`;
 }
 
+/* HISTORY */
+function setHistoryFilter(f) {
+  state.historyFilter = f;
+  render(false);
+}
+
+function renderHistory() {
+  const filter = state.historyFilter || 'all';
+  let list = [...state.history].reverse(); // Новые сверху
+  
+  if (filter !== 'all') {
+    list = list.filter(h => {
+      if (filter === 'deposit') return h.type === 'deposit';
+      if (filter === 'withdraw') return h.type === 'sell' || h.type === 'withdraw';
+      if (filter === 'case') return h.type === 'case';
+      if (filter === 'upgrade') return h.type === 'upgrade_win' || h.type === 'upgrade_lose';
+      if (filter === 'fuse') return h.type === 'fuse';
+      return true;
+    });
+  }
+
+  const grouped = {};
+  list.forEach(h => {
+    const d = new Date(h.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    if (!grouped[d]) grouped[d] = { items: [], profit: 0 };
+    grouped[d].items.push(h);
+    
+    // Подсчет профита
+    if (h.type === 'case') {
+      const it = itemById(h.itemId);
+      if (it) grouped[d].profit -= it.price; // Условно вычитаем цену
+    } else if (h.type === 'sell') {
+      grouped[d].profit += (h.price || 0);
+    } else if (h.type === 'deposit') {
+      grouped[d].profit += (h.amount || 0);
+    } else if (h.type === 'upgrade_win') {
+      const it = itemById(h.toId);
+      if (it) grouped[d].profit += it.price;
+    } else if (h.type === 'upgrade_lose') {
+      const it = itemById(h.fromId);
+      if (it) grouped[d].profit -= it.price;
+    } else if (h.type === 'mines_win') {
+      grouped[d].profit += (h.win || 0);
+    } else if (h.type === 'mines_lose') {
+      grouped[d].profit -= (h.bet || 0);
+    }
+  });
+
+  const tabs = [
+    { id: 'all', label: 'Все' },
+    { id: 'case', label: 'Кейсы' },
+    { id: 'upgrade', label: 'Апгрейды' },
+    { id: 'fuse', label: 'Фьюз' },
+    { id: 'deposit', label: 'Пополнения' },
+    { id: 'withdraw', label: 'Выводы' }
+  ];
+
+  let html = `<div class="page-title">📜 История</div><div class="page-sub">Все твои действия в одном месте</div>`;
+  
+  html += `<div class="history-tabs">
+    ${tabs.map(t => `<div class="history-tab ${filter === t.id ? 'active' : ''}" onclick="setHistoryFilter('${t.id}')">${t.label}</div>`).join('')}
+  </div>`;
+
+  if (Object.keys(grouped).length === 0) {
+    html += `<div class="empty-state">📭 История пуста</div>`;
+  } else {
+    for (const [date, data] of Object.entries(grouped)) {
+      const profitClass = data.profit >= 0 ? 'pos' : 'neg';
+      const profitSign = data.profit > 0 ? '+' : '';
+      html += `<div class="history-day-group">
+        <div class="history-day-header">
+          <div class="history-day-title">${date === new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) ? 'СЕГОДНЯ' : date}</div>
+          <div class="history-day-profit ${profitClass}">${profitSign}${fmt(data.profit)} 🪙</div>
+        </div>`;
+      
+      data.items.forEach(h => {
+        let icon = '❓', title = '', sub = '', amountStr = '', amtClass = 'pos';
+        
+        if (h.type === 'case') {
+          const it = itemById(h.itemId);
+          const c = CASES.find(x => x.id === h.caseId);
+          icon = '📦';
+          title = `Открытие кейса «${c ? c.name : 'Неизвестно'}»`;
+          sub = it ? it.name : '';
+          amountStr = it ? `-${fmt(it.price)}` : '';
+          amtClass = 'neg';
+        } else if (h.type === 'sell') {
+          const it = itemById(h.itemId);
+          icon = '💰';
+          title = `Продажа предмета`;
+          sub = it ? it.name : '';
+          amountStr = `+${fmt(h.price)}`;
+          amtClass = 'pos';
+        } else if (h.type === 'upgrade_win') {
+          const toIt = itemById(h.toId);
+          icon = '📈';
+          title = `Успешный апгрейд`;
+          sub = `Выигрыш: ${toIt ? toIt.name : '?'}`;
+          amountStr = toIt ? `+${fmt(toIt.price)}` : '';
+          amtClass = 'pos';
+        } else if (h.type === 'upgrade_lose') {
+          const fromIt = itemById(h.fromId);
+          icon = '📉';
+          title = `Проваленный апгрейд`;
+          sub = `Потерян: ${fromIt ? fromIt.name : '?'}`;
+          amountStr = fromIt ? `-${fmt(fromIt.price)}` : '';
+          amtClass = 'neg';
+        } else if (h.type === 'fuse') {
+          const it = itemById(h.itemId);
+          icon = '✨';
+          title = `Фьюз предметов`;
+          sub = `Получен: ${it ? it.name : '?'}`;
+          amountStr = '';
+        } else if (h.type === 'deposit') {
+          icon = '📥';
+          title = `Пополнение баланса`;
+          sub = `Зачислено`;
+          amountStr = `+${fmt(h.amount)}`;
+          amtClass = 'pos';
+        } else if (h.type === 'mines_win') {
+          icon = '💎';
+          title = `Победа в Минах`;
+          sub = `Множитель x${h.mult.toFixed(2)}`;
+          amountStr = `+${fmt(h.win)}`;
+          amtClass = 'pos';
+        } else if (h.type === 'mines_lose') {
+          icon = '💣';
+          title = `Проигрыш в Минах`;
+          sub = `Взрыв`;
+          amountStr = `-${fmt(h.bet)}`;
+          amtClass = 'neg';
+        }
+
+        html += `<div class="history-item">
+          <div class="history-item-left">
+            <div class="history-item-icon">${icon}</div>
+            <div class="history-item-info">
+              <div class="history-item-title">${esc(title)}</div>
+              <div class="history-item-sub">${esc(sub)}</div>
+            </div>
+          </div>
+          ${amountStr ? `<div class="history-item-amount ${amtClass}">${amountStr} 🪙</div>` : ''}
+        </div>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  return html;
+}
+
 function render(fresh){
   updateBalance(state.balance);
   const el=$('#content');
@@ -1459,6 +1624,7 @@ function render(fresh){
     else if(state.tab==='fuse')el.innerHTML=renderFuse();
     else if(state.tab==='upgrade')el.innerHTML=renderUpgrade();
     else if(state.tab==='inventory')el.innerHTML=renderInventory();
+    else if(state.tab==='history')el.innerHTML=renderHistory();
     else if(state.tab==='profile')el.innerHTML=renderProfile();
     else if(state.tab==='admin')el.innerHTML=isAdmin()?renderAdmin():'<div class="empty-state">Доступ только для админов</div>';
     saveLocalState();
@@ -1482,7 +1648,6 @@ async function fetchGlobalDrops() {
     }
   } catch (e) {
     console.log('Не удалось загрузить дропы', e);
-    state.globalDrops = [];
   }
 }
 
@@ -1500,6 +1665,15 @@ function getTopDropOfTheDay(){
   return null; 
 }
 
+function renderLiveDrops() {
+  const live = state.globalDrops.length ? state.globalDrops.map(d => {
+    const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
+    return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
+  }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
+
+  return `<div class="live-head"><span class="dot"></span><span style="font-size:16px;font-weight:800;letter-spacing:.02em;">Live дропы</span></div><div class="live-list">${live}</div>`;
+}
+
 function renderCases(){
   const topDrop = getTopDropOfTheDay();
   const categories={standard:'📦 Премиум кейсы',special:'🔥 Особые',mutagen:'🧬 Мутагенные кейсы'};
@@ -1514,11 +1688,6 @@ function renderCases(){
     }).join('');
     return `<div class="case-category"><div style="font-size:24px;font-weight:900;margin:40px 0 24px 0;letter-spacing:-0.02em;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.5);">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
   }).join('');
-  
-  const live = state.globalDrops.length ? state.globalDrops.map(d => {
-    const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
-    return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
-  }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
 
   let topDropHtml = '';
   if (topDrop) {
@@ -1540,7 +1709,7 @@ function renderCases(){
     <button class="btn btn-danger btn-lg" onclick="openCase('all_in')">ALL IN 🎰</button>
   </div>
   ${topDropHtml}
-  <div class="live-bar"><div class="live-head"><span class="dot"></span><span style="font-size:16px;font-weight:800;letter-spacing:.02em;">Live дропы</span></div><div class="live-list">${live}</div></div>
+  <div class="live-bar" id="live-drops-container">${renderLiveDrops()}</div>
   <div class="page-title" style="margin-top:48px;">Магазин кейсов</div>
   <div class="page-sub" style="margin-bottom:0;">Кейсы на любой вкус и кошелёк</div>
   ${cards}`;
@@ -2011,7 +2180,6 @@ function fuseDo(){
 }
 
 /* UPGRADE */
-const MAX_UPG=4;
 
 function cleanUpgradeSelection() {
   state.upgrade.froms = state.upgrade.froms.filter(uid => state.inventory.some(inv => inv.uid === uid));
@@ -2224,7 +2392,7 @@ function upgToggle(u){
     const l=state.upgrade.froms;
     const i=l.indexOf(u);
     if(i>=0)l.splice(i,1);
-    else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предмета`,'err');return;}l.push(u);}
+    else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предметов`,'err');return;}l.push(u);}
     state.upgrade.target=null;render(false);
   } catch(e) { console.error('upgToggle error', e); }
 }
@@ -2904,7 +3072,12 @@ async function submitDeposit() {
       })
     });
 
-    if (!response.ok) throw new Error('Ошибка сервера');
+    // ЧИТАЕМ РЕАЛЬНУЮ ОШИБКУ С СЕРВЕРА
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Сервер вернул ошибку ' + response.status);
+    }
+    
     const data = await response.json();
 
     if (state.user) state.user.robloxName = d.robloxUsername;
@@ -2918,7 +3091,8 @@ async function submitDeposit() {
 
   } catch (error) {
     console.error(error);
-    toast('Ошибка связи с сервером!', 'err');
+    // ВЫВОДИМ РЕАЛЬНУЮ ОШИБКУ В ТОСТ
+    toast(`Ошибка: ${error.message}`, 'err');
     haptic('error');
     if (btn) { btn.disabled = false; btn.textContent = 'СОЗДАТЬ ЗАЯВКУ'; }
   }
@@ -3047,28 +3221,8 @@ async function withdrawItem(uid) {
 
 /* === INITIALIZATION === */
 document.addEventListener('DOMContentLoaded', () => {
-  fetchGlobalDrops().then(() => {
-    const isLoaded = loadSavedState();
-    if(!isLoaded || !state.user){
-      document.getElementById('loginScreen').classList.add('show');
-      initFairness();
-    }else{
-      document.getElementById('loginScreen').classList.remove('show');
-      document.getElementById('app').classList.add('logged-in');
-      const nameEl=document.getElementById('profileName');
-      const avatarEl=document.getElementById('profileAvatar');
-      if(nameEl)nameEl.textContent=state.user.name||'User';
-      if(avatarEl) {
-        if(state.user.avatar) {
-          avatarEl.innerHTML = `<img src="${state.user.avatar}" alt="ava">`;
-        } else {
-          avatarEl.textContent=(state.user.name||'?')[0].toUpperCase();
-        }
-      }
-      renderNav();
-      render(true);
-    }
-  });
+  // Убрал двойной рендер, всё делает initTelegramLogin
+  initTelegramLogin();
 });
 </script>
 </body>
