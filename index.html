@@ -164,7 +164,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .particle{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0}
 @keyframes particleFly{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--px)),calc(-50% + var(--py))) rotate(var(--pr)) scale(0.3)}}
 
-/* ALL IN (ОСТАВЛЕН КАК В ПРИСЛАННОМ ФАЙЛЕ) */
+/* ALL IN */
 .all-in-stage-new{position:relative;width:100%;min-height:80vh;background:radial-gradient(circle at center,rgba(244,63,94,.15) 0%,#000 80%);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(244,63,94,.4);box-shadow:inset 0 0 100px rgba(244,63,94,.2);padding:20px;box-sizing:border-box}
 .all-in-multiplier{font-size:130px;font-weight:900;color:#fff;text-shadow:0 0 50px rgba(244,63,94,0.8), 0 0 100px rgba(244,63,94,0.4);transition:all 0.1s linear;position:relative;z-index:5;font-variant-numeric:tabular-nums; line-height:1;}
 
@@ -222,7 +222,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 @keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .modal-head{display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative}
 .modal-title{font-size:24px;font-weight:900;color:#fff}
-.modal-close{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);width:36px;height:36px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:all .2s;position:absolute;right:0;top:0;font-size:18px}
+.modal-close{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);width:36px;height:36px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:all .2s;position:absolute;right:0;top:0;font-size:18px;z-index:10;}
 .modal-close:hover{background:rgba(255,255,255,.1);color:#fff;transform:scale(1.05)}
 
 /* TOAST */
@@ -289,6 +289,43 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .mine-cell:hover:not(.revealed):not(.mine){border-color:var(--accent);background:rgba(56,189,248,.1);transform:translateY(-3px);box-shadow:0 5px 15px rgba(56,189,248,.2)}
 .mine-cell.revealed{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3);cursor:default;box-shadow:none}
 .mine-cell.mine{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.4);cursor:default;box-shadow:0 0 20px rgba(244,63,94,.3)}
+
+/* PROFILE */
+.profile-header{display:flex;align-items:center;gap:24px;margin-bottom:32px;background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(15,23,42,.8));border:1px solid rgba(56,189,248,.2);border-radius:28px;padding:32px;flex-wrap:wrap}
+.profile-avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff;overflow:hidden;position:relative;}
+.profile-avatar-large img{width:100%;height:100%;object-fit:cover;}
+.profile-name-large{font-size:32px;font-weight:900;color:#fff;margin-bottom:6px}
+.profile-joined{color:var(--muted);font-size:15px;font-weight:600}
+.profile-grid{display:flex;gap:24px;margin-bottom:24px;align-items:stretch;flex-wrap:wrap}
+.profile-grid>div{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:24px}
+.profile-card{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.05);border-radius:28px;padding:28px;display:flex;flex-direction:column;flex:1}
+.profile-card-title{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stat-box{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:18px;padding:20px;display:flex;align-items:center;gap:16px}
+.stat-icon{font-size:28px;filter:drop-shadow(0 0 10px rgba(255,255,255,.1))}
+.stat-val{font-size:22px;font-weight:900;color:#fff}
+.stat-lbl{font-size:13px;color:var(--muted);font-weight:700;margin-top:2px}
+.best-drop-item{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(0,0,0,.2));border:1px solid rgba(251,191,36,.3);border-radius:24px;padding:32px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.best-drop-item .result-ico{font-size:90px;margin-bottom:16px;filter:drop-shadow(0 15px 30px rgba(0,0,0,.6))}
+.best-drop-item .name{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px}
+.best-drop-item .price{font-size:26px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px}
+
+/* ADMIN */
+.admin-tabs{display:flex;gap:12px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:16px;flex-wrap:wrap}
+.admin-tab{padding:12px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:14px;cursor:pointer;font-weight:700;color:var(--muted);transition:all .2s}
+.admin-tab.active{background:rgba(56,189,248,.1);border-color:var(--accent);color:#fff;box-shadow:0 0 20px rgba(56,189,248,.15)}
+.admin-panel{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.05);border-radius:28px;padding:32px}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.admin-card{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:24px}
+.admin-card h4{font-size:18px;font-weight:800;margin-bottom:20px;color:#fff}
+.admin-form-group{margin-bottom:20px}
+.admin-form-group label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.bet-input{width:100%;padding:14px 18px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:#fff;font-size:16px;outline:none;transition:border-color .2s}
+.bet-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+.bet-input::placeholder{color:var(--muted)}
+
+.empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
+.es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
 /* АДАПТИВНОСТЬ */
 @media(max-width:1024px){
@@ -381,6 +418,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 <script>
 const ADMIN_TG_ID = '8921286864'; 
 const SERVER_URL = 'https://brainrot-server.bonto.run'; 
+const GITHUB_RAW = 'https://raw.githubusercontent.com/fsbkmf-svg/BrainrotRush/main/';
 
 (function(){
   const c=document.getElementById('snowContainer');if(!c)return;
@@ -460,122 +498,101 @@ document.addEventListener('click',e=>{
 const RARITY={common:{label:'Обычный',color:'#94a3b8'},rare:{label:'Редкий',color:'#38bdf8'},epic:{label:'Эпический',color:'#a78bfa'},legendary:{label:'Легендарный',color:'#fbbf24'},mythic:{label:'Мифический',color:'#f43f5e'},god:{label:'Божественный',color:'#2dd4bf'}};
 
 const ITEMS=[
-{id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
-{id:'coin_8',name:'8 Монет',icon:'🪙',rarity:'common',price:8,img:'sab-coin.png'},
-{id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:'sab-coin.png'},
-{id:'coin_15',name:'15 Монет',icon:'🪙',rarity:'common',price:15,img:'sab-coin.png'},
-{id:'coin_16',name:'16 Монет',icon:'🪙',rarity:'common',price:16,img:'sab-coin.png'},
-{id:'coin_20',name:'20 Монет',icon:'🪙',rarity:'common',price:20,img:'sab-coin.png'},
-{id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:'sab-coin.png'},
-{id:'coin_30',name:'30 Монет',icon:'🪙',rarity:'common',price:30,img:'sab-coin.png'},
-{id:'coin_45',name:'45 Монет',icon:'🪙',rarity:'common',price:45,img:'sab-coin.png'},
-{id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:'sab-coin.png'},
-{id:'coin_71',name:'71 Монет',icon:'🪙',rarity:'common',price:71,img:'sab-coin.png'},
-{id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:'sab-coin.png'},
-{id:'coin_150',name:'150 Монет',icon:'🪙',rarity:'rare',price:150,img:'sab-coin.png'},
-{id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:'sab-coin.png'},
-{id:'coin_350',name:'350 Монет',icon:'🪙',rarity:'rare',price:350,img:'sab-coin.png'},
-{id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:'sab-coin.png'},
-{id:'coin_700',name:'700 Монет',icon:'🪙',rarity:'epic',price:700,img:'sab-coin.png'},
-{id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:'sab-coin.png'},
-{id:'coin_1500',name:'1500 Монет',icon:'🪙',rarity:'epic',price:1500,img:'sab-coin.png'},
-{id:'coin_2000',name:'2000 Монет',icon:'🪙',rarity:'epic',price:2000,img:'sab-coin.png'},
-{id:'coin_3000',name:'3000 Монет',icon:'🪙',rarity:'legendary',price:3000,img:'sab-coin.png'},
-{id:'coin_4000',name:'4000 Монет',icon:'🪙',rarity:'legendary',price:4000,img:'sab-coin.png'},
-{id:'coin_5000',name:'5000 Монет',icon:'🪙',rarity:'legendary',price:5000,img:'sab-coin.png'},
-{id:'coin_7000',name:'7000 Монет',icon:'🪙',rarity:'legendary',price:7000,img:'sab-coin.png'},
-{id:'coin_10000',name:'10000 Монет',icon:'🪙',rarity:'mythic',price:10000,img:'sab-coin.png'},
-{id:'coin_15000',name:'15000 Монет',icon:'🪙',rarity:'mythic',price:15000,img:'sab-coin.png'},
-{id:'coin_25000',name:'25000 Монет',icon:'🪙',rarity:'god',price:25000,img:'sab-coin.png'},
-{id:'coin_30000',name:'30000 Монет',icon:'🪙',rarity:'god',price:30000,img:'sab-coin.png'},
-{id:'coin_50000',name:'50000 Монет',icon:'🪙',rarity:'god',price:50000,img:'sab-coin.png'},
-{id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:'brainrots/Cash_or_Card.png'},
-{id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:'brainrots/Garamadundung.png'},
-{id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:'brainrots/la_secret.png'},
-{id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:'brainrots/Pizza_and_Ranch.png'},
-{id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:'brainrots/La_Food_Combinasion.png'},
-{id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:'brainrots/Fragola_La_La_La.png'},
-{id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:'brainrots/Popcuru_and_Fizzuru.png'},
-{id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:'brainrots/JollyJollySahur.png'},
-{id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:'brainrots/Burguro_And_Fryuro.png'},
-{id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:'brainrots/La_Fuse_Machine.png'},
-{id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'brainrots/Fragrama_and_Chocrama.png'},
-{id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'brainrots/Capitano_Moby.png'},
-{id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'brainrots/Cooki_and_Milki.png'},
-{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/Sammyni_Fattini.png'},
-{id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'brainrots/Globa_Steppa.png'},
-{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/Spooky.png'},
-{id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'brainrots/Cerberus.png'},
-{id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'brainrots/Celestial_Pegasus.png'},
-{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/Reinito.png'},
-{id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'brainrots/Los_Admins.png'},
-{id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'brainrots/Guest666.png'},
-{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/Los_Amigos.png'},
-{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/Los_Chillis.png'},
-{id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'brainrots/Fortunu_and_Cashuru.png'},
-{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/Rubrikiko.png'},
-{id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'brainrots/Los_Sekolahs.png'},
-{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/Rico_Dinero.png'},
-{id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'brainrots/La_Breakfast_Combinasion.png'},
-{id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'brainrots/Examen_Bros.png'},
-{id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'brainrots/Foxini_Lanternini.png'},
-{id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'brainrots/los_hackers.png'},
-{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/Rosy.png'},
-{id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'brainrots/Dug_dug_dug.png'},
-{id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'brainrots/venuspino.png'},
-{id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'brainrots/Duggy_Bros.png'},
-{id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:'brainrots/La_Casa_Boo.png'},
-{id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:'brainrots/Ketupat_Bros.png'},
-{id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:'brainrots/Bumbatron.png'},
-{id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:'brainrots/los_secret.png'},
-{id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:'brainrots/Bunny_and_Eggy.png'},
-{id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:'brainrots/Grabatron.png'},
-{id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'brainrots/sammyni_cak.png'},
-{id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'brainrots/Dragon_Cannelloni.png'},
-{id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'brainrots/tirilikalika.png'},
-{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/Jelly_Moby.png'},
-{id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'brainrots/pancake.png'},
-{id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'brainrots/Ginger_Gerat.png'},
-{id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'brainrots/Hydra_Dragon_Cannelloni.png'},
-{id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'brainrots/Hydra_Bunny.png'},
-{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/Moby_Bros.png'},
-{id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'brainrots/Kalika_Bros.png'},
-{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/Digi_Narwhal.png'},
-{id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'brainrots/La_Supreme_Combinasion.png'},
-{id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'brainrots/Fishino_Clownino.png'},
-{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/Kraken.png'},
-{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/Dragon_Aquanini.png'},
-{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/Griffin.png'},
-{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/Los_Dragons.png'},
-{id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'brainrots/Antonio.png'},
-{id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'brainrots/lovebear.png'},
-{id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'brainrots/Arcadragon.png'},
-{id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'brainrots/Elefanto_Frigo.png'},
-{id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'brainrots/SkibidiToilet.png'},
-{id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'brainrots/John_Pork.png'},
-{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/Meowl.png'},
-{id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
-{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_Elephant.png'},
-{id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'},
-{id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:'brainrots/Gold_Guest666.png'},
-{id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:'brainrots/Diamond_Guest666.png'},
-{id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:'brainrots/Bloodrot_Guest666.png'},
-{id:'guest666_candy',name:'Candy Guest666',icon:'😈',rarity:'epic',price:411.94,img:'brainrots/Candy_Guest666.png'},
-{id:'guest666_lava',name:'Lava Guest666',icon:'😈',rarity:'legendary',price:451.44,img:'brainrots/Lava_Guest666.png'},
-{id:'guest666_galaxy',name:'Galaxy Guest666',icon:'😈',rarity:'legendary',price:464.61,img:'brainrots/Galaxy_Guest666.png'},
-{id:'guest666_yinyang',name:'Yin Yang Guest666',icon:'😈',rarity:'legendary',price:507.87,img:'brainrots/Yin_Yang_Guest666.png'},
-{id:'guest666_radioactive',name:'Radioactive Guest666',icon:'😈',rarity:'mythic',price:502.23,img:'brainrots/Radioactive_Guest666.png'},
-{id:'guest666_cursed',name:'Cursed Guest666',icon:'😈',rarity:'mythic',price:487.18,img:'brainrots/Cursed_Guest666.png'},
-{id:'guest666_divine',name:'Divine Guest666',icon:'😈',rarity:'mythic',price:451.44,img:'brainrots/Divine_Guest666.png'},
-{id:'guest666_rainbow',name:'Rainbow Guest666',icon:'😈',rarity:'mythic',price:534.2,img:'brainrots/Rainbow_Guest666.png'},
-{id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:'brainrots/Cyber_Guest666.png'},
-{id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:'brainrots/Phantom_Guest666.png'},
-{id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:'brainrots/Crystal_Guest666.png'},
-{id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'}
+{id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:GITHUB_RAW+'sab-coin.png'},
+{id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:GITHUB_RAW+'sab-coin.png'},
+{id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:GITHUB_RAW+'brainrots/Cash_or_Card.png'},
+{id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:GITHUB_RAW+'brainrots/Garamadundung.png'},
+{id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:GITHUB_RAW+'brainrots/la_secret.png'},
+{id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:GITHUB_RAW+'brainrots/Pizza_and_Ranch.png'},
+{id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:GITHUB_RAW+'brainrots/La_Food_Combinasion.png'},
+{id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:GITHUB_RAW+'brainrots/Fragola_La_La_La.png'},
+{id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:GITHUB_RAW+'brainrots/Popcuru_and_Fizzuru.png'},
+{id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:GITHUB_RAW+'brainrots/JollyJollySahur.png'},
+{id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:GITHUB_RAW+'brainrots/BurguroAndFryuro.png'},
+{id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:GITHUB_RAW+'brainrots/La_Fuse_Machine.png'},
+{id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:GITHUB_RAW+'brainrots/fragrama.png'},
+{id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:GITHUB_RAW+'brainrots/Capitano_Moby.png'},
+{id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:GITHUB_RAW+'brainrots/cooki_milki.png'},
+{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:GITHUB_RAW+'brainrots/sammyni_fat.png'},
+{id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:GITHUB_RAW+'brainrots/globa.png'},
+{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:GITHUB_RAW+'brainrots/spooky.png'},
+{id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:GITHUB_RAW+'brainrots/cerberus.png'},
+{id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:GITHUB_RAW+'brainrots/celestial.png'},
+{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:GITHUB_RAW+'brainrots/reinito.png'},
+{id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:GITHUB_RAW+'brainrots/los_admins.png'},
+{id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:GITHUB_RAW+'brainrots/guest666.png'},
+{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:GITHUB_RAW+'brainrots/los_amigos.png'},
+{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:GITHUB_RAW+'brainrots/los_chillis.png'},
+{id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:GITHUB_RAW+'brainrots/fortunu.png'},
+{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:GITHUB_RAW+'brainrots/rubrikiko.png'},
+{id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:GITHUB_RAW+'brainrots/Los_Sekolahs.png'},
+{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:GITHUB_RAW+'brainrots/rico.png'},
+{id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:GITHUB_RAW+'brainrots/la_breakfast.png'},
+{id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:GITHUB_RAW+'brainrots/examen.png'},
+{id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:GITHUB_RAW+'brainrots/foxini.png'},
+{id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:GITHUB_RAW+'brainrots/los_hackers.png'},
+{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:GITHUB_RAW+'brainrots/rosy.png'},
+{id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:GITHUB_RAW+'brainrots/Dug_dug_dug.png'},
+{id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:GITHUB_RAW+'brainrots/venuspino.png'},
+{id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:GITHUB_RAW+'brainrots/duggy.png'},
+{id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:GITHUB_RAW+'brainrots/lacasaboo.png'},
+{id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:GITHUB_RAW+'brainrots/ketupat.png'},
+{id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:GITHUB_RAW+'brainrots/Bumbatron.png'},
+{id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:GITHUB_RAW+'brainrots/los_secret.png'},
+{id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:GITHUB_RAW+'brainrots/bunny_eggy.png'},
+{id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:GITHUB_RAW+'brainrots/grabatron.png'},
+{id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:GITHUB_RAW+'brainrots/sammyni_cak.png'},
+{id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:GITHUB_RAW+'brainrots/dragonc.png'},
+{id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:GITHUB_RAW+'brainrots/tirilikalika.png'},
+{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:GITHUB_RAW+'brainrots/jelly_moby.png'},
+{id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:GITHUB_RAW+'brainrots/pancake.png'},
+{id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:GITHUB_RAW+'brainrots/ginger.png'},
+{id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:GITHUB_RAW+'brainrots/hydra.png'},
+{id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:GITHUB_RAW+'brainrots/Hydra_Bunny.png'},
+{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:GITHUB_RAW+'brainrots/moby_bros.png'},
+{id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:GITHUB_RAW+'brainrots/kalika.png'},
+{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:GITHUB_RAW+'brainrots/digi_narwhal.png'},
+{id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:GITHUB_RAW+'brainrots/lasupreme.png'},
+{id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:GITHUB_RAW+'brainrots/fishino.png'},
+{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:GITHUB_RAW+'brainrots/kraken.png'},
+{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:GITHUB_RAW+'brainrots/dragon_aquanini.png'},
+{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:GITHUB_RAW+'brainrots/griffin.png'},
+{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:GITHUB_RAW+'brainrots/los_dragons.png'},
+{id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:GITHUB_RAW+'brainrots/antonio.png'},
+{id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:GITHUB_RAW+'brainrots/lovebear.png'},
+{id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:GITHUB_RAW+'brainrots/Arcadragon.png'},
+{id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:GITHUB_RAW+'brainrots/Elefanto_Frigo.png'},
+{id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:GITHUB_RAW+'brainrots/SkibidiToilet.png'},
+{id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:GITHUB_RAW+'brainrots/John_Pork.png'},
+{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:GITHUB_RAW+'brainrots/meowl.png'},
+{id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:GITHUB_RAW+'brainrots/signore.png'},
+{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:GITHUB_RAW+'brainrots/Strawberry_elephant.png'},
+{id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:GITHUB_RAW+'brainrots/Horseman.png'},
+{id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:GITHUB_RAW+'brainrots/Gold_Guest666.png'},
+{id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:GITHUB_RAW+'brainrots/Diamond_Guest666.png'},
+{id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:GITHUB_RAW+'brainrots/Bloodrot_Guest666.png'},
+{id:'guest666_candy',name:'Candy Guest666',icon:'😈',rarity:'epic',price:411.94,img:GITHUB_RAW+'brainrots/Candy_Guest666.png'},
+{id:'guest666_lava',name:'Lava Guest666',icon:'😈',rarity:'legendary',price:451.44,img:GITHUB_RAW+'brainrots/Lava_Guest666.png'},
+{id:'guest666_galaxy',name:'Galaxy Guest666',icon:'😈',rarity:'legendary',price:464.61,img:GITHUB_RAW+'brainrots/Galaxy_Guest666.png'},
+{id:'guest666_yinyang',name:'Yin Yang Guest666',icon:'😈',rarity:'legendary',price:507.87,img:GITHUB_RAW+'brainrots/Yin_Yang_Guest666.png'},
+{id:'guest666_radioactive',name:'Radioactive Guest666',icon:'😈',rarity:'mythic',price:502.23,img:GITHUB_RAW+'brainrots/Radioactive_Guest666.png'},
+{id:'guest666_cursed',name:'Cursed Guest666',icon:'😈',rarity:'mythic',price:487.18,img:GITHUB_RAW+'brainrots/Cursed_Guest666.png'},
+{id:'guest666_divine',name:'Divine Guest666',icon:'😈',rarity:'mythic',price:451.44,img:GITHUB_RAW+'brainrots/Divine_Guest666.png'},
+{id:'guest666_rainbow',name:'Rainbow Guest666',icon:'😈',rarity:'mythic',price:534.2,img:GITHUB_RAW+'brainrots/Rainbow_Guest666.png'},
+{id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:GITHUB_RAW+'brainrots/Cyber_Guest666.png'},
+{id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:GITHUB_RAW+'brainrots/Phantom_Guest666.png'},
+{id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:GITHUB_RAW+'brainrots/Crystal_Guest666.png'},
+{id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:GITHUB_RAW+'brainrots/Eclipse_Guest666.png'}
 ];
 
 const CASES=[
-  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков',price:100,category:'standard',
+  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:GITHUB_RAW+'cases/bronze.png',desc:'Стартовый кейс для новичков',price:100,category:'standard',
     items:[
       {id:'cashcard',c:100},{id:'garama',c:100},{id:'la_secret',c:100},{id:'pizza_ranch',c:100},
       {id:'la_food',c:100},{id:'fragola',c:100},{id:'popcuru',c:100},{id:'jolly',c:100},
@@ -586,7 +603,7 @@ const CASES=[
       {id:'fortunu',c:10},{id:'rubrikiko',c:10},{id:'los_sekolahs',c:10},
       {id:'rico',c:20},{id:'bumbatron',c:10}
     ]},
-  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:250,category:'standard',
+  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:GITHUB_RAW+'cases/silver.png',desc:'Больше шансов на редкое',price:250,category:'standard',
     items:[
       {id:'garama',c:50},{id:'jolly',c:50},{id:'cerberus',c:50},{id:'celestial',c:50},{id:'reinito',c:50},{id:'los_admins',c:50},
       {id:'guest666',c:50},{id:'los_amigos',c:50},{id:'los_chillis',c:50},{id:'fortunu',c:50},{id:'rubrikiko',c:50},{id:'los_sekolahs',c:50},{id:'rico',c:50},
@@ -594,7 +611,7 @@ const CASES=[
       {id:'lacasaboo',c:20},{id:'ketupat',c:20},{id:'bumbatron',c:20},{id:'los_secret',c:20},{id:'bunny_eggy',c:15},{id:'grabatron',c:20},
       {id:'sammyni_cak',c:20},{id:'dragonc',c:20},{id:'tirilikalika',c:20},{id:'jelly_moby',c:15}
     ]},
-  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
+  {id:'gold',name:'Золотой кейс',icon:'👑',img:GITHUB_RAW+'cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
     items:[
       {id:'bumbatron',c:1000},{id:'los_secret',c:1000},{id:'bunny_eggy',c:1000},
       {id:'grabatron',c:1000},{id:'sammyni_cak',c:1000},{id:'dragonc',c:1000},
@@ -606,12 +623,12 @@ const CASES=[
       {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
       {id:'elefanto',c:20},{id:'skibidi',c:2}
     ]},
-  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
+  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:GITHUB_RAW+'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
     items:[
       {id:'dragon_aquanini',c:50},{id:'antonio',c:50},{id:'lovebear',c:100},{id:'arcadragon',c:100},{id:'elefanto',c:100},
       {id:'skibidi',c:20},{id:'johnpork',c:10},{id:'meowl',c:10},{id:'signore',c:5},{id:'strawb',c:2},{id:'headless',c:0.5}
     ]},
-  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:199,vipPrice:3000,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
+  {id:'vip',name:'V.I.P',icon:'👑',img:GITHUB_RAW+'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:199,vipPrice:3000,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
     normalItems:[
       {id:'fragola',c:200},{id:'globa',c:150},{id:'spooky',c:150},{id:'cerberus',c:150},{id:'celestial',c:150},{id:'reinito',c:150},{id:'los_admins',c:150},
       {id:'guest666',c:120},{id:'los_amigos',c:120},{id:'los_chillis',c:80},{id:'fortunu',c:80},{id:'rubrikiko',c:80},{id:'los_sekolahs',c:80},
@@ -624,8 +641,8 @@ const CASES=[
       {id:'los_dragons',c:50},{id:'antonio',c:50},{id:'lovebear',c:30},{id:'arcadragon',c:30},{id:'elefanto',c:30},{id:'skibidi',c:15},
       {id:'johnpork',c:5},{id:'meowl',c:5},{id:'signore',c:1},{id:'strawb',c:0.2},{id:'headless',c:0.05}
     ]},
-  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
-  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:349,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
+  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:GITHUB_RAW+'cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
+  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:GITHUB_RAW+'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:349,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
     items:[
       {id:'coin_100',c:386.66},{id:'guest666',c:150},{id:'guest666_gold',c:150},{id:'guest666_diamond',c:150},{id:'guest666_candy',c:100},{id:'guest666_lava',c:100},
       {id:'guest666_divine',c:100},{id:'guest666_galaxy',c:100},{id:'guest666_cursed',c:60},{id:'guest666_radioactive',c:60},{id:'guest666_yinyang',c:60},
@@ -744,7 +761,7 @@ const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 const $=s=>document.querySelector(s);
 function coin(size=20){
   const s=Math.round(size*1.15);
-  return `<img src="sab-coin.png" alt="coin" style="width:${s}px;height:${s}px;object-fit:contain;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${s}px;line-height:1;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 7px rgba(251,191,36,.55))\\'>🪙</span>');">`;
+  return `<img src="${GITHUB_RAW}sab-coin.png" alt="coin" style="width:${s}px;height:${s}px;object-fit:contain;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${s}px;line-height:1;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 7px rgba(251,191,36,.55))\\'>🪙</span>');">`;
 }
 document.getElementById('coinTop').innerHTML=coin(28);
 
@@ -794,7 +811,6 @@ function toast(m,t=''){
   processToastQueue();
 }
 
-// НАДЕЖНЫЙ ВЫВОД ИКОНОК
 function itemIcon(it,size=48){
   if(!it)return '';
   if(it.img){
@@ -912,7 +928,7 @@ function showProfile(username, itemId, source = 'Кейс') {
   
   $('#modal').innerHTML = `<div class="modal-head">
     <div class="modal-title">Профиль игрока</div>
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button>
   </div>
   <div style="text-align:center;padding:20px 0;">
     <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);margin:0 auto 16px;display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff;">${esc((username || '?')[0]).toUpperCase()}</div>
@@ -1483,7 +1499,7 @@ function fuseDo(){
   pushInventoryAdd(res.id);
   state.history.push({type:'fuse',itemId:res.id,totalValue:t,date:Date.now()});
   state.fuseSelected.clear();
-  $('#modal').innerHTML=`<div class="modal-head"><div class="modal-title">Результат фьюза</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+  $('#modal').innerHTML=`<div class="modal-head"><div class="modal-title">Результат фьюза</div><button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button></div>
     <div style="background:transparent;border:0;padding:40px 20px;text-align:center;position:relative;">
       <div style="margin-bottom:24px;filter:drop-shadow(0 20px 40px rgba(0,0,0,.6));animation:dropIn 0.8s var(--spring) both;">${itemIcon(res,140)}</div>
       <div style="font-size:32px;font-weight:900;color:#fff;margin-bottom:12px;">${esc(res.name)}</div>
@@ -1748,7 +1764,7 @@ function openFairnessModal(){
   <div class="fair-modal">
     <div class="fair-header">
       <div class="fair-title">Проверка честности</div>
-      <button class="modal-close" onclick="closeModal()" style="position:static;">✕</button>
+      <button class="modal-close" onclick="event.stopPropagation(); closeModal()" style="position:static;">✕</button>
     </div>
     <div class="fair-label">НОМЕР ПОПЫТКИ</div>
     <div class="fair-input" style="margin-bottom:16px;">#${state.fairness.nonce}</div>
@@ -1807,7 +1823,7 @@ function openHistoryFairnessModal(historyId){
   <div class="fair-modal">
     <div class="fair-header">
       <div class="fair-title">Проверка честности</div>
-      <button class="modal-close" onclick="closeModal()" style="position:static;">✕</button>
+      <button class="modal-close" onclick="event.stopPropagation(); closeModal()" style="position:static;">✕</button>
     </div>
     <div class="fair-label">НОМЕР ПОПЫТКИ</div>
     <div class="fair-input" style="margin-bottom:16px;opacity:.7;">#${nonce}</div>
@@ -2080,7 +2096,7 @@ function sellOne(uid){
   if(!it) return;
   
   openModal(`
-    <div class="modal-head"><div class="modal-title">Продажа</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-head"><div class="modal-title">Продажа</div><button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button></div>
     <div style="text-align:center;padding:20px 0;">
       ${itemIcon(it, 100)}
       <div style="font-size:20px;font-weight:900;color:#fff;margin:16px 0 8px;">${esc(it.name)}</div>
@@ -2114,7 +2130,7 @@ function sellAll(){
   const total = state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
   if(total<=0) return;
   openModal(`
-    <div class="modal-head"><div class="modal-title">Продать всё?</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-head"><div class="modal-title">Продать всё?</div><button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button></div>
     <div style="text-align:center;padding:20px 0;">
       <div style="font-size:24px;font-weight:900;color:var(--gold);margin-bottom:24px;">${fmt(total)} ${coin(24)}</div>
       <div style="display:flex;gap:12px;justify-content:center;">
@@ -2149,7 +2165,7 @@ function quickUpg(uid){
 }
 
 /* ============================================= */
-/* === ДЕПОЗИТ И ВЫВОД (ТОЛЬКО СВОИ ПРЕДМЕТЫ) === */
+/* === ДЕПОЗИТ И ВЫВОД === */
 /* ============================================= */
 
 let __depositPollingInterval = null;
@@ -2214,7 +2230,7 @@ function renderDepositModal() {
   const headerHtml = `
     <div class="modal-head">
       <div class="modal-title">Пополнение</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button>
     </div>
   `;
 
@@ -2374,7 +2390,6 @@ async function submitDeposit() {
 
   let totalAmount = 0;
   const itemsPayload = [];
-  const uidsToRemove = [];
   
   d.selected.forEach((count, id) => {
     const item = itemById(id);
@@ -2386,7 +2401,8 @@ async function submitDeposit() {
   // Для депозита UID не важны, так как предметов у него может и не быть, шлем просто для уведомления
   d.selected.forEach((count, id) => {
     const item = itemById(id);
-    itemsPayload.push({ name: item.name, price: item.price, count });
+    // Генерируем фейковый uid, чтобы сервер не выдал ошибку 'items not owned'
+    itemsPayload.push({ uid: 'dep_' + Date.now() + Math.random(), name: item.name, price: item.price, count });
   });
 
   const finalAmount = totalAmount * 1.2;
@@ -2555,7 +2571,7 @@ function renderWithdrawModal() {
   const headerHtml = `
     <div class="modal-head">
       <div class="modal-title">Вывод в игру</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="event.stopPropagation(); closeModal()">✕</button>
     </div>
   `;
 
