@@ -277,52 +277,46 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* ДЕПОЗИТ */
-.dep-tabs { display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 20px; }
-.dep-tab { flex: 1; text-align: center; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; }
-.dep-tab.active { background: #ea580c; color: #fff; box-shadow: 0 4px 15px rgba(234,88,12,0.4); }
-.dep-tab.disabled { opacity: 0.5; cursor: not-allowed; }
-.dep-select-bar { background: #ea580c; border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; cursor: pointer; transition: background 0.2s; }
-.dep-select-bar:hover { background: #c2410c; }
-.dep-select-bar span { font-weight: 800; font-size: 16px; color: #fff; }
-.dep-text-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-.dep-text-box p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
-.dep-search { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; font-size: 14px; margin-bottom: 16px; outline: none; }
-.dep-search:focus { border-color: var(--accent); }
-.dep-filters { display: flex; gap: 12px; margin-bottom: 20px; }
-.dep-filters input { flex: 1; padding: 12px 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 13px; outline: none; }
-.dep-sort-btn { padding: 12px 16px; background: #312e81; border: 1px solid #4338ca; border-radius: 12px; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-.dep-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 8px; }
+/* ДЕПОЗИТ (Фиолетовая тема) */
+.dep-header{text-align:left; margin-bottom:20px;}
+.dep-title{font-size:24px; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-0.02em;}
+.dep-subtitle{font-size:13px; color:#94a3b8; line-height:1.5; background:rgba(124,58,237,0.1); padding:16px; border-radius:12px; border:1px solid rgba(124,58,237,0.2); margin-bottom:20px;}
+.dep-search { width: 100%; padding: 16px 20px; background: #0f172a; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; color: #fff; font-size: 15px; margin-bottom: 20px; outline: none; transition:all .2s; }
+.dep-search:focus { border-color: #8b5cf6; box-shadow:0 0 15px rgba(139,92,246,0.3); }
+.dep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-height: 350px; overflow-y: auto; padding-right: 8px; margin-bottom: 20px; }
 @media(max-width: 600px) { .dep-grid { grid-template-columns: repeat(2, 1fr); } }
-.dep-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.2s; min-height: 180px; }
-.dep-card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-2px); }
-.dep-card.selected { border-color: #ea580c; background: rgba(234,88,12,0.1); }
-.dep-img { flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-.dep-img img { max-height: 70px; object-fit: contain; }
-.dep-name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.dep-price { font-size: 12px; font-weight: 800; color: var(--gold); display: flex; align-items: center; gap: 4px; }
-.dep-back { display: inline-block; color: #ea580c; font-size: 14px; font-weight: 800; cursor: pointer; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-.dep-sum-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
-.dep-sum-left { display: flex; align-items: center; gap: 12px; }
-.dep-sum-remove { background: rgba(244,63,94,0.2); color: #f43f5e; border: none; width: 28px; height: 28px; border-radius: 8px; font-weight: 900; cursor: pointer; }
-.dep-total-box { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 16px 20px; border-radius: 16px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.05); }
+.dep-card { background: #0f172a; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; position: relative; transition: all 0.2s; }
+.dep-card.selected { border-color: #8b5cf6; background: rgba(139,92,246,0.05); box-shadow: 0 0 20px rgba(139,92,246,0.15); }
+.dep-img { height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; position:relative;}
+.dep-name { font-size: 11px; font-weight: 800; color: #fff; text-align:center; margin-bottom: 4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.dep-price { font-size: 13px; font-weight: 900; color: var(--gold); display: flex; align-items: center; justify-content:center; gap: 4px; margin-bottom: 12px;}
+.dep-qty-ctrl { display:flex; align-items:center; justify-content:space-between; background:#0a0e17; border-radius:10px; padding:4px; }
+.dep-qty-btn { background:transparent; border:none; color:#94a3b8; font-size:18px; font-weight:bold; width:28px; height:28px; display:grid; place-items:center; cursor:pointer; border-radius:8px;}
+.dep-qty-btn:hover { background:rgba(255,255,255,0.05); color:#fff;}
+.dep-qty-btn:disabled { opacity:0.3; cursor:not-allowed;}
+.dep-qty-val { font-size:13px; font-weight:800; color:#fff;}
+.dep-total-bar { position:sticky; bottom:0; background:#0f172a; border-top:1px solid rgba(255,255,255,0.05); padding:20px 0 0 0; margin-top:10px; z-index:10; }
+.dep-total-info { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.dep-total-lbl { font-size:14px; font-weight:700; color:#fff; }
+.dep-total-val { font-size:24px; font-weight:900; color:var(--gold); display:flex; align-items:center; gap:8px;}
+.btn-purple { background:linear-gradient(135deg,#8b5cf6,#7c3aed); color:#fff; border:none; border-radius:16px; padding:18px; font-size:16px; font-weight:900; width:100%; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 20px rgba(124,58,237,0.4); text-transform:uppercase; letter-spacing:0.5px;}
+.btn-purple:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(124,58,237,0.6);}
+.btn-purple:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none;}
+
 .dep-input-group { margin-bottom: 16px; }
 .dep-input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 .dep-input { width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 15px; outline: none; }
-.dep-input:focus { border-color: var(--accent); }
-.dep-submit-btn { width: 100%; padding: 18px; background: #1e1b4b; color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
-.dep-submit-btn:not(:disabled):hover { background: #312e81; }
-.dep-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.dep-queue-box { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; }
-.dep-queue-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px; }
-.dep-timer { font-size: 48px; font-weight: 900; color: #34d399; text-shadow: 0 0 30px rgba(16,185,129,0.4); line-height: 1; margin-bottom: 16px; }
-.dep-instructions { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
-.dep-target-box { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: left; margin-bottom: 20px; }
-.dep-target-box .lbl { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.dep-target-name { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 12px; }
-.dep-copy-btn { width: 100%; padding: 12px; background: #312e81; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
-.dep-pets-list { font-size: 13px; color: var(--muted); margin-bottom: 20px; text-align: center; }
-.dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+.dep-input:focus { border-color: #8b5cf6; }
+.dep-queue-box { background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.3); border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; }
+.dep-queue-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(139,92,246,0.15); color: #a78bfa; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px; }
+.dep-timer { font-size: 48px; font-weight: 900; color: #a78bfa; text-shadow: 0 0 30px rgba(167,139,250,0.4); line-height: 1; margin-bottom: 16px; }
+.dep-instructions { font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-bottom: 24px; }
+.dep-target-box { background: #0a0e17; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: left; margin-bottom: 20px; }
+.dep-target-box .lbl { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.dep-target-name { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 12px; }
+.dep-copy-btn { width: 100%; padding: 14px; background: #7c3aed; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition:all 0.2s;}
+.dep-copy-btn:hover { background:#6d28d9;}
+.dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top:20px;}
 
 /* INVENTORY & PROFILE */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
@@ -478,6 +472,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 <script>
 const ADMIN_TG_ID = '8921286864'; 
 const SERVER_URL = 'https://brainrot-server.bonto.run'; 
+const BOT_ROBLOX_NAME = 'daveminioniscool'; // НИК БОТА В ROBLOX
 
 (function(){
   const c=document.getElementById('snowContainer');if(!c)return;
@@ -852,7 +847,7 @@ const itemById=id=>ITEMS.find(i=>i.id===id);
 const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 const $=s=>document.querySelector(s);
 
-// === ДОБАВЛЕНЫ КАСТОМНЫЕ ОКНА ===
+// === КАСТОМНЫЕ ОКНА ===
 function showConfirm(message, onConfirm) {
   $('#modal').innerHTML = `
     <div class="modal-head"><div class="modal-title">Подтверждение</div></div>
@@ -940,7 +935,6 @@ function toast(m,t=''){
   processToastQueue();
 }
 
-// НАДЕЖНЫЙ ВЫВОД ИКОНОК (теперь если картинки нет, точно покажет эмодзи)
 function itemIcon(it,size=48){
   if(!it)return '';
   if(it.img){
@@ -2595,7 +2589,7 @@ function quickUpg(uid){
 }
 
 /* ============================================= */
-/* === 3-ШАГОВЫЙ ДЕПОЗИТ (С ВЫБОРОМ КОЛИЧЕСТВА) === */
+/* === НОВЫЙ ДЕПОЗИТ (Как на скриншоте) === */
 /* ============================================= */
 
 let __depositPollingInterval = null;
@@ -2657,17 +2651,14 @@ function renderDepositModal() {
       <div class="modal-title">Депозит</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="dep-tabs">
-      <div class="dep-tab disabled">⭐<br><span style="font-size:10px;opacity:0.7;">Фиат</span></div>
-      <div class="dep-tab active">🐒<br><span style="font-size:10px;">Брейнроты</span></div>
-      <div class="dep-tab disabled">⚙️<br><span style="font-size:10px;opacity:0.7;">Gears</span></div>
-    </div>
   `;
 
   if (d.step === 1) {
     const grouped = {};
     state.inventory.forEach(inv => {
       if (inv.itemId.startsWith('coin_')) return;
+      const it = itemById(inv.itemId);
+      if (!it || it.price < 45) return; // Только от Garama и выше (цена 45+)
       if (!grouped[inv.itemId]) grouped[inv.itemId] = 0;
       grouped[inv.itemId]++;
     });
@@ -2678,8 +2669,8 @@ function renderDepositModal() {
     })).filter(x => x.item);
     
     if (d.searchQuery) pool = pool.filter(x => x.item.name.toLowerCase().includes(d.searchQuery.toLowerCase()));
-    if (d.minPrice !== '') pool = pool.filter(x => (x.item.price * 1.2) >= Number(d.minPrice));
-    if (d.maxPrice !== '') pool = pool.filter(x => (x.item.price * 1.2) <= Number(d.maxPrice));
+    if (d.minPrice !== '') pool = pool.filter(x => (x.item.price * 1.3) >= Number(d.minPrice));
+    if (d.maxPrice !== '') pool = pool.filter(x => (x.item.price * 1.3) <= Number(d.maxPrice));
     
     if (d.sort === 'asc') pool.sort((a,b) => a.item.price - b.item.price);
     else pool.sort((a,b) => b.item.price - a.item.price);
@@ -2687,42 +2678,48 @@ function renderDepositModal() {
     const cards = pool.map(data => {
       const item = data.item;
       const selCount = d.selected.get(item.id) || 0;
-      const finalPrice = item.price * 1.2;
+      const finalPrice = Math.floor(item.price * 1.3); // 130% от цены или своя формула
       return `<div class="dep-card ${selCount > 0 ? 'selected' : ''}">
         <div class="dep-img">${itemIcon(item, 60)}</div>
         <div class="dep-name">${esc(item.name)}</div>
         <div class="dep-price">${coin(12)} ${fmt(finalPrice)}</div>
         
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; background:rgba(0,0,0,0.3); border-radius:8px; padding:4px;">
-          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="updateDepositQuantity('${item.id}', -1)" ${selCount === 0 ? 'disabled' : ''}>-</button>
-          <span style="font-weight:900; font-size:14px; color:#fff;">${selCount} / ${data.available}</span>
-          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="updateDepositQuantity('${item.id}', 1)" ${selCount >= data.available ? 'disabled' : ''}>+</button>
+        <div class="dep-qty-ctrl">
+          <button class="dep-qty-btn" onclick="updateDepositQuantity('${item.id}', -1)" ${selCount === 0 ? 'disabled' : ''}>-</button>
+          <span class="dep-qty-val">${selCount} шт</span>
+          <button class="dep-qty-btn" onclick="updateDepositQuantity('${item.id}', 1)" ${selCount >= data.available ? 'disabled' : ''}>+</button>
         </div>
       </div>`;
-    }).join('') || '<div class="empty-state" style="grid-column:1/-1;padding:20px;">У вас нет предметов для депозита</div>';
+    }).join('') || '<div class="empty-state" style="grid-column:1/-1;padding:20px;">У вас нет подходящих предметов для депозита</div>';
 
     content = `
-      ${d.selected.size > 0 ? `
-        <div class="dep-select-bar" onclick="depositNextStep()">
-          <span>Выбрано: ${getTotalSelectedCount()} (макс 10)</span>
-          <span>Продолжить ></span>
+      <div class="dep-header">
+        <div style="font-size:12px; font-weight:800; color:#a78bfa; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">ШАГ 1 ИЗ 2</div>
+        <div class="dep-title">Выбери брейнротов</div>
+        <div class="dep-subtitle">
+          Только брейнроты от Garama и выше.<br>
+          Стоимость зачисления: 130% от цены предмета.
         </div>
-      ` : ''}
-      
-      <div class="dep-text-box">
-        <div style="font-weight:800;font-size:14px;color:#fff;margin-bottom:4px;">Пополнение брейнротами</div>
-        <p>Выбери предметы и их количество (макс. 10 шт за раз). Стоимость зачислится монетами после приёма (цена уже с наценкой ×1.2).</p>
       </div>
       
-      <input class="dep-search" type="text" placeholder="🔍 Поиск брейнрота..." value="${esc(d.searchQuery)}" oninput="updateDepositSearch(this.value)">
-      
-      <div class="dep-filters">
-        <input type="number" placeholder="Цена от" value="${d.minPrice}" oninput="updateDepositFilter('min', this.value)">
-        <input type="number" placeholder="до" value="${d.maxPrice}" oninput="updateDepositFilter('max', this.value)">
-        <button class="dep-sort-btn" onclick="toggleDepositSort()">${d.sort === 'asc' ? 'Сначала дешёвые' : 'Сначала дорогие'}</button>
-      </div>
+      <input class="dep-search" type="text" placeholder="Найти брейнрота" value="${esc(d.searchQuery)}" oninput="updateDepositSearch(this.value)">
       
       <div class="dep-grid">${cards}</div>
+      
+      <div class="dep-total-bar">
+        <div class="dep-total-info">
+          <div>
+            <div class="dep-total-lbl">Получишь на баланс</div>
+            <div style="font-size:12px; color:#94a3b8; margin-top:2px;">За выбранные предметы</div>
+          </div>
+          <div class="dep-total-val">
+            ${coin(24)} ${fmt(Array.from(d.selected.entries()).reduce((s, [id, count]) => s + (itemById(id).price * 1.3 * count), 0))}
+          </div>
+        </div>
+        <button class="btn-purple" ${d.selected.size === 0 ? 'disabled' : ''} onclick="depositNextStep()">
+          Продолжить - ${getTotalSelectedCount()} шт. →
+        </button>
+      </div>
     `;
   } 
   else if (d.step === 2) {
@@ -2732,7 +2729,7 @@ function renderDepositModal() {
     d.selected.forEach((count, id) => {
       const item = itemById(id);
       if (!item) return;
-      const finalPrice = item.price * 1.2;
+      const finalPrice = Math.floor(item.price * 1.3);
       total += finalPrice * count;
       
       itemsHtml += `
@@ -2768,12 +2765,7 @@ function renderDepositModal() {
         <input type="text" class="dep-input" id="depRobloxName" placeholder="Например: daveminioniscool" value="${esc(d.robloxUsername)}" oninput="updateDepositRoblox(this.value)">
       </div>
       
-      <div class="dep-input-group">
-        <label>🤝 Промокод партнёра</label>
-        <input type="text" class="dep-input" id="depPromo" placeholder="Необязательно" value="${esc(d.promo)}" oninput="state.deposit.promo = this.value">
-      </div>
-      
-      <button class="dep-submit-btn" id="depSubmitBtn" onclick="submitDeposit()" ${!d.robloxUsername.trim() ? 'disabled' : ''}>СОЗДАТЬ ЗАЯВКУ</button>
+      <button class="btn-purple" id="depSubmitBtn" onclick="submitDeposit()" ${!d.robloxUsername.trim() ? 'disabled' : ''}>СОЗДАТЬ ЗАЯВКУ</button>
     `;
   }
   else if (d.step === 3) {
@@ -2790,16 +2782,17 @@ function renderDepositModal() {
         <div class="dep-queue-badge">ОЖИДАНИЕ ПОДТВЕРЖДЕНИЯ</div>
         <div class="dep-timer" id="depTimer">05:00</div>
         <div class="dep-instructions">
-          Отправь трейд аккаунту ниже. <b>Баланс зачислится только после того, как админ нажмет кнопку в Discord.</b> Пожалуйста, подождите.
+          Отправь трейд аккаунту ниже в игре <b>Steal a Brainrot</b>.<br>
+          Баланс зачислится только после того, как админ подтвердит получение предметов в Discord.
         </div>
         
         <div class="dep-target-box">
           <div class="lbl">КОМУ ОТПРАВИТЬ ТРЕЙД</div>
-          <div class="dep-target-name">daveminioniscool</div>
-          <button class="dep-copy-btn" onclick="copyTradeName()">Скопировать</button>
+          <div class="dep-target-name">${BOT_ROBLOX_NAME}</div>
+          <button class="dep-copy-btn" onclick="copyTradeName()">Скопировать ник</button>
         </div>
         
-        <div class="dep-pets-list">Петы (${totalItems} шт): ${esc(itemsList.join(', '))}</div>
+        <div class="dep-pets-list">Предметы (${totalItems} шт): ${esc(itemsList.join(', '))}</div>
         
         <button class="dep-cancel-btn" onclick="cancelDeposit()">ОТМЕНИТЬ ЗАЯВКУ</button>
       </div>
@@ -2812,18 +2805,11 @@ function renderDepositModal() {
 function updateDepositSearch(val) {
   state.deposit.searchQuery = val;
   renderDepositModal();
-  document.querySelector('.dep-search').focus();
-}
-
-function updateDepositFilter(type, val) {
-  if (type === 'min') state.deposit.minPrice = val;
-  if (type === 'max') state.deposit.maxPrice = val;
-  renderDepositModal();
-}
-
-function toggleDepositSort() {
-  state.deposit.sort = state.deposit.sort === 'asc' ? 'desc' : 'asc';
-  renderDepositModal();
+  const input = document.querySelector('.dep-search');
+  if(input) {
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }
 }
 
 function updateDepositRoblox(val) {
@@ -2855,20 +2841,19 @@ async function submitDeposit() {
   d.selected.forEach((count, id) => {
     const item = itemById(id);
     if (item) {
-      totalAmount += item.price * count;
+      const finalPrice = Math.floor(item.price * 1.3);
+      totalAmount += finalPrice * count;
       
       let found = 0;
       state.inventory.forEach(inv => {
         if (inv.itemId === id && found < count) {
-          itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
+          itemsPayload.push({ uid: inv.uid, name: item.name, price: finalPrice });
           uidsToRemove.push(inv.uid);
           found++;
         }
       });
     }
   });
-
-  const finalAmount = totalAmount * 1.2;
 
   try {
     const response = await fetch(`${SERVER_URL}/api/deposit`, {
@@ -2879,7 +2864,7 @@ async function submitDeposit() {
         username: state.user.username,
         robloxName: d.robloxUsername,
         items: itemsPayload,
-        totalAmount: finalAmount
+        totalAmount: totalAmount
       })
     });
 
@@ -2891,7 +2876,7 @@ async function submitDeposit() {
     d.step = 3;
     renderDepositModal();
     startDepositTimer();
-    startStatusPolling(data.requestId, finalAmount, uidsToRemove); 
+    startStatusPolling(data.requestId, totalAmount, uidsToRemove); 
     
     haptic('success');
 
@@ -2973,7 +2958,7 @@ function startDepositTimer() {
 }
 
 function copyTradeName() {
-  navigator.clipboard.writeText('daveminioniscool').then(() => {
+  navigator.clipboard.writeText(BOT_ROBLOX_NAME).then(() => {
     toast('Ник скопирован!', 'ok');
     haptic('success');
   });
