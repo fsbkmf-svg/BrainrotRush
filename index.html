@@ -6,7 +6,6 @@
 <title>Brainrot Rush</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Новый, более современный шрифт Outfit -->
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 <style>
@@ -776,13 +775,13 @@ async function pushBalance(delta) {
   } catch(e) {}
 }
 
-async function pushInventoryAdd(itemId) {
+async function pushInventoryAdd(itemId, uid, date) {
   if (!state.user) return null;
   try {
     const res = await fetch(`${SERVER_URL}/api/inventory/add`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ tgId: state.user.id, itemId })
+      body: JSON.stringify({ tgId: state.user.id, itemId, uid, date })
     });
     if (res.ok) {
         const data = await res.json();
@@ -852,6 +851,43 @@ const uuid=()=>'u'+Math.random().toString(36).slice(2)+Date.now().toString(36);
 const itemById=id=>ITEMS.find(i=>i.id===id);
 const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 const $=s=>document.querySelector(s);
+
+// === ДОБАВЛЕНЫ КАСТОМНЫЕ ОКНА ===
+function showConfirm(message, onConfirm) {
+  $('#modal').innerHTML = `
+    <div class="modal-head"><div class="modal-title">Подтверждение</div></div>
+    <div style="padding:20px 0;text-align:center;font-size:16px;color:#fff;">${esc(message)}</div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-accent" id="confirmYes">Да</button>
+      <button class="btn btn-ghost" id="confirmNo">Отмена</button>
+    </div>
+  `;
+  $('#overlay').classList.add('open');
+  document.getElementById('confirmYes').onclick = () => { closeModal(); onConfirm(); };
+  document.getElementById('confirmNo').onclick = () => closeModal();
+}
+
+function showPrompt(message, defaultValue, onConfirm) {
+  $('#modal').innerHTML = `
+    <div class="modal-head"><div class="modal-title">Ввод</div></div>
+    <div style="padding:20px 0;">
+      <p style="margin-bottom:12px;color:#fff;">${esc(message)}</p>
+      <input id="promptInput" class="bet-input" value="${esc(defaultValue)}" style="width:100%;">
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn btn-accent" id="promptOk">ОК</button>
+      <button class="btn btn-ghost" id="promptCancel">Отмена</button>
+    </div>
+  `;
+  $('#overlay').classList.add('open');
+  document.getElementById('promptOk').onclick = () => {
+    const val = document.getElementById('promptInput').value.trim();
+    closeModal();
+    if (val) onConfirm(val);
+  };
+  document.getElementById('promptCancel').onclick = () => closeModal();
+}
+
 function coin(size=20){
   const s=Math.round(size*1.15);
   return `<img src="sab-coin.png" alt="coin" style="width:${s}px;height:${s}px;object-fit:contain;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${s}px;line-height:1;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 7px rgba(251,191,36,.55))\\'>🪙</span>');">`;
@@ -937,7 +973,7 @@ function settlePendingCase(){
     state.history.push({type:'case',caseId:pending.case.id,itemId:it.id,date:now});
     added.push(invItem);
     
-    pushInventoryAdd(it.id); 
+    pushInventoryAdd(it.id, invItem.uid, invItem.date); 
     fetch(`${SERVER_URL}/api/drops`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -1216,13 +1252,15 @@ function adminGiveItem(){
   saveLocalState();toast(`Выдан: ${itemById(id).name}`,'ok');render(false);
 }
 function adminClearInventory(){
-  if(!confirm('Очистить весь инвентарь?'))return;
-  state.inventory=[];saveLocalState();toast('Инвентарь очищен','ok');render(false);
+  showConfirm('Очистить весь инвентарь?', () => {
+    state.inventory=[];saveLocalState();toast('Инвентарь очищен','ok');render(false);
+  });
 }
 function adminApproveWithdrawal(id){
-  if(!confirm('Подтвердить выдачу? Заявка будет закрыта.'))return;
-  state.pendingWithdrawals=state.pendingWithdrawals.filter(r=>r.id!==id);
-  saveLocalState();sndWinRarity('epic');toast('Заявка выполнена','ok');render(false);
+  showConfirm('Подтвердить выдачу? Заявка будет закрыта.', () => {
+    state.pendingWithdrawals=state.pendingWithdrawals.filter(r=>r.id!==id);
+    saveLocalState();sndWinRarity('epic');toast('Заявка выполнена','ok');render(false);
+  });
 }
 
 function renderAdmin(){
@@ -1598,14 +1636,15 @@ function openCaseNow(){
   if(c.isAllIn){
     if(state.balance<=0){toast('У вас нет монет для ALL IN!','err');haptic('error');return;}
     const cost=state.balance;
-    if(!confirm(`Вы уверены?\nСтавка: ${fmt(cost)} монет.\nВ случае неудачи потеряете всё.`))return;
-    state.balance=0;renderHeader();
-    pushBalance(-cost);
-    
-    const result=rollAllInCase(cost);
-    __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
-    startRoulette(c, [result], true); // Передаем true для режима ALL IN
-    render(false);
+    showConfirm(`Вы уверены?\nСтавка: ${fmt(cost)} монет.\nВ случае неудачи потеряете всё.`, () => {
+      state.balance=0;renderHeader();
+      pushBalance(-cost);
+      
+      const result=rollAllInCase(cost);
+      __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
+      startRoulette(c, [result], true); 
+      render(false);
+    });
     return;
   }
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
@@ -1638,7 +1677,6 @@ function startRoulette(c,results, isAllIn){
   results.forEach((win,idx)=>{
     const pool=[];
     if(isAllIn){
-      // Для ALL IN подбираем только дорогие предметы (визуально)
       const nci=ITEMS.filter(i=>i.price>1000 && !i.id.startsWith('coin_'));
       for(let i=0;i<TRACK_LEN;i++) pool.push(nci[Math.floor(Math.random()*nci.length)].id);
     } else {
@@ -1651,8 +1689,6 @@ function startRoulette(c,results, isAllIn){
     
     const trackHtml=ids.map(id=>{
       const it=itemById(id);
-      
-      // Для ALL IN делаем рулетку ОГРОМНОЙ
       const iconSize = isAllIn ? 140 : (opens>1 ? 60 : 100);
       const itemStyle = isAllIn 
         ? 'min-width:200px;width:200px;height:200px;padding:15px;gap:12px;'
@@ -1674,7 +1710,7 @@ function startRoulette(c,results, isAllIn){
   state.openingView=html;render(false);
   
   const isSpecialSpin = Math.random() < 0.3; 
-  let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 6000 : (isSpecialSpin ? 5500 : 3500)); // Для ALL IN дольше крутим
+  let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 6000 : (isSpecialSpin ? 5500 : 3500));
   let easing = isSpecialSpin ? 'cubic-bezier(0.05, 1, 0.1, 1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
   
   setTimeout(() => {
@@ -1921,8 +1957,10 @@ function fuseDo(){
   const res=pool[Math.floor(Math.random()*pool.length)];
   state.inventory=state.inventory.filter(i=>!state.fuseSelected.has(i.uid));
   pushInventoryRemove(sel);
-  state.inventory.push({uid:uuid(),itemId:res.id,date:Date.now()});
-  pushInventoryAdd(res.id);
+  const uid = uuid();
+  const now = Date.now();
+  state.inventory.push({uid,itemId:res.id,date:now});
+  pushInventoryAdd(res.id, uid, now);
   state.history.push({type:'fuse',itemId:res.id,totalValue:t,date:Date.now()});
   state.fuseSelected.clear();
   $('#modal').innerHTML=`<div class="modal-head"><div class="modal-title">Результат фьюза</div><button class="modal-close" onclick="closeModal()">✕</button></div>
@@ -2322,8 +2360,10 @@ function finishUpgradeSpin(payload){
   };
   
   if(win){
-    state.inventory.push({uid: uuid(), itemId: toItem.id, date: Date.now()});
-    pushInventoryAdd(toItem.id);
+    const uid = uuid();
+    const now = Date.now();
+    state.inventory.push({uid, itemId: toItem.id, date: now});
+    pushInventoryAdd(toItem.id, uid, now);
     state.history.push(historyEntry);
     if(state.settings.upgradeSound) sndWinRarity(toItem.rarity);
     haptic('success');
@@ -2520,29 +2560,31 @@ function sellOne(uid){
   if(!inv) return;
   const it = itemById(inv.itemId);
   if(!it) return;
-  if(!confirm(`Продать «${it.name}» за ${fmt(it.price)}?`)) return;
-  state.balance += it.price;
-  state.inventory = state.inventory.filter(i=>i.uid!==uid);
-  pushBalance(it.price);
-  pushInventoryRemove([uid]);
-  state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
-  sndCash(); haptic('success');
-  toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
-  saveLocalState(); renderHeader(); render(false);
+  showConfirm(`Продать «${it.name}» за ${fmt(it.price)}?`, () => {
+    state.balance += it.price;
+    state.inventory = state.inventory.filter(i=>i.uid!==uid);
+    pushBalance(it.price);
+    pushInventoryRemove([uid]);
+    state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
+    sndCash(); haptic('success');
+    toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
+    saveLocalState(); renderHeader(); render(false);
+  });
 }
 function sellAll(){
   const total = state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
   if(total<=0) return;
-  if(!confirm(`Продать все предметы за ${fmt(total)} монет?`)) return;
-  const uids = state.inventory.map(i=>i.uid);
-  state.inventory.forEach(inv=>{const it=itemById(inv.itemId);if(it)state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});});
-  state.inventory = [];
-  state.balance += total;
-  pushBalance(total);
-  pushInventoryRemove(uids);
-  sndCash(); haptic('success');
-  toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
-  saveLocalState(); renderHeader(); render(false);
+  showConfirm(`Продать все предметы за ${fmt(total)} монет?`, () => {
+    const uids = state.inventory.map(i=>i.uid);
+    state.inventory.forEach(inv=>{const it=itemById(inv.itemId);if(it)state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});});
+    state.inventory = [];
+    state.balance += total;
+    pushBalance(total);
+    pushInventoryRemove(uids);
+    sndCash(); haptic('success');
+    toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
+    saveLocalState(); renderHeader(); render(false);
+  });
 }
 function quickUpg(uid){
   state.upgrade.froms = [uid];
@@ -2808,17 +2850,17 @@ async function submitDeposit() {
 
   let totalAmount = 0;
   const itemsPayload = [];
-  
   const uidsToRemove = [];
+  
   d.selected.forEach((count, id) => {
     const item = itemById(id);
     if (item) {
       totalAmount += item.price * count;
-      itemsPayload.push({ name: item.name, price: item.price, count });
       
       let found = 0;
       state.inventory.forEach(inv => {
         if (inv.itemId === id && found < count) {
+          itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
           uidsToRemove.push(inv.uid);
           found++;
         }
@@ -2833,9 +2875,9 @@ async function submitDeposit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        tgId: state.user.id,
         username: state.user.username,
         robloxName: d.robloxUsername,
-        robloxId: 'Не указан',
         items: itemsPayload,
         totalAmount: finalAmount
       })
@@ -2855,7 +2897,7 @@ async function submitDeposit() {
 
   } catch (error) {
     console.error(error);
-    toast('Ошибка связи с сервером! Проверьте, запущен ли бэкенд.', 'err');
+    toast('Ошибка связи с сервером!', 'err');
     haptic('error');
     if (btn) { btn.disabled = false; btn.textContent = 'СОЗДАТЬ ЗАЯВКУ'; }
   }
@@ -2951,36 +2993,36 @@ async function withdrawItem(uid) {
     const item = itemById(invItem.itemId);
     if (!item) return;
 
-    let robloxName = prompt('Введите ваш ник в Roblox для вывода:', state.user?.robloxName || '');
-    if (!robloxName) return;
+    showPrompt('Введите ваш ник в Roblox для вывода:', state.user?.robloxName || '', async (robloxName) => {
+        showConfirm(`Вывести «${item.name}» в игру Roblox?\nУчтите, что вывод происходит вручную по расписанию.`, async () => {
+            try {
+                const response = await fetch(`${SERVER_URL}/api/withdraw`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tgId: state.user.id,
+                        username: state.user.username,
+                        robloxName: robloxName,
+                        robloxId: state.user?.robloxId || 'Не указан',
+                        items: [{ uid: invItem.uid, name: item.name, price: item.price }]
+                    })
+                });
 
-    if (!confirm(`Вывести «${item.name}» в игру Roblox?\nУчтите, что вывод происходит вручную по расписанию.`)) return;
+                if (!response.ok) throw new Error('Ошибка сервера');
 
-    try {
-        const response = await fetch(`${SERVER_URL}/api/withdraw`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: state.user.username,
-                robloxName: robloxName,
-                robloxId: state.user?.robloxId || 'Не указан',
-                items: [{ uid: invItem.uid, name: item.name, price: item.price }]
-            })
+                state.inventory = state.inventory.filter(i => i.uid !== uid);
+                pushInventoryRemove([uid]);
+                saveLocalState();
+                render(false);
+                toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
+                haptic('success');
+
+            } catch (error) {
+                console.error(error);
+                toast('Ошибка связи с сервером. Проверьте заявку в Discord.', 'err');
+            }
         });
-
-        if (!response.ok) throw new Error('Ошибка сервера');
-
-        state.inventory = state.inventory.filter(i => i.uid !== uid);
-        pushInventoryRemove([uid]);
-        saveLocalState();
-        render(false);
-        toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
-        haptic('success');
-
-    } catch (error) {
-        console.error(error);
-        toast('Ошибка связи с сервером. Проверьте заявку в Discord.', 'err');
-    }
+    });
 }
 
 /* === INITIALIZATION === */
