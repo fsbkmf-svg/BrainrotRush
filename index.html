@@ -4,262 +4,415 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Brainrot Rush</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Montserrat',sans-serif!important;-webkit-tap-highlight-color:transparent}
-:root{--bg:#070a12;--surface:#111827;--text:#f8fafc;--muted:#94a3b8;--accent:#38bdf8;--gold:#fbbf24;--green:#34d399;--red:#f87171;--border:rgba(56,189,248,.2)}
-body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;background-image:radial-gradient(circle at 50% 0%,rgba(56,189,248,.15) 0%,transparent 50%)}
-input,button{font-family:inherit!important}
-#loginScreen{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
-#loginScreen.show{display:flex}
-.login-card{background:rgba(15,23,42,.85);border:1px solid var(--border);border-radius:28px;padding:40px 30px;max-width:400px;width:100%;box-shadow:0 25px 80px rgba(0,0,0,.55);backdrop-filter:blur(10px)}
-.login-logo{width:100px;height:100px;background:linear-gradient(135deg,#0ea5e9,#06b6d4);border-radius:28px;margin:0 auto 20px;display:grid;place-items:center;font-size:50px;box-shadow:0 0 50px rgba(14,165,233,.45)}
-.login-title{font-size:32px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.spinner{width:30px;height:30px;border:3px solid rgba(56,189,248,.3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-.app{display:none;min-height:100vh}
-.app.logged-in{display:flex}
-.sidebar{width:260px;background:rgba(10,14,23,.5);border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:30}
-.logo{height:80px;display:flex;align-items:center;gap:14px;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.05)}
-.logo-text{font-weight:900;font-size:20px;color:#fff}
-.nav{flex:1;overflow-y:auto;padding:20px 16px}
-.nav-section-title{font-size:11px;font-weight:800;text-transform:uppercase;color:#64748b;margin-bottom:12px;padding-left:12px}
-.nav-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;font-size:15px;font-weight:600;color:#cbd5e1;cursor:pointer;transition:all .3s;margin-bottom:4px}
-.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.08)}
-.nav-item.active{box-shadow:inset 2px 0 0 var(--accent)}
-.sidebar-profile{padding:20px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:14px;cursor:pointer}
-.profile-avatar{width:44px;height:44px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:18px;font-weight:800;overflow:hidden;color:#000}
-.profile-avatar img{width:100%;height:100%;object-fit:cover}
-.main{flex:1;display:flex;flex-direction:column}
-.header{height:72px;position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:16px;padding:0 32px;background:rgba(10,14,23,.8);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(20px)}
-.balance{display:flex;align-items:center;gap:12px;padding:10px 20px;border-radius:16px;background:rgba(0,0,0,.5);border:1px solid rgba(251,191,36,.2);font-weight:800;font-size:18px;color:#fff;margin-left:auto}
-.btn{border:none;cursor:pointer;font-weight:700;font-size:14px;padding:10px 20px;border-radius:14px;transition:all .3s;color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.btn-primary{background:linear-gradient(135deg,#0ea5e9,#0284c7)}
-.btn-accent{background:linear-gradient(135deg,#22d3ee,#06b6d4);color:#042f2e}
-.btn-ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
-.btn-danger{background:linear-gradient(135deg,#f43f5e,#e11d48)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.content{flex:1;padding:32px;max-width:1600px;width:100%;margin:0 auto}
-.page-title{font-size:32px;font-weight:900;margin-bottom:8px;color:#fff}
-.page-sub{color:var(--muted);font-size:15px;margin-bottom:32px}
-.hero{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(14,165,233,.05));border:1px solid var(--border);border-radius:28px;padding:48px;margin-bottom:32px;position:relative;overflow:hidden}
-.hero h1{font-size:42px;font-weight:900;margin-bottom:12px;color:#fff;line-height:1.15;max-width:700px}
-.hero p{color:#cbd5e1;font-size:16px;max-width:500px;margin-bottom:24px}
-.cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
-.case-card{background:linear-gradient(180deg,rgba(30,41,59,.7),rgba(15,23,42,.9));border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:28px;cursor:pointer;transition:all .4s;display:flex;flex-direction:column}
-.case-card:hover{transform:translateY(-8px);border-color:var(--accent)}
-.case-img{height:200px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(56,189,248,.1),transparent 70%);border-radius:20px;margin-bottom:24px;font-size:80px}
-.case-img img{width:100%;height:100%;object-fit:contain}
-.case-name{font-size:20px;font-weight:800;margin-bottom:24px;text-align:center;color:#fff}
-.case-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.05)}
-.case-price{font-size:18px;font-weight:900;color:var(--gold)}
-.top-drop-banner{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(0,0,0,.4));border:1px solid rgba(251,191,36,.3);border-radius:24px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;cursor:pointer}
-.top-drop-title{font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px}
-.top-drop-name{font-size:22px;font-weight:900;color:#fff}
-.top-drop-price{font-size:28px;font-weight:900;color:var(--gold)}
-.live-bar{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:16px 20px;margin-bottom:32px;display:flex;align-items:center;gap:20px;overflow:hidden}
-.live-list{display:flex;gap:16px;overflow-x:auto}
-.live-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);padding:8px 16px;border-radius:14px}
-.li-name{font-size:13px;font-weight:700;color:#fff}
-.li-user{font-size:11px;color:var(--muted)}
-.case-detail{display:grid;grid-template-columns:380px 1fr;gap:40px}
-.case-detail-img{background:radial-gradient(circle,#0f172a,rgba(56,189,248,.1));border:1px solid var(--border);border-radius:32px;height:340px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;font-size:140px}
-.roulette-wrap{position:relative;overflow:hidden;background:#0a0e17;border:3px solid var(--border);border-radius:20px;height:250px}
-.roulette-marker{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--red);transform:translateX(-50%);z-index:10}
-.roulette-track{display:flex;align-items:center;gap:12px;height:100%;padding:20px;will-change:transform}
-.roulette-item{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(56,189,248,.05);border:1px solid var(--border);border-radius:16px;flex-shrink:0}
-.all-in-multiplier{font-size:120px;font-weight:900;color:#fff;text-align:center;text-shadow:0 0 50px rgba(244,63,94,.8)}
-.all-in-stage-new{background:radial-gradient(circle,rgba(244,63,94,.15) 0%,#000 80%);border-radius:24px;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(244,63,94,.4)}
-.modal{background:var(--surface);border:1px solid rgba(255,255,255,.1);border-radius:28px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;padding:32px;position:relative}
-.overlay{position:fixed;inset:0;z-index:200;background:rgba(5,6,12,.85);display:none;align-items:center;justify-content:center;padding:20px}
-.overlay.open{display:flex}
-.toast{display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.95);border:1px solid var(--border);color:#fff;padding:16px 28px;border-radius:16px;font-weight:700;z-index:99999}
-.toast.show{display:block}
-@media(max-width:1024px){
-  .sidebar{display:none}
-  .mobile-nav{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:100;gap:6px;padding:8px;background:rgba(10,14,23,.95);border-radius:22px;overflow-x:auto}
-  .mobile-nav .nav-item{flex-direction:column;padding:10px;font-size:10px}
-  .content{padding:20px 16px 120px}
-  .header{padding:0 16px;height:64px}
-  .case-detail{grid-template-columns:1fr}
-  .all-in-multiplier{font-size:80px}
-  .hero h1{font-size:32px}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, sans-serif !important; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #070a12; --surface: rgba(15,23,42,.85); --surface-solid: #111827;
+  --border: rgba(56,189,248,.12); --border-strong: rgba(56,189,248,.3);
+  --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8;
+  --gold: #fbbf24; --green: #34d399; --red: #f87171;
+  --ease: cubic-bezier(.22,1,.36,1);
 }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+html { background-color: var(--bg); }
+body { color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  background-image: radial-gradient(ellipse 80% 50% at 20% -10%,rgba(56,189,248,.15),transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 10%,rgba(34,211,238,.1),transparent 50%),
+    linear-gradient(to bottom,rgba(7,10,18,.3) 0%,rgba(7,10,18,.9) 100%); }
+
+/* LOGIN */
+#loginScreen { position: fixed; inset: 0; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; background: var(--bg); }
+#loginScreen.show { display: flex; }
+.login-card { background: rgba(15,23,42,.85); border: 1px solid var(--border-strong); border-radius: 28px; padding: 40px 30px; max-width: 400px; width: 100%; }
+.login-title { font-size: 32px; font-weight: 900; margin-bottom: 8px; color: #fff; }
+.spinner { width: 30px; height: 30px; border: 3px solid rgba(56,189,248,.3); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* LAYOUT */
+.app { display: none; min-height: 100vh; position: relative; z-index: 2; }
+.app.logged-in { display: flex; }
+.sidebar { width: 260px; flex-shrink: 0; background: rgba(10,14,23,.5); border-right: 1px solid rgba(255,255,255,.05); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; z-index: 30; }
+.logo { height: 80px; display: flex; align-items: center; gap: 14px; padding: 0 24px; border-bottom: 1px solid rgba(255,255,255,.05); }
+.logo-text { font-weight: 900; font-size: 20px; color: #fff; }
+.nav { flex: 1; overflow-y: auto; padding: 20px 16px; }
+.nav-section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 12px; padding-left: 12px; }
+.nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 14px; font-size: 15px; font-weight: 600; color: #cbd5e1; cursor: pointer; transition: all .3s var(--ease); margin-bottom: 4px; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,.08); }
+.nav-item.active { color: #fff; background: linear-gradient(90deg,rgba(56,189,248,.2),transparent); box-shadow: inset 2px 0 0 var(--accent); }
+.sidebar-profile { padding: 20px; border-top: 1px solid rgba(255,255,255,.05); display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.profile-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg,#0ea5e9,#22d3ee); display: grid; place-items: center; font-size: 18px; font-weight: 800; overflow: hidden; color: #fff; }
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.header { height: 72px; position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 16px; padding: 0 32px; background: rgba(10,14,23,.8); border-bottom: 1px solid rgba(255,255,255,.05); backdrop-filter: blur(20px); }
+.balance { display: flex; align-items: center; gap: 12px; padding: 10px 20px; border-radius: 16px; background: rgba(0,0,0,.5); border: 1px solid rgba(251,191,36,.2); font-weight: 800; font-size: 18px; color: #fff; margin-left: auto; }
+.btn { border: none; cursor: pointer; font-weight: 700; font-size: 14px; padding: 10px 20px; border-radius: 14px; transition: all .3s; color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-primary { background: linear-gradient(135deg,#0ea5e9,#0284c7); }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-ghost { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); }
+.btn-danger { background: linear-gradient(135deg,#f43f5e,#e11d48); }
+.btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 10px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.content { flex: 1; padding: 32px; max-width: 1600px; width: 100%; margin: 0 auto; }
+.page-title { font-size: 32px; font-weight: 900; margin-bottom: 8px; color: #fff; }
+.page-sub { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
+
+/* CASES */
+.hero { background: linear-gradient(135deg,rgba(56,189,248,.15),rgba(14,165,233,.05)); border: 1px solid var(--border); border-radius: 28px; padding: 48px; margin-bottom: 32px; }
+.hero h1 { font-size: 42px; font-weight: 900; margin-bottom: 12px; color: #fff; line-height: 1.15; max-width: 700px; }
+.hero p { color: #cbd5e1; font-size: 16px; max-width: 500px; margin-bottom: 24px; }
+.live-bar { background: rgba(15,23,42,.6); border: 1px solid rgba(255,255,255,.05); border-radius: 20px; padding: 16px 20px; margin-bottom: 32px; display: flex; align-items: center; gap: 20px; overflow: hidden; }
+.live-list { display: flex; gap: 16px; overflow-x: auto; }
+.live-list::-webkit-scrollbar { display: none; }
+.live-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.05); padding: 8px 16px; border-radius: 14px; min-width: max-content; }
+.li-name { font-size: 13px; font-weight: 700; color: #fff; }
+.li-user { font-size: 11px; color: var(--muted); }
+.cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+.case-card { background: linear-gradient(180deg,rgba(30,41,59,.7),rgba(15,23,42,.9)); border: 1px solid rgba(255,255,255,.08); border-radius: 28px; padding: 28px; cursor: pointer; transition: all .4s var(--ease); display: flex; flex-direction: column; }
+.case-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+.case-img { height: 200px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle,rgba(56,189,248,.1),transparent 70%); border-radius: 20px; margin-bottom: 24px; font-size: 80px; }
+.case-img img { width: 100%; height: 100%; object-fit: contain; }
+.case-name { font-size: 20px; font-weight: 800; margin-bottom: 24px; text-align: center; color: #fff; }
+.case-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.05); }
+.case-price { font-size: 18px; font-weight: 900; color: var(--gold); }
+.all-in-card { border: 1px solid rgba(244,63,94,.4); background: linear-gradient(180deg,rgba(244,63,94,.1),rgba(15,23,42,.95)); }
+.all-in-card .case-price { color: var(--red); }
+
+/* CASE DETAIL + ROULETTE */
+.case-back { background: transparent; border: none; color: var(--muted); font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+.case-back:hover { color: #fff; }
+.case-detail { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
+.case-detail-img { background: radial-gradient(circle at 50% 50%,rgba(56,189,248,.15) 0%,#0f172a 75%); border: 2px solid var(--border); border-radius: 32px; height: 340px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 140px; padding: 20px; }
+.case-detail-img img { width: 100%; height: 100%; object-fit: contain; }
+.case-title { font-size: 42px; font-weight: 900; margin-bottom: 12px; color: #fff; }
+.case-open-panel { background: rgba(15,23,42,.8); border: 1px solid rgba(255,255,255,.08); border-radius: 28px; padding: 36px; }
+.roulette-wrap { position: relative; overflow: hidden; background: #0a0e17; border: 3px solid var(--border-strong); border-radius: 20px; height: 250px; }
+.roulette-marker { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: var(--red); transform: translateX(-50%); z-index: 10; box-shadow: 0 0 20px var(--red); }
+.roulette-track { display: flex; align-items: center; gap: 12px; height: 100%; padding: 20px; will-change: transform; }
+.roulette-item { display: flex; align-items: center; justify-content: center; background: rgba(56,189,248,.05); border: 1px solid var(--border); border-radius: 16px; flex-shrink: 0; width: 130px; height: 130px; }
+
+/* ALL IN */
+.all-in-stage-new { position: relative; width: 100%; min-height: 80vh; background: radial-gradient(circle at center,rgba(244,63,94,.15) 0%,#000 80%); border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(244,63,94,.4); overflow: hidden; }
+.all-in-multiplier { font-size: 130px; font-weight: 900; color: #fff; text-shadow: 0 0 50px rgba(244,63,94,0.8); z-index: 5; }
+
+/* INVENTORY */
+.inv-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 16px; }
+.inv-card { background: linear-gradient(180deg,rgba(30,41,59,.7),rgba(15,23,42,.9)); padding: 16px; border-radius: 20px; text-align: center; border: 1px solid #334155; }
+.inv-card button { margin-top: 10px; width: 100%; }
+
+/* MODAL */
+.overlay { position: fixed; inset: 0; z-index: 200; background: rgba(5,6,12,.85); display: none; align-items: center; justify-content: center; padding: 20px; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface-solid); border: 1px solid rgba(255,255,255,.1); border-radius: 28px; max-width: 640px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.modal-title { font-size: 24px; font-weight: 900; color: #fff; }
+.modal-close { background: rgba(255,255,255,.05); border: none; color: var(--muted); width: 36px; height: 36px; border-radius: 12px; cursor: pointer; font-size: 18px; }
+.form-input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; color: #fff; font-size: 15px; margin-bottom: 16px; }
+.form-input:focus { outline: none; border-color: var(--accent); }
+.item-selector { max-height: 300px; overflow-y: auto; border: 1px solid rgba(255,255,255,.05); border-radius: 16px; padding: 8px; margin-bottom: 16px; }
+.item-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background .2s; }
+.item-row:hover { background: rgba(56,189,248,.08); }
+.item-row.selected { background: rgba(56,189,248,.15); border: 1px solid var(--accent); }
+.item-row input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; }
+.item-row-info { flex: 1; }
+.item-row-name { font-size: 13px; font-weight: 700; color: #fff; }
+.item-row-price { font-size: 12px; color: var(--gold); }
+
+/* RESPONSIVE */
+@media(max-width: 1024px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 100; gap: 6px; padding: 8px; background: rgba(10,14,23,.95); border: 1px solid rgba(255,255,255,.08); border-radius: 22px; overflow-x: auto; }
+  .mobile-nav .nav-item { flex-direction: column; padding: 10px 8px; font-size: 10px; }
+  .content { padding: 20px 16px 120px; }
+  .header { padding: 0 16px; height: 64px; gap: 10px; }
+  .hero { padding: 32px 24px; }
+  .hero h1 { font-size: 32px; }
+  .case-detail { grid-template-columns: 1fr; }
+  .case-title { font-size: 28px; }
+  .all-in-multiplier { font-size: 80px; }
+}
+.mobile-nav { display: none; }
 </style>
 </head>
 <body>
 
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-logo"><img src="logo-badge.png" style="width:80px" onerror="this.parentElement.textContent='🧠'"></div>
+    <div style="font-size:60px;margin-bottom:16px;">🧠</div>
     <div class="login-title">Brainrot Rush</div>
-    <div class="login-sub">Загрузка...</div>
-    <div id="loginLoading" style="display:block;"><div class="spinner"></div></div>
-    <div id="tgErrorBox" style="display:none; background:rgba(248,113,113,0.1); border:1px solid var(--red); border-radius:16px; padding:20px; margin-top:16px; text-align:left;">
-      <div style="color:var(--red); font-weight:900; margin-bottom:10px;">⚠️ Ошибка</div>
-      <div id="tgErrorMessage" style="color:#cbd5e1; font-size:14px;"></div>
-      <button class="btn btn-primary" style="margin-top:16px; width:100%;" onclick="location.reload()">Повторить</button>
+    <div style="color:var(--muted);margin-bottom:20px;">Загрузка...</div>
+    <div id="loginLoading"><div class="spinner"></div></div>
+    <div id="tgErrorBox" style="display:none;background:rgba(248,113,113,0.1);border:1px solid var(--red);border-radius:16px;padding:20px;margin-top:16px;text-align:left;">
+      <div style="color:var(--red);font-weight:900;margin-bottom:10px;">⚠️ Ошибка</div>
+      <div id="tgErrorMessage" style="color:#cbd5e1;font-size:14px;"></div>
+      <button class="btn btn-primary" style="margin-top:16px;width:100%;" onclick="location.reload()">Повторить</button>
     </div>
   </div>
 </div>
 
 <div class="app" id="app">
   <aside class="sidebar">
-    <div class="logo">
-      <img src="logo-badge.png" style="width:44px" onerror="this.style.display='none'">
-      <div class="logo-text">Brainrot Rush</div>
-    </div>
+    <div class="logo"><div class="logo-text">🧠 Brainrot Rush</div></div>
     <nav class="nav" id="nav"></nav>
     <div class="sidebar-profile" onclick="setTab('profile')">
       <div class="profile-avatar" id="profileAvatar">?</div>
-      <div class="profile-info">
-        <div class="profile-name" id="profileName">Гость</div>
-        <div class="profile-status">Онлайн</div>
+      <div>
+        <div style="font-weight:700;font-size:14px;" id="profileName">Гость</div>
+        <div style="font-size:12px;color:var(--accent);">Онлайн</div>
       </div>
     </div>
   </aside>
   <div class="main">
     <header class="header">
-      <button class="btn btn-ghost" onclick="toggleSound()" style="padding:10px;font-size:18px;">🔊</button>
-      <div class="balance"><span id="balanceEl">0</span> <span style="font-size:16px;">🪙</span></div>
-      <button class="btn btn-primary" onclick="openDepositModal()">+ Пополнить</button>
+      <div class="balance"><span id="balanceEl">0</span> 🪙</div>
+      <button class="btn btn-primary btn-sm" onclick="openDepositModal()">+ Пополнить</button>
+      <button class="btn btn-ghost btn-sm" onclick="openWithdrawModal()">Вывод</button>
     </header>
     <div class="content" id="content"></div>
   </div>
 </div>
 <nav class="mobile-nav" id="mobileNav"></nav>
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
-<div class="toast" id="toast"></div>
 
 <script>
+// ==================== CONFIG ====================
+const SERVER_URL = 'https://brainrot-server.bonto.run/';
 const ADMIN_TG_ID = '8921286864';
-let isMuted = false;
-function toggleSound(){ isMuted = !isMuted; }
 
-const ITEMS=[
-{id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
-{id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:'sab-coin.png'},
-{id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:'sab-coin.png'},
-{id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:'sab-coin.png'},
-{id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:'sab-coin.png'},
-{id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:'sab-coin.png'},
-{id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:'sab-coin.png'},
-{id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:'sab-coin.png'},
-{id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:'brainrots/Cash_or_Card.png'},
-{id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:'brainrots/Garamadundung.png'},
-{id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:'brainrots/la_secret.png'},
-{id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:'brainrots/Pizza_and_Ranch.png'},
-{id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:'brainrots/La_Food_Combinasion.png'},
-{id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:'brainrots/Fragola_La_La_La.png'},
-{id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:'brainrots/Popcuru_and_Fizzuru.png'},
-{id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:'brainrots/JollyJollySahur.png'},
-{id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:'brainrots/Burguro_And_Fryuro.png'},
-{id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:'brainrots/La_Fuse_Machine.png'},
-{id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'brainrots/fragrama.png'},
-{id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'brainrots/Capitano_Moby.png'},
-{id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'brainrots/cooki_milki.png'},
-{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/sammyni_fat.png'},
-{id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'brainrots/globa.png'},
-{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/spooky.png'},
-{id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'brainrots/cerberus.png'},
-{id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'brainrots/celestial.png'},
-{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/reinito.png'},
-{id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'brainrots/los_admins.png'},
-{id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'brainrots/guest666.png'},
-{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/los_amigos.png'},
-{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/los_chillis.png'},
-{id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'brainrots/fortunu.png'},
-{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/rubrikiko.png'},
-{id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'brainrots/Los_Sekolahs.png'},
-{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/rico.png'},
-{id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'brainrots/la_breakfast.png'},
-{id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'brainrots/examen.png'},
-{id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'brainrots/foxini.png'},
-{id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'brainrots/los_hackers.png'},
-{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/rosy.png'},
-{id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'brainrots/Dug_dug_dug.png'},
-{id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'brainrots/venuspino.png'},
-{id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'brainrots/duggy.png'},
-{id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:'brainrots/lacasaboo.png'},
-{id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:'brainrots/ketupat.png'},
-{id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:'brainrots/Bumbatron.png'},
-{id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:'brainrots/los_secret.png'},
-{id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:'brainrots/bunny_eggy.png'},
-{id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:'brainrots/grabatron.png'},
-{id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'brainrots/sammyni_cak.png'},
-{id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'brainrots/dragonc.png'},
-{id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'brainrots/tirilikalika.png'},
-{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/jelly_moby.png'},
-{id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'brainrots/pancake.png'},
-{id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'brainrots/ginger.png'},
-{id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'brainrots/hydra.png'},
-{id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'brainrots/Hydra_Bunny.png'},
-{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/moby_bros.png'},
-{id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'brainrots/kalika.png'},
-{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/digi_narwhal.png'},
-{id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'brainrots/lasupreme.png'},
-{id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'brainrots/fishino.png'},
-{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/kraken.png'},
-{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/dragon_aquanini.png'},
-{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/griffin.png'},
-{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/los_dragons.png'},
-{id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'brainrots/antonio.png'},
-{id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'brainrots/lovebear.png'},
-{id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'brainrots/Arcadragon.png'},
-{id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'brainrots/Elefanto_Frigo.png'},
-{id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'brainrots/SkibidiToilet.png'},
-{id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'brainrots/John_Pork.png'},
-{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/meowl.png'},
-{id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
-{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_elephant.png'},
-{id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'}
+// ==================== ITEMS ====================
+const ITEMS = [
+  {id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
+  {id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:'sab-coin.png'},
+  {id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:'sab-coin.png'},
+  {id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:'sab-coin.png'},
+  {id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:'sab-coin.png'},
+  {id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:'sab-coin.png'},
+  {id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:'sab-coin.png'},
+  {id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:'sab-coin.png'},
+  {id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:'brainrots/Cash_or_Card.png'},
+  {id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:'brainrots/Garamadundung.png'},
+  {id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:'brainrots/la_secret.png'},
+  {id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:'brainrots/Pizza_and_Ranch.png'},
+  {id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:'brainrots/La_Food_Combinasion.png'},
+  {id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:'brainrots/Fragola_La_La_La.png'},
+  {id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:'brainrots/Popcuru_and_Fizzuru.png'},
+  {id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:'brainrots/JollyJollySahur.png'},
+  {id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:'brainrots/Burguro_And_Fryuro.png'},
+  {id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:'brainrots/La_Fuse_Machine.png'},
+  {id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'brainrots/fragrama.png'},
+  {id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'brainrots/Capitano_Moby.png'},
+  {id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'brainrots/cooki_milki.png'},
+  {id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/sammyni_fat.png'},
+  {id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'brainrots/globa.png'},
+  {id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/spooky.png'},
+  {id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'brainrots/cerberus.png'},
+  {id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'brainrots/celestial.png'},
+  {id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/reinito.png'},
+  {id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'brainrots/los_admins.png'},
+  {id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'brainrots/guest666.png'},
+  {id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/los_amigos.png'},
+  {id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/los_chillis.png'},
+  {id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'brainrots/fortunu.png'},
+  {id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/rubrikiko.png'},
+  {id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'brainrots/Los_Sekolahs.png'},
+  {id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/rico.png'},
+  {id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'brainrots/la_breakfast.png'},
+  {id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'brainrots/examen.png'},
+  {id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'brainrots/foxini.png'},
+  {id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'brainrots/los_hackers.png'},
+  {id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/rosy.png'},
+  {id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'brainrots/Dug_dug_dug.png'},
+  {id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'brainrots/venuspino.png'},
+  {id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'brainrots/duggy.png'},
+  {id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:'brainrots/lacasaboo.png'},
+  {id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:'brainrots/ketupat.png'},
+  {id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:'brainrots/Bumbatron.png'},
+  {id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:'brainrots/los_secret.png'},
+  {id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:'brainrots/bunny_eggy.png'},
+  {id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:'brainrots/grabatron.png'},
+  {id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'brainrots/sammyni_cak.png'},
+  {id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'brainrots/dragonc.png'},
+  {id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'brainrots/tirilikalika.png'},
+  {id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/jelly_moby.png'},
+  {id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'brainrots/pancake.png'},
+  {id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'brainrots/ginger.png'},
+  {id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'brainrots/hydra.png'},
+  {id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'brainrots/Hydra_Bunny.png'},
+  {id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/moby_bros.png'},
+  {id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'brainrots/kalika.png'},
+  {id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/digi_narwhal.png'},
+  {id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'brainrots/lasupreme.png'},
+  {id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'brainrots/fishino.png'},
+  {id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/kraken.png'},
+  {id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/dragon_aquanini.png'},
+  {id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/griffin.png'},
+  {id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/los_dragons.png'},
+  {id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'brainrots/antonio.png'},
+  {id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'brainrots/lovebear.png'},
+  {id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'brainrots/Arcadragon.png'},
+  {id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'brainrots/Elefanto_Frigo.png'},
+  {id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'brainrots/SkibidiToilet.png'},
+  {id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'brainrots/John_Pork.png'},
+  {id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/meowl.png'},
+  {id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
+  {id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_elephant.png'},
+  {id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'}
 ];
 
-const CASES=[
+// ==================== CASES ====================
+const CASES = [
   {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс',price:100,
     items:[{id:'cashcard',c:100},{id:'garama',c:100},{id:'la_secret',c:100},{id:'pizza_ranch',c:100},{id:'la_food',c:100},{id:'fragola',c:100},{id:'popcuru',c:100},{id:'jolly',c:100},{id:'burguro',c:25},{id:'la_fuse',c:25},{id:'fragrama',c:25},{id:'capitano_moby',c:25},{id:'cooki_milki',c:25},{id:'sammyni_fat',c:25},{id:'globa',c:25},{id:'spooky',c:25},{id:'cerberus',c:25},{id:'celestial',c:25},{id:'reinito',c:25},{id:'los_admins',c:25},{id:'guest666',c:15},{id:'los_amigos',c:15},{id:'los_chillis',c:15},{id:'fortunu',c:10},{id:'rubrikiko',c:10},{id:'los_sekolahs',c:10},{id:'rico',c:20},{id:'bumbatron',c:10}]},
   {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:250,
     items:[{id:'garama',c:50},{id:'jolly',c:50},{id:'cerberus',c:50},{id:'celestial',c:50},{id:'reinito',c:50},{id:'los_admins',c:50},{id:'guest666',c:50},{id:'los_amigos',c:50},{id:'los_chillis',c:50},{id:'fortunu',c:50},{id:'rubrikiko',c:50},{id:'los_sekolahs',c:50},{id:'rico',c:50},{id:'la_breakfast',c:50},{id:'examen',c:50},{id:'foxini',c:50},{id:'los_hackers',c:50},{id:'rosy',c:50},{id:'dugdug',c:20},{id:'venuspino',c:20},{id:'duggy',c:20},{id:'lacasaboo',c:20},{id:'ketupat',c:20},{id:'bumbatron',c:20},{id:'los_secret',c:20},{id:'bunny_eggy',c:15},{id:'grabatron',c:20},{id:'sammyni_cak',c:20},{id:'dragonc',c:20},{id:'tirilikalika',c:20},{id:'jelly_moby',c:15}]},
-  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,badge:{text:'HOT'},
+  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,
     items:[{id:'bumbatron',c:1000},{id:'los_secret',c:1000},{id:'bunny_eggy',c:1000},{id:'grabatron',c:1000},{id:'sammyni_cak',c:1000},{id:'dragonc',c:1000},{id:'tirilikalika',c:1000},{id:'jelly_moby',c:400},{id:'pancake',c:400},{id:'ginger',c:400},{id:'hydra',c:400},{id:'hydra_bunny',c:400},{id:'moby_bros',c:400},{id:'kalika',c:400},{id:'digi_narwhal',c:100},{id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},{id:'dragon_aquanini',c:100},{id:'griffin',c:20},{id:'los_dragons',c:20},{id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},{id:'elefanto',c:20},{id:'skibidi',c:2}]},
   {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,
     items:[{id:'dragon_aquanini',c:50},{id:'antonio',c:50},{id:'lovebear',c:100},{id:'arcadragon',c:100},{id:'elefanto',c:100},{id:'skibidi',c:20},{id:'johnpork',c:10},{id:'meowl',c:10},{id:'signore',c:5},{id:'strawb',c:2},{id:'headless',c:0.5}]},
-  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,badge:{text:'ALL IN'},isAllIn:true,description:'Забирает ВЕСЬ ваш баланс.'}
+  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,isAllIn:true}
 ];
 
-const state={balance:0,tab:'cases',inventory:[],history:[],currentCase:null,caseOpens:1,openingView:null,user:null,globalDrops:[]};
-const $=s=>document.querySelector(s);
-const itemById=id=>ITEMS.find(i=>i.id===id);
-const fmt=n=>Math.round(n).toLocaleString('ru-RU');
+// ==================== STATE ====================
+const state = {
+  balance: 0,
+  tab: 'cases',
+  inventory: [],
+  currentCase: null,
+  openingView: null,
+  user: null,
+  globalDrops: [],
+  online: true
+};
 
-function itemIcon(it,size=48){
-  if(!it)return '';
-  if(it.img)return`<img src="${it.img}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.outerHTML='<span style=\\'font-size:${size}px;line-height:1\\'>${it.icon}</span>'">`;
-  return`<span style="font-size:${size}px;line-height:1">${it.icon}</span>`;
+const $ = s => document.querySelector(s);
+const itemById = id => ITEMS.find(i => i.id === id);
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+
+// ==================== API ====================
+async function api(path, opts = {}) {
+  try {
+    const r = await fetch(SERVER_URL + path, {
+      headers: { 'Content-Type': 'application/json' },
+      ...opts
+    });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) {
+    state.online = false;
+    return null;
+  }
 }
 
-function loadSavedState(){
-  try{
-    const raw=localStorage.getItem('brainrot-state');if(!raw)return false;
-    const s=JSON.parse(raw);
-    if(s.user) { state.user = s.user; state.balance = Number(s.balance)||0; state.inventory = s.inventory||[]; }
+async function syncFromServer() {
+  if (!state.user) return;
+  const data = await api(`api/state/${state.user.id}`);
+  if (data) {
+    state.online = true;
+    state.balance = data.balance;
+    state.inventory = data.inventory || [];
+    if (!state.user.username && data.username) state.user.username = data.username;
+    updateBalanceUI();
+    saveLocal();
+  }
+}
+
+async function pushBalance(delta, reason) {
+  if (!state.user) return;
+  const data = await api('api/balance', {
+    method: 'POST',
+    body: JSON.stringify({ tgId: state.user.id, delta, reason })
+  });
+  if (data) {
+    state.balance = data.balance;
+    updateBalanceUI();
+  }
+  saveLocal();
+}
+
+async function pushInventoryAdd(itemId) {
+  if (!state.user) return null;
+  const data = await api('api/inventory/add', {
+    method: 'POST',
+    body: JSON.stringify({ tgId: state.user.id, itemId })
+  });
+  if (data && data.entry) {
+    state.inventory.push(data.entry);
+    saveLocal();
+    return data.entry;
+  }
+  return null;
+}
+
+async function pushInventoryRemove(uids) {
+  if (!state.user) return;
+  await api('api/inventory/remove', {
+    method: 'POST',
+    body: JSON.stringify({ tgId: state.user.id, uids })
+  });
+  saveLocal();
+}
+
+async function pushDrop(item) {
+  if (!state.user || !item) return;
+  await api('api/drops', {
+    method: 'POST',
+    body: JSON.stringify({
+      username: state.user.username,
+      itemName: item.name,
+      price: item.price,
+      rarity: item.rarity,
+      itemId: item.id
+    })
+  });
+}
+
+async function fetchDrops() {
+  const drops = await api('api/drops');
+  if (Array.isArray(drops)) {
+    state.globalDrops = drops;
+    if (state.tab === 'cases' && !state.currentCase && !state.openingView) render();
+  }
+}
+
+// ==================== LOCAL SAVE (fallback) ====================
+function saveLocal() {
+  try {
+    localStorage.setItem('brainrot-state', JSON.stringify({
+      user: state.user,
+      balance: state.balance,
+      inventory: state.inventory,
+      globalDrops: state.globalDrops
+    }));
+  } catch (e) {}
+}
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem('brainrot-state');
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (s.user) {
+      state.user = s.user;
+      state.balance = Number(s.balance) || 0;
+      state.inventory = s.inventory || [];
+      state.globalDrops = s.globalDrops || [];
+    }
     return true;
-  }catch(e){return false;}
-}
-function saveState(){
-  try{ localStorage.setItem('brainrot-state',JSON.stringify({user:state.user, balance:state.balance, inventory:state.inventory})); }catch(e){}
+  } catch (e) { return false; }
 }
 
-function updateBalance(newVal){
+function updateBalanceUI() {
   const el = $('#balanceEl');
-  if(el) el.textContent = fmt(Math.round(newVal));
+  if (el) el.textContent = fmt(Math.round(state.balance));
 }
 
-function initTelegramLogin(){
+// ==================== AUTH ====================
+function initTelegramLogin() {
   const tg = window.Telegram?.WebApp;
-  
-  // ЖЕЛЕЗОБЕТОННЫЙ ВХОД (Даже если сервер мертв)
   if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
     onTelegramAuth({
       id: tg.initDataUnsafe.user.id,
@@ -269,183 +422,427 @@ function initTelegramLogin(){
     });
     return;
   }
-  
-  // Если мы не в телеге
   document.getElementById('loginLoading').style.display = 'none';
   document.getElementById('tgErrorBox').style.display = 'block';
-  document.getElementById('tgErrorMessage').innerText = 'Откройте игру через Telegram-бота (Mini App).';
+  document.getElementById('tgErrorMessage').innerText = 'Откройте игру через Telegram-бота.';
 }
 
-function onTelegramAuth(user){
+async function onTelegramAuth(user) {
   state.user = {
     id: user.id,
     name: user.first_name || 'Игрок',
     username: user.username || '',
     avatar: user.photo_url || null
   };
-  
-  if(state.balance === 0 && state.inventory.length === 0) state.balance = 5000; // Стартовый бонус для теста
-  
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('app').classList.add('logged-in');
-  
-  const nameEl=document.getElementById('profileName');
-  const avatarEl=document.getElementById('profileAvatar');
-  
-  if(nameEl) nameEl.textContent = state.user.name;
-  if(avatarEl) {
-    if(state.user.avatar) avatarEl.innerHTML = `<img src="${state.user.avatar}">`;
-    else avatarEl.textContent = state.user.name[0].toUpperCase();
+  const nameEl = document.getElementById('profileName');
+  const avEl = document.getElementById('profileAvatar');
+  if (nameEl) nameEl.textContent = state.user.name;
+  if (avEl) {
+    if (state.user.avatar) avEl.innerHTML = `<img src="${state.user.avatar}">`;
+    else avEl.textContent = state.user.name[0].toUpperCase();
   }
-  
-  updateBalance(state.balance);
+  // Sync from server
+  await syncFromServer();
+  updateBalanceUI();
   renderNav();
   render(true);
-  saveState();
+  fetchDrops();
+  setInterval(fetchDrops, 15000);
+  saveLocal();
 }
 
-function renderNav(){
-  const groups=[
-    {s:'Игры',items:[{id:'cases',l:'Кейсы',i:'📦'},{id:'mines',l:'Мины',i:'💣'}]},
-    {s:'Прогресс',items:[{id:'inventory',l:'Инвентарь',i:'🎒'},{id:'profile',l:'Профиль',i:'👤'}]}
+// ==================== NAV ====================
+function renderNav() {
+  const groups = [
+    { s: 'Игры', items: [{ id: 'cases', l: 'Кейсы', i: '📦' }, { id: 'mines', l: 'Мины', i: '💣' }] },
+    { s: 'Механики', items: [{ id: 'upgrade', l: 'Апгрейд', i: '📈' }, { id: 'inventory', l: 'Инвентарь', i: '🎒' }] },
+    { s: 'Прогресс', items: [{ id: 'profile', l: 'Профиль', i: '👤' }] }
   ];
   const navEl = $('#nav');
-  if(navEl) navEl.innerHTML = groups.map(g=>`<div><div class="nav-section-title">${g.s}</div>${g.items.map(it=>`<div class="nav-item ${state.tab===it.id?'active':''}" onclick="setTab('${it.id}')"><span>${it.i}</span><span>${it.l}</span></div>`).join('')}</div>`).join('');
-  
-  const mobile=$('#mobileNav');
-  if(mobile) mobile.innerHTML = groups.flatMap(g=>g.items).map(it=>`<div class="nav-item ${state.tab===it.id?'active':''}" onclick="setTab('${it.id}')"><span style="font-size:20px">${it.i}</span><span>${it.l}</span></div>`).join('');
+  if (navEl) navEl.innerHTML = groups.map(g => `
+    <div>
+      <div class="nav-section-title">${g.s}</div>
+      ${g.items.map(it => `<div class="nav-item ${state.tab === it.id ? 'active' : ''}" onclick="setTab('${it.id}')"><span>${it.i}</span><span>${it.l}</span></div>`).join('')}
+    </div>
+  `).join('');
+  const mobile = $('#mobileNav');
+  if (mobile) mobile.innerHTML = groups.flatMap(g => g.items).map(it => `<div class="nav-item ${state.tab === it.id ? 'active' : ''}" onclick="setTab('${it.id}')"><span style="font-size:20px">${it.i}</span><span>${it.l}</span></div>`).join('');
 }
 
-function setTab(t){
-  state.tab=t; state.currentCase=null; state.openingView=null;
-  renderNav(); render(true);
+function setTab(t) {
+  state.tab = t;
+  state.currentCase = null;
+  state.openingView = null;
+  renderNav();
+  render(true);
 }
 
-function render(fresh){
-  updateBalance(state.balance);
-  const el=$('#content');
-  if(!el) return;
-  
-  if(state.openingView){el.innerHTML=state.openingView;return;}
-  if(state.currentCase){el.innerHTML=renderCaseDetail(state.currentCase);return;}
-  
-  if(state.tab==='cases') el.innerHTML=renderCases();
-  else if(state.tab==='inventory') el.innerHTML=renderInventory();
-  else if(state.tab==='profile') el.innerHTML=renderProfile();
-  else if(state.tab==='mines') el.innerHTML='<div class="empty-state">В разработке...</div>';
+// ==================== RENDER ====================
+function render() {
+  updateBalanceUI();
+  const el = $('#content');
+  if (!el) return;
+  if (state.openingView) { el.innerHTML = state.openingView; return; }
+  if (state.currentCase) { el.innerHTML = renderCaseDetail(state.currentCase); return; }
+  if (state.tab === 'cases') el.innerHTML = renderCases();
+  else if (state.tab === 'inventory') el.innerHTML = renderInventory();
+  else if (state.tab === 'profile') el.innerHTML = renderProfile();
+  else if (state.tab === 'upgrade') el.innerHTML = '<div class="page-title">📈 Апгрейд</div><div style="color:var(--muted)">В разработке...</div>';
+  else if (state.tab === 'mines') el.innerHTML = '<div class="page-title">💣 Мины</div><div style="color:var(--muted)">В разработке...</div>';
 }
 
-function renderCases(){
-  const live = state.globalDrops.map(d=>`<div class="live-item">${itemIcon(itemById(d.itemId),30)}<div><div class="li-name">${d.itemName}</div><div class="li-user">${d.username}</div></div></div>`).join('') || '<div style="color:var(--muted);font-size:14px;">Пока нет дропов</div>';
-  
-  const cards = CASES.map(c=>{
+function itemIcon(it, size = 48) {
+  if (!it) return '';
+  if (it.img) return `<img src="${it.img}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.outerHTML='<span style=\\'font-size:${size}px;line-height:1\\'>${it.icon}</span>'">`;
+  return `<span style="font-size:${size}px;line-height:1">${it.icon}</span>`;
+}
+
+function renderCases() {
+  const live = state.globalDrops.slice(0, 10).map(d => `
+    <div class="live-item">${itemIcon(itemById(d.itemId), 30)}<div><div class="li-name">${d.itemName}</div><div class="li-user">${d.username}</div></div></div>
+  `).join('') || '<div style="color:var(--muted);font-size:14px;">Пока нет дропов</div>';
+  const cards = CASES.map(c => {
     const priceStr = c.isAllIn ? `Баланс: ${fmt(state.balance)}` : `${fmt(c.price)} 🪙`;
     const imgHtml = c.img ? `<img src="${c.img}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">` : `<span>${c.icon}</span>`;
-    return `<div class="case-card" onclick="openCase('${c.id}')"><div class="case-img">${imgHtml}</div><div class="case-name">${c.name}</div><div class="case-footer"><div class="case-price">${priceStr}</div><button class="btn btn-primary">Открыть</button></div></div>`;
+    return `<div class="case-card ${c.isAllIn ? 'all-in-card' : ''}" onclick="openCase('${c.id}')">
+      <div class="case-img">${imgHtml}</div>
+      <div class="case-name">${c.name}</div>
+      <div class="case-footer"><div class="case-price">${priceStr}</div><button class="btn btn-primary">Открыть</button></div>
+    </div>`;
   }).join('');
-
-  return `<div class="hero"><h1>Открывай кейсы. Собирай брейнротов.</h1><button class="btn btn-danger" onclick="openCase('all_in')">ALL IN 🎰</button></div>
-  <div class="live-bar"><div style="font-weight:900;color:var(--red)">🔴 LIVE</div><div class="live-list">${live}</div></div>
-  <div class="page-title">Кейсы</div><div class="cases-grid">${cards}</div>`;
+  return `
+    <div class="hero"><h1>Открывай кейсы. Собирай брейнротов.</h1><p>Испытай удачу и забери редкие скины в свой инвентарь.</p><button class="btn btn-danger" onclick="openCase('all_in')">ALL IN 🎰</button></div>
+    <div class="live-bar"><div style="font-weight:900;color:var(--red);white-space:nowrap;">🔴 LIVE ДРОПЫ</div><div class="live-list">${live}</div></div>
+    <div class="page-title">Магазин кейсов</div>
+    <div class="cases-grid">${cards}</div>`;
 }
 
-function renderCaseDetail(id){
-  const c=CASES.find(x=>x.id===id);
+function renderCaseDetail(id) {
+  const c = CASES.find(x => x.id === id);
+  if (!c) return '';
   const imgHtml = c.img ? `<img src="${c.img}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">` : `<span>${c.icon}</span>`;
-  return `<button class="btn btn-ghost" onclick="state.currentCase=null;render()">← Назад</button>
-  <div class="case-detail">
-    <div><div class="case-detail-img">${imgHtml}</div></div>
-    <div>
-      <div class="page-title">${c.name}</div><div class="page-sub">${c.desc}</div>
-      <button class="btn btn-primary" style="width:100%;padding:20px;font-size:20px;" onclick="openCaseNow()">ОТКРЫТЬ ЗА ${c.isAllIn ? 'ВСЁ' : fmt(c.price)+' 🪙'}</button>
-    </div>
-  </div>`;
+  const canAfford = c.isAllIn ? state.balance > 0 : state.balance >= c.price;
+  return `
+    <button class="case-back" onclick="state.currentCase=null;render()">← Назад</button>
+    <div class="case-detail">
+      <div><div class="case-detail-img">${imgHtml}</div></div>
+      <div>
+        <div class="case-title">${c.name}</div>
+        <div class="page-sub">${c.desc}</div>
+        <div class="case-open-panel">
+          <div style="text-align:center;margin-bottom:20px;">
+            <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">Цена открытия:</div>
+            <div style="font-size:42px;font-weight:900;color:var(--gold);">${c.isAllIn ? 'ВСЁ' : fmt(c.price) + ' 🪙'}</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;padding:20px;font-size:20px;" onclick="openCaseNow()" ${!canAfford ? 'disabled' : ''}>
+            ${!canAfford ? 'Недостаточно средств' : 'ОТКРЫТЬ КЕЙС'}
+          </button>
+        </div>
+      </div>
+    </div>`;
 }
 
-function openCase(id){ state.currentCase=id; render(); }
+function openCase(id) { state.currentCase = id; render(); }
 
-function openCaseNow(){
-  const c=CASES.find(x=>x.id===state.currentCase);
-  if(c.isAllIn){
-    if(state.balance<=0) return alert('Нет монет!');
-    state.balance=0; updateBalance(0);
-    startAllInSequence(); return;
+// ==================== OPEN CASE ====================
+async function openCaseNow() {
+  const c = CASES.find(x => x.id === state.currentCase);
+  if (!c) return;
+  if (c.isAllIn) {
+    if (state.balance <= 0) return alert('Нет монет для ALL IN!');
+    const cost = state.balance;
+    state.balance = 0;
+    updateBalanceUI();
+    await pushBalance(-cost, 'all_in');
+    startAllInSequence(cost);
+    return;
   }
-  if(state.balance < c.price) return alert('Недостаточно монет!');
-  
-  state.balance -= c.price; updateBalance(state.balance);
-  
-  // Выбор предмета
-  const pool = c.items;
-  const total = pool.reduce((s,i)=>s+i.c,0);
-  let r = Math.random()*total;
-  let res = pool[pool.length-1];
-  for(const it of pool){ r-=it.c; if(r<=0){res=it;break;} }
-  
+  if (state.balance < c.price) return alert('Недостаточно монет!');
+  state.balance -= c.price;
+  updateBalanceUI();
+  await pushBalance(-c.price, 'case_' + c.id);
+  const total = c.items.reduce((s, i) => s + i.c, 0);
+  let r = Math.random() * total;
+  let res = c.items[c.items.length - 1];
+  for (const it of c.items) { r -= it.c; if (r <= 0) { res = it; break; } }
   const winItem = itemById(res.id);
-  
-  // Сохраняем в инвентарь
-  state.inventory.push({uid:Date.now(), itemId:winItem.id, date:Date.now()});
-  state.globalDrops.unshift({itemName:winItem.name, username:state.user.username, itemId:winItem.id});
-  saveState();
-  
-  state.openingView = `<div style="text-align:center;padding:50px;">
-    <div style="font-size:120px;margin-bottom:20px;">${itemIcon(winItem,120)}</div>
-    <div class="page-title">${winItem.name}</div>
-    <button class="btn btn-primary" onclick="state.openingView=null;state.currentCase=null;render()">Забрать</button>
-  </div>`;
-  render();
+  startRoulette(winItem, c);
 }
 
-function startAllInSequence(){
-  state.openingView = `<div class="all-in-stage-new">
-    <div class="all-in-multiplier" id="allInMult">x1.0</div>
-    <div style="margin-top:20px;"><button class="btn btn-primary" onclick="state.openingView=null;render()">Забрать</button></div>
-  </div>`;
+function startRoulette(winItem, c) {
+  const trackItems = [];
+  for (let i = 0; i < 60; i++) {
+    if (i === 48) trackItems.push(winItem);
+    else trackItems.push(itemById(c.items[Math.floor(Math.random() * c.items.length)].id));
+  }
+  let html = `<button class="case-back" onclick="state.currentCase=null;render()">← Назад</button>`;
+  html += `<div class="roulette-wrap"><div class="roulette-marker"></div><div class="roulette-track" id="track">`;
+  html += trackItems.map(it => `<div class="roulette-item">${itemIcon(it, 70)}</div>`).join('');
+  html += `</div></div><div style="text-align:center;margin-top:24px;color:var(--muted);font-weight:700;">Крутим...</div>`;
+  state.openingView = html;
   render();
-  
-  let el = document.getElementById('allInMult');
+  setTimeout(async () => {
+    const track = document.getElementById('track');
+    if (!track) return;
+    const items = track.querySelectorAll('.roulette-item');
+    const winEl = items[48];
+    const wrap = track.parentElement;
+    const wrapW = wrap.offsetWidth;
+    const winElLeft = winEl.offsetLeft;
+    const winElWidth = winEl.offsetWidth;
+    const offset = (wrapW / 2) - winElLeft - (winElWidth / 2);
+    track.style.transition = 'transform 4000ms cubic-bezier(0.12, 0.8, 0.15, 1)';
+    track.style.transform = `translateX(${offset}px)`;
+    setTimeout(async () => {
+      // Persist
+      await pushInventoryAdd(winItem.id);
+      await pushDrop(winItem);
+      state.openingView = `
+        <div style="text-align:center;padding:50px;">
+          <div style="font-size:120px;margin-bottom:20px;">${itemIcon(winItem, 120)}</div>
+          <div class="page-title">${winItem.name}</div>
+          <div style="color:var(--gold);font-size:24px;font-weight:900;margin-bottom:20px;">${fmt(winItem.price)} 🪙</div>
+          <button class="btn btn-primary" onclick="state.openingView=null;state.currentCase=null;render()">Забрать в инвентарь</button>
+        </div>`;
+      render();
+    }, 4200);
+  }, 50);
+}
+
+// ==================== ALL IN ====================
+function startAllInSequence(cost) {
+  state.openingView = `
+    <div class="all-in-stage-new">
+      <div class="all-in-multiplier" id="allInMult">x0.0</div>
+      <div style="margin-top:20px;"><button class="btn btn-primary" id="allInBtn" style="display:none;" onclick="state.openingView=null;render()">Забрать</button></div>
+    </div>`;
+  render();
   let count = 0;
-  let int = setInterval(()=>{
-    if(!document.getElementById('allInMult')){clearInterval(int);return;}
-    count += 0.5;
+  let mult = 0.5 + Math.random() * 5.0;
+  const int = setInterval(async () => {
+    const el = document.getElementById('allInMult');
+    const btn = document.getElementById('allInBtn');
+    if (!el) { clearInterval(int); return; }
+    count += 0.3;
     el.innerText = 'x' + count.toFixed(1);
-    if(count > 5){
+    if (count > mult) {
       clearInterval(int);
-      el.style.color = '#fbbf24';
-      state.balance += 5000; // Заглушка для теста
-      saveState();
+      el.innerText = 'x' + mult.toFixed(2);
+      el.style.color = mult > 1 ? 'var(--gold)' : 'var(--red)';
+      btn.style.display = 'inline-flex';
+      const reward = Math.floor(cost * mult);
+      state.balance = reward;
+      updateBalanceUI();
+      await pushBalance(reward, 'all_in_reward');
     }
-  }, 100);
+  }, 50);
 }
 
-function renderInventory(){
-  if(state.inventory.length === 0) return '<div class="page-title">Инвентарь пуст</div>';
-  return `<div class="page-title">Инвентарь</div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;">
-    ${state.inventory.map(inv => {
-      const it = itemById(inv.itemId);
-      return `<div style="background:#111827;padding:16px;border-radius:16px;text-align:center;border:1px solid #334155;">
-        ${itemIcon(it,60)}
-        <div style="font-size:14px;font-weight:700;margin:10px 0;">${it.name}</div>
-        <div style="color:#fbbf24;font-weight:900;">${fmt(it.price)} 🪙</div>
-      </div>`;
-    }).join('')}
-  </div>`;
+// ==================== INVENTORY ====================
+function renderInventory() {
+  if (state.inventory.length === 0) return '<div class="page-title">Инвентарь пуст</div><div class="page-sub">Открой первый кейс!</div>';
+  const total = state.inventory.reduce((s, i) => s + (itemById(i.itemId)?.price || 0), 0);
+  return `
+    <div class="page-title">Инвентарь</div>
+    <div class="page-sub">Стоимость: ${fmt(total)} 🪙</div>
+    <div class="inv-grid">
+      ${state.inventory.map(inv => {
+        const it = itemById(inv.itemId);
+        if (!it) return '';
+        return `<div class="inv-card">
+          ${itemIcon(it, 60)}
+          <div style="font-size:13px;font-weight:700;margin:10px 0;color:#fff;">${it.name}</div>
+          <div style="color:var(--gold);font-weight:900;font-size:14px;">${fmt(it.price)} 🪙</div>
+          <button class="btn btn-ghost btn-sm" onclick="sellItem('${inv.uid}')">Продать</button>
+        </div>`;
+      }).join('')}
+    </div>`;
 }
 
-function renderProfile(){
-  return `<div class="page-title">Профиль</div>
-  <div style="background:#111827;border:1px solid #334155;border-radius:24px;padding:30px;">
-    <div style="font-size:24px;font-weight:900;margin-bottom:10px;">${state.user.name}</div>
-    <div style="color:var(--muted);">Telegram ID: <b style="color:#fff;">${state.user.id}</b></div>
-  </div>`;
+async function sellItem(uid) {
+  const idx = state.inventory.findIndex(i => String(i.uid) === String(uid));
+  if (idx < 0) return;
+  const inv = state.inventory[idx];
+  const it = itemById(inv.itemId);
+  if (!it) return;
+  if (!confirm(`Продать "${it.name}" за ${fmt(it.price)} 🪙?`)) return;
+  state.inventory.splice(idx, 1);
+  state.balance += it.price;
+  updateBalanceUI();
+  render();
+  await pushInventoryRemove([inv.uid]);
+  await pushBalance(it.price, 'sell_' + it.id);
 }
 
+// ==================== PROFILE ====================
+function renderProfile() {
+  const avatarImg = state.user.avatar ? `<img src="${state.user.avatar}" style="width:100%;height:100%;object-fit:cover;">` : state.user.name[0].toUpperCase();
+  return `
+    <div class="page-title">Профиль</div>
+    <div style="background:rgba(15,23,42,.8);border:1px solid var(--border);border-radius:28px;padding:32px;display:flex;align-items:center;gap:24px;margin-bottom:24px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:32px;font-weight:900;overflow:hidden;color:#000;">${avatarImg}</div>
+      <div>
+        <div style="font-size:28px;font-weight:900;color:#fff;">${state.user.name}</div>
+        <div style="color:var(--muted);">@${state.user.username || 'anon'} · ID: ${state.user.id}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+      <button class="btn btn-primary" style="padding:20px;" onclick="openDepositModal()">💳 Пополнить</button>
+      <button class="btn btn-ghost" style="padding:20px;" onclick="openWithdrawModal()">📤 Вывести</button>
+      <button class="btn btn-ghost" style="padding:20px;" onclick="syncFromServer()">🔄 Синхронизация</button>
+    </div>`;
+}
+
+// ==================== MODALS ====================
+function openModal(html) {
+  $('#modal').innerHTML = html;
+  $('#overlay').classList.add('open');
+}
+function closeModal() { $('#overlay').classList.remove('open'); }
+
+function openDepositModal() {
+  const inv = state.inventory.filter(i => itemById(i.itemId));
+  if (!inv.length) {
+    openModal(`<div class="modal-head"><div class="modal-title">Пополнение</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div style="text-align:center;padding:40px;"><div style="font-size:64px;margin-bottom:16px;">📦</div><p style="color:var(--muted);">Инвентарь пуст. Открой кейс, чтобы было что депонировать.</p></div>`);
+    return;
+  }
+  const rows = inv.map(i => {
+    const it = itemById(i.itemId);
+    return `<label class="item-row" data-uid="${i.uid}">
+      <input type="checkbox" value="${i.uid}" data-price="${it.price}" data-name="${it.name}" onchange="onItemToggle(this)">
+      ${itemIcon(it, 40)}
+      <div class="item-row-info"><div class="item-row-name">${it.name}</div><div class="item-row-price">${fmt(it.price)} 🪙</div></div>
+    </label>`;
+  }).join('');
+  openModal(`
+    <div class="modal-head"><div class="modal-title">💳 Депозит (пополнение)</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="color:var(--muted);margin-bottom:16px;font-size:14px;">Выбери предметы для обмена на монеты и укажи Roblox-ник.</p>
+    <input class="form-input" id="robloxNameDep" placeholder="Твой Roblox ник" required>
+    <div class="item-selector" id="depositItems">${rows}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <span style="color:var(--muted);">Сумма:</span>
+      <span style="color:var(--gold);font-weight:900;font-size:20px;" id="depositSum">0 🪙</span>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:16px;" onclick="submitDeposit()">Отправить заявку</button>
+  `);
+}
+
+function onItemToggle(cb) {
+  const row = cb.closest('.item-row');
+  if (cb.checked) row.classList.add('selected'); else row.classList.remove('selected');
+  updateSum('depositItems', 'depositSum');
+}
+
+function updateSum(containerId, sumId) {
+  const cont = document.getElementById(containerId);
+  if (!cont) return;
+  let sum = 0;
+  cont.querySelectorAll('input:checked').forEach(cb => sum += parseFloat(cb.dataset.price) || 0);
+  document.getElementById(sumId).textContent = fmt(sum) + ' 🪙';
+}
+
+async function submitDeposit() {
+  const robloxName = document.getElementById('robloxNameDep').value.trim();
+  if (!robloxName) return alert('Укажи Roblox ник');
+  const selected = [...document.querySelectorAll('#depositItems input:checked')];
+  if (!selected.length) return alert('Выбери хотя бы один предмет');
+  const items = selected.map(cb => {
+    const inv = state.inventory.find(i => String(i.uid) === cb.value);
+    const it = itemById(inv.itemId);
+    return { uid: inv.uid, name: it.name, price: it.price };
+  });
+  const totalAmount = items.reduce((s, i) => s + i.price, 0);
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Отправка...';
+  const res = await api('api/deposit', {
+    method: 'POST',
+    body: JSON.stringify({
+      tgId: state.user.id,
+      username: state.user.username,
+      robloxName,
+      items,
+      totalAmount
+    })
+  });
+  btn.disabled = false;
+  btn.textContent = 'Отправить заявку';
+  if (res && res.success) {
+    openModal(`
+      <div class="modal-head"><div class="modal-title">✅ Заявка отправлена</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div style="text-align:center;padding:20px;">
+        <p style="color:var(--muted);margin-bottom:16px;">ID: <b style="color:var(--accent)">${res.requestId}</b></p>
+        <p style="color:var(--muted);">Админ проверит заявку в Discord и начислит монеты.</p>
+      </div>
+    `);
+  } else {
+    alert('Ошибка отправки. Сервер недоступен.');
+  }
+}
+
+function openWithdrawModal() {
+  const inv = state.inventory.filter(i => itemById(i.itemId));
+  if (!inv.length) {
+    openModal(`<div class="modal-head"><div class="modal-title">Вывод</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div style="text-align:center;padding:40px;"><p style="color:var(--muted);">Нечего выводить.</p></div>`);
+    return;
+  }
+  const rows = inv.map(i => {
+    const it = itemById(i.itemId);
+    return `<label class="item-row" data-uid="${i.uid}">
+      <input type="checkbox" value="${i.uid}" data-price="${it.price}" onchange="onItemToggle(this)">
+      ${itemIcon(it, 40)}
+      <div class="item-row-info"><div class="item-row-name">${it.name}</div><div class="item-row-price">${fmt(it.price)} 🪙</div></div>
+    </label>`;
+  }).join('');
+  openModal(`
+    <div class="modal-head"><div class="modal-title">📤 Вывод (в игру)</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <p style="color:var(--muted);margin-bottom:16px;font-size:14px;">Выбери предметы и укажи Roblox-ник — админ выдаст их в игре.</p>
+    <input class="form-input" id="robloxNameWd" placeholder="Твой Roblox ник" required>
+    <div class="item-selector" id="withdrawItems">${rows}</div>
+    <button class="btn btn-primary" style="width:100%;padding:16px;" onclick="submitWithdraw()">Отправить заявку</button>
+  `);
+}
+
+async function submitWithdraw() {
+  const robloxName = document.getElementById('robloxNameWd').value.trim();
+  if (!robloxName) return alert('Укажи Roblox ник');
+  const selected = [...document.querySelectorAll('#withdrawItems input:checked')];
+  if (!selected.length) return alert('Выбери хотя бы один предмет');
+  const items = selected.map(cb => {
+    const inv = state.inventory.find(i => String(i.uid) === cb.value);
+    const it = itemById(inv.itemId);
+    return { uid: inv.uid, name: it.name, price: it.price };
+  });
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Отправка...';
+  const res = await api('api/withdraw', {
+    method: 'POST',
+    body: JSON.stringify({ tgId: state.user.id, username: state.user.username, robloxName, items })
+  });
+  btn.disabled = false;
+  btn.textContent = 'Отправить заявку';
+  if (res && res.success) {
+    openModal(`
+      <div class="modal-head"><div class="modal-title">✅ Заявка отправлена</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div style="text-align:center;padding:20px;">
+        <p style="color:var(--muted);margin-bottom:16px;">ID: <b style="color:var(--accent)">${res.requestId}</b></p>
+        <p style="color:var(--muted);">Админ выдаст предметы в игре.</p>
+      </div>
+    `);
+  } else {
+    alert('Ошибка отправки.');
+  }
+}
+
+// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
-  loadSavedState();
+  loadLocal();
   document.getElementById('loginScreen').classList.add('show');
-  // Даем телеге 1 секунду на инициализацию
   setTimeout(initTelegramLogin, 500);
 });
 </script>
