@@ -4,15 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Brainrot Rush</title>
-<!-- Оптимизация загрузки шрифтов -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"></noscript>
-<!-- Асинхронный скрипт телеграм -->
 <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 <style>
-/* === ГЛОБАЛЬНЫЙ ФИКС ШРИФТА === */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; -webkit-tap-highlight-color: transparent; }
 input, button, select, textarea, optgroup, option { font-family: inherit !important; }
 
@@ -49,17 +46,8 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .login-title{font-size:32px;font-weight:900;margin-bottom:8px;background:linear-gradient(90deg,#fff 0%,#bae6fd 25%,#38bdf8 50%,#bae6fd 75%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;animation:shine 4s linear infinite}
 @keyframes shine{to{background-position:200% center}}
 .login-sub{color:var(--muted);font-size:15px;margin-bottom:20px;line-height:1.5}
-
-/* Спиннер загрузки */
-.spinner {
-  width: 30px; height: 30px;
-  border: 3px solid rgba(56,189,248,0.3);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 20px auto 0;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
+.spinner{width:30px;height:30px;border:3px solid rgba(56,189,248,0.3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto 0;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* === КАРКАС === */
 .app{display:none;min-height:100vh;position:relative;z-index:2}
@@ -436,9 +424,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 </style>
 </head>
 <body>
-<!-- Возвращен автоплей и убран постер -->
 <video id="bg-video" autoplay loop muted playsinline src="fon.mp4"></video>
-
 <div class="bg-layer"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="snow" id="snowContainer"></div>
@@ -491,11 +477,9 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 <div class="toast" id="toast"></div>
 <script>
-/* ===== CONFIG ===== */
-const ADMIN_TG_ID = '8921286864'; // Ваш ID
-const SERVER_URL = 'https://brainrot-server.bonto.run'; // Ссылка на ваш сервер
+const ADMIN_TG_ID = '8921286864'; 
+const SERVER_URL = 'https://brainrot-server.bonto.run'; 
 
-/* Snow */
 (function(){
   const c=document.getElementById('snowContainer');if(!c)return;
   for(let i=0;i<40;i++){
@@ -509,13 +493,11 @@ const SERVER_URL = 'https://brainrot-server.bonto.run'; // Ссылка на в�
   }
 })();
 
-/* Telegram */
 (function(){
   const tg=window.Telegram&&window.Telegram.WebApp;
   if(tg){try{tg.ready();tg.expand();if(tg.setHeaderColor)tg.setHeaderColor('#070a12');if(tg.setBackgroundColor)tg.setBackgroundColor('#070a12');}catch(e){}}
 })();
 
-/* Haptic */
 function haptic(type){
   try{
     const tg=window.Telegram?.WebApp;
@@ -529,14 +511,12 @@ function haptic(type){
   }catch(e){}
 }
 
-/* Audio */
 let audioCtx,isMuted=false,masterGain;
 function initAudio(){if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=0.2;masterGain.connect(audioCtx.destination);}if(audioCtx.state==='suspended')audioCtx.resume();}
 function toggleSound(){isMuted=!isMuted;document.getElementById('soundToggle').textContent=isMuted?'🔇':'🔊';haptic('light');}
 function playTone(freq,type,duration,vol=0.1,slideTo=null){if(!audioCtx||isMuted)return;try{const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=2000;osc.type=type;osc.frequency.setValueAtTime(freq,audioCtx.currentTime);if(slideTo)osc.frequency.exponentialRampToValueAtTime(slideTo,audioCtx.currentTime+duration);gain.gain.setValueAtTime(0,audioCtx.currentTime);gain.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+0.03);gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+duration);osc.connect(filter);filter.connect(gain);gain.connect(masterGain);osc.start();osc.stop(audioCtx.currentTime+duration);}catch(e){}}
 function sndClick(){playTone(800,'sine',0.08,0.05,600);}
 function sndTick(){playTone(1200,'triangle',0.03,0.06);}
-function sndWin(){sndWinRarity('epic');}
 function sndWinRarity(rarity){
   if(!audioCtx||isMuted)return;
   const tones={
@@ -549,14 +529,11 @@ function sndWinRarity(rarity){
 }
 function sndLose(){playTone(150,'sine',0.5,0.15,50);}
 function sndCash(){playTone(2000,'sine',0.15,0.05,2500);setTimeout(()=>playTone(2500,'sine',0.2,0.05,2800),50);}
-function sndHeavyDrop(){playTone(100,'sawtooth',1,0.3,30);setTimeout(sndCash,300);}
 
-/* Cursor glow */
 const glow=document.getElementById('cursorGlow');let gx=innerWidth/2,gy=innerHeight/2,cx=gx,cy=gy;
 addEventListener('mousemove',e=>{gx=e.clientX;gy=e.clientY;});
 (function loop(){cx+=(gx-cx)*.1;cy+=(gy-cy)*.1;if(glow)glow.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
 
-/* ESC close */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     const ov=document.getElementById('overlay');
@@ -564,7 +541,6 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-/* Ripple */
 document.addEventListener('click',e=>{
   initAudio();
   const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn');
@@ -582,122 +558,122 @@ document.addEventListener('click',e=>{
 const RARITY={common:{label:'Обычный',color:'#94a3b8'},rare:{label:'Редкий',color:'#38bdf8'},epic:{label:'Эпический',color:'#a78bfa'},legendary:{label:'Легендарный',color:'#fbbf24'},mythic:{label:'Мифический',color:'#f43f5e'},god:{label:'Божественный',color:'#2dd4bf'}};
 
 const ITEMS=[
-{id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
-{id:'coin_8',name:'8 Монет',icon:'🪙',rarity:'common',price:8,img:'sab-coin.png'},
-{id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:'sab-coin.png'},
-{id:'coin_15',name:'15 Монет',icon:'🪙',rarity:'common',price:15,img:'sab-coin.png'},
-{id:'coin_16',name:'16 Монет',icon:'🪙',rarity:'common',price:16,img:'sab-coin.png'},
-{id:'coin_20',name:'20 Монет',icon:'🪙',rarity:'common',price:20,img:'sab-coin.png'},
-{id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:'sab-coin.png'},
-{id:'coin_30',name:'30 Монет',icon:'🪙',rarity:'common',price:30,img:'sab-coin.png'},
-{id:'coin_45',name:'45 Монет',icon:'🪙',rarity:'common',price:45,img:'sab-coin.png'},
-{id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:'sab-coin.png'},
-{id:'coin_71',name:'71 Монет',icon:'🪙',rarity:'common',price:71,img:'sab-coin.png'},
-{id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:'sab-coin.png'},
-{id:'coin_150',name:'150 Монет',icon:'🪙',rarity:'rare',price:150,img:'sab-coin.png'},
-{id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:'sab-coin.png'},
-{id:'coin_350',name:'350 Монет',icon:'🪙',rarity:'rare',price:350,img:'sab-coin.png'},
-{id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:'sab-coin.png'},
-{id:'coin_700',name:'700 Монет',icon:'🪙',rarity:'epic',price:700,img:'sab-coin.png'},
-{id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:'sab-coin.png'},
-{id:'coin_1500',name:'1500 Монет',icon:'🪙',rarity:'epic',price:1500,img:'sab-coin.png'},
-{id:'coin_2000',name:'2000 Монет',icon:'🪙',rarity:'epic',price:2000,img:'sab-coin.png'},
-{id:'coin_3000',name:'3000 Монет',icon:'🪙',rarity:'legendary',price:3000,img:'sab-coin.png'},
-{id:'coin_4000',name:'4000 Монет',icon:'🪙',rarity:'legendary',price:4000,img:'sab-coin.png'},
-{id:'coin_5000',name:'5000 Монет',icon:'🪙',rarity:'legendary',price:5000,img:'sab-coin.png'},
-{id:'coin_7000',name:'7000 Монет',icon:'🪙',rarity:'legendary',price:7000,img:'sab-coin.png'},
-{id:'coin_10000',name:'10000 Монет',icon:'🪙',rarity:'mythic',price:10000,img:'sab-coin.png'},
-{id:'coin_15000',name:'15000 Монет',icon:'🪙',rarity:'mythic',price:15000,img:'sab-coin.png'},
-{id:'coin_25000',name:'25000 Монет',icon:'🪙',rarity:'god',price:25000,img:'sab-coin.png'},
-{id:'coin_30000',name:'30000 Монет',icon:'🪙',rarity:'god',price:30000,img:'sab-coin.png'},
-{id:'coin_50000',name:'50000 Монет',icon:'🪙',rarity:'god',price:50000,img:'sab-coin.png'},
-{id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:'brainrots/Cash_or_Card.png'},
-{id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:'brainrots/Garamadundung.png'},
-{id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:'brainrots/la_secret.png'},
-{id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:'brainrots/Pizza_and_Ranch.png'},
-{id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:'brainrots/La_Food_Combinasion.png'},
-{id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:'brainrots/Fragola_La_La_La.png'},
-{id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:'brainrots/Popcuru_and_Fizzuru.png'},
-{id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:'brainrots/JollyJollySahur.png'},
-{id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:'brainrots/Burguro_And_Fryuro.png'},
-{id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:'brainrots/La_Fuse_Machine.png'},
-{id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'brainrots/fragrama.png'},
-{id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'brainrots/Capitano_Moby.png'},
-{id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'brainrots/cooki_milki.png'},
-{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/sammyni_fat.png'},
-{id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'brainrots/globa.png'},
-{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/spooky.png'},
-{id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'brainrots/cerberus.png'},
-{id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'brainrots/celestial.png'},
-{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/reinito.png'},
-{id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'brainrots/los_admins.png'},
-{id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'brainrots/guest666.png'},
-{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/los_amigos.png'},
-{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/los_chillis.png'},
-{id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'brainrots/fortunu.png'},
-{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/rubrikiko.png'},
-{id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'brainrots/Los_Sekolahs.png'},
-{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/rico.png'},
-{id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'brainrots/la_breakfast.png'},
-{id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'brainrots/examen.png'},
-{id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'brainrots/foxini.png'},
-{id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'brainrots/los_hackers.png'},
-{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/rosy.png'},
-{id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'brainrots/Dug_dug_dug.png'},
-{id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'brainrots/venuspino.png'},
-{id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'brainrots/duggy.png'},
-{id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:'brainrots/lacasaboo.png'},
-{id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:'brainrots/ketupat.png'},
-{id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:'brainrots/Bumbatron.png'},
-{id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:'brainrots/los_secret.png'},
-{id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:'brainrots/bunny_eggy.png'},
-{id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:'brainrots/grabatron.png'},
-{id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'brainrots/sammyni_cak.png'},
-{id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'brainrots/dragonc.png'},
-{id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'brainrots/tirilikalika.png'},
-{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/jelly_moby.png'},
-{id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'brainrots/pancake.png'},
-{id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'brainrots/ginger.png'},
-{id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'brainrots/hydra.png'},
-{id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'brainrots/Hydra_Bunny.png'},
-{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/moby_bros.png'},
-{id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'brainrots/kalika.png'},
-{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/digi_narwhal.png'},
-{id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'brainrots/lasupreme.png'},
-{id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'brainrots/fishino.png'},
-{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/kraken.png'},
-{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/dragon_aquanini.png'},
-{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/griffin.png'},
-{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/los_dragons.png'},
-{id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'brainrots/antonio.png'},
-{id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'brainrots/lovebear.png'},
-{id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'brainrots/Arcadragon.png'},
-{id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'brainrots/Elefanto_Frigo.png'},
-{id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'brainrots/SkibidiToilet.png'},
-{id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'brainrots/John_Pork.png'},
-{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/meowl.png'},
-{id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
-{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_elephant.png'},
-{id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'},
-{id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:'brainrots/Gold_Guest666.png'},
-{id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:'brainrots/Diamond_Guest666.png'},
-{id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:'brainrots/Bloodrot_Guest666.png'},
-{id:'guest666_candy',name:'Candy Guest666',icon:'😈',rarity:'epic',price:411.94,img:'brainrots/Candy_Guest666.png'},
-{id:'guest666_lava',name:'Lava Guest666',icon:'😈',rarity:'legendary',price:451.44,img:'brainrots/Lava_Guest666.png'},
-{id:'guest666_galaxy',name:'Galaxy Guest666',icon:'😈',rarity:'legendary',price:464.61,img:'brainrots/Galaxy_Guest666.png'},
-{id:'guest666_yinyang',name:'Yin Yang Guest666',icon:'😈',rarity:'legendary',price:507.87,img:'brainrots/Yin_Yang_Guest666.png'},
-{id:'guest666_radioactive',name:'Radioactive Guest666',icon:'😈',rarity:'mythic',price:502.23,img:'brainrots/Radioactive_Guest666.png'},
-{id:'guest666_cursed',name:'Cursed Guest666',icon:'😈',rarity:'mythic',price:487.18,img:'brainrots/Cursed_Guest666.png'},
-{id:'guest666_divine',name:'Divine Guest666',icon:'😈',rarity:'mythic',price:451.44,img:'brainrots/Divine_Guest666.png'},
-{id:'guest666_rainbow',name:'Rainbow Guest666',icon:'😈',rarity:'mythic',price:534.2,img:'brainrots/Rainbow_Guest666.png'},
-{id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:'brainrots/Cyber_Guest666.png'},
-{id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:'brainrots/Phantom_Guest666.png'},
-{id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:'brainrots/Crystal_Guest666.png'},
-{id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'}
+{id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'./sab-coin.png'},
+{id:'coin_8',name:'8 Монет',icon:'🪙',rarity:'common',price:8,img:'./sab-coin.png'},
+{id:'coin_10',name:'10 Монет',icon:'🪙',rarity:'common',price:10,img:'./sab-coin.png'},
+{id:'coin_15',name:'15 Монет',icon:'🪙',rarity:'common',price:15,img:'./sab-coin.png'},
+{id:'coin_16',name:'16 Монет',icon:'🪙',rarity:'common',price:16,img:'./sab-coin.png'},
+{id:'coin_20',name:'20 Монет',icon:'🪙',rarity:'common',price:20,img:'./sab-coin.png'},
+{id:'coin_25',name:'25 Монет',icon:'🪙',rarity:'common',price:25,img:'./sab-coin.png'},
+{id:'coin_30',name:'30 Монет',icon:'🪙',rarity:'common',price:30,img:'./sab-coin.png'},
+{id:'coin_45',name:'45 Монет',icon:'🪙',rarity:'common',price:45,img:'./sab-coin.png'},
+{id:'coin_50',name:'50 Монет',icon:'🪙',rarity:'common',price:50,img:'./sab-coin.png'},
+{id:'coin_71',name:'71 Монет',icon:'🪙',rarity:'common',price:71,img:'./sab-coin.png'},
+{id:'coin_100',name:'100 Монет',icon:'🪙',rarity:'rare',price:100,img:'./sab-coin.png'},
+{id:'coin_150',name:'150 Монет',icon:'🪙',rarity:'rare',price:150,img:'./sab-coin.png'},
+{id:'coin_250',name:'250 Монет',icon:'🪙',rarity:'rare',price:250,img:'./sab-coin.png'},
+{id:'coin_350',name:'350 Монет',icon:'🪙',rarity:'rare',price:350,img:'./sab-coin.png'},
+{id:'coin_500',name:'500 Монет',icon:'🪙',rarity:'epic',price:500,img:'./sab-coin.png'},
+{id:'coin_700',name:'700 Монет',icon:'🪙',rarity:'epic',price:700,img:'./sab-coin.png'},
+{id:'coin_1000',name:'1000 Монет',icon:'🪙',rarity:'epic',price:1000,img:'./sab-coin.png'},
+{id:'coin_1500',name:'1500 Монет',icon:'🪙',rarity:'epic',price:1500,img:'./sab-coin.png'},
+{id:'coin_2000',name:'2000 Монет',icon:'🪙',rarity:'epic',price:2000,img:'./sab-coin.png'},
+{id:'coin_3000',name:'3000 Монет',icon:'🪙',rarity:'legendary',price:3000,img:'./sab-coin.png'},
+{id:'coin_4000',name:'4000 Монет',icon:'🪙',rarity:'legendary',price:4000,img:'./sab-coin.png'},
+{id:'coin_5000',name:'5000 Монет',icon:'🪙',rarity:'legendary',price:5000,img:'./sab-coin.png'},
+{id:'coin_7000',name:'7000 Монет',icon:'🪙',rarity:'legendary',price:7000,img:'./sab-coin.png'},
+{id:'coin_10000',name:'10000 Монет',icon:'🪙',rarity:'mythic',price:10000,img:'./sab-coin.png'},
+{id:'coin_15000',name:'15000 Монет',icon:'🪙',rarity:'mythic',price:15000,img:'./sab-coin.png'},
+{id:'coin_25000',name:'25000 Монет',icon:'🪙',rarity:'god',price:25000,img:'./sab-coin.png'},
+{id:'coin_30000',name:'30000 Монет',icon:'🪙',rarity:'god',price:30000,img:'./sab-coin.png'},
+{id:'coin_50000',name:'50000 Монет',icon:'🪙',rarity:'god',price:50000,img:'./sab-coin.png'},
+{id:'cashcard',name:'Cash or Card',icon:'💳',rarity:'common',price:45,img:'./brainrots/Cash_or_Card.png'},
+{id:'garama',name:'Garama and Madundung',icon:'🐉',rarity:'common',price:45,img:'./brainrots/Garamadundung.png'},
+{id:'la_secret',name:'La Secret Combinasion',icon:'🔒',rarity:'common',price:70,img:'./brainrots/la_secret.png'},
+{id:'pizza_ranch',name:'Pizza and Ranch',icon:'🍕',rarity:'common',price:71,img:'./brainrots/Pizza_and_Ranch.png'},
+{id:'la_food',name:'La Food Combinasion',icon:'🍱',rarity:'common',price:82.65,img:'./brainrots/La_Food_Combinasion.png'},
+{id:'fragola',name:'Fragola La La La',icon:'🍓',rarity:'common',price:83.6,img:'./brainrots/Fragola_La_La_La.png'},
+{id:'popcuru',name:'Popcuru and Fizzuru',icon:'🍿',rarity:'common',price:85,img:'./brainrots/Popcuru_and_Fizzuru.png'},
+{id:'jolly',name:'Jolly Jolly Sahur',icon:'🥁',rarity:'common',price:87.4,img:'./brainrots/JollyJollySahur.png'},
+{id:'burguro',name:'Burguro and Fryuro',icon:'🍔',rarity:'common',price:103.5,img:'./brainrots/Burguro_And_Fryuro.png'},
+{id:'la_fuse',name:'La Fuse Machine',icon:'⚙️',rarity:'common',price:114,img:'./brainrots/La_Fuse_Machine.png'},
+{id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'./brainrots/fragrama.png'},
+{id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'./brainrots/Capitano_Moby.png'},
+{id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'./brainrots/cooki_milki.png'},
+{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'./brainrots/sammyni_fat.png'},
+{id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'./brainrots/globa.png'},
+{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'./brainrots/spooky.png'},
+{id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'./brainrots/cerberus.png'},
+{id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'./brainrots/celestial.png'},
+{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'./brainrots/reinito.png'},
+{id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'./brainrots/los_admins.png'},
+{id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'./brainrots/guest666.png'},
+{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'./brainrots/los_amigos.png'},
+{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'./brainrots/los_chillis.png'},
+{id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'./brainrots/fortunu.png'},
+{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'./brainrots/rubrikiko.png'},
+{id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'./brainrots/Los_Sekolahs.png'},
+{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'./brainrots/rico.png'},
+{id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'./brainrots/la_breakfast.png'},
+{id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'./brainrots/examen.png'},
+{id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'./brainrots/foxini.png'},
+{id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'./brainrots/los_hackers.png'},
+{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'./brainrots/rosy.png'},
+{id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'./brainrots/Dug_dug_dug.png'},
+{id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'./brainrots/venuspino.png'},
+{id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'./brainrots/duggy.png'},
+{id:'lacasaboo',name:'La Casa Boo',icon:'👻',rarity:'rare',price:500,img:'./brainrots/lacasaboo.png'},
+{id:'ketupat',name:'Ketupat Bros',icon:'🍚',rarity:'rare',price:500.65,img:'./brainrots/ketupat.png'},
+{id:'bumbatron',name:'Bumbatron',icon:'🐝',rarity:'epic',price:573,img:'./brainrots/Bumbatron.png'},
+{id:'los_secret',name:'Los Secret Combinasionas',icon:'🎭',rarity:'epic',price:721.05,img:'./brainrots/los_secret.png'},
+{id:'bunny_eggy',name:'Bunny and Eggy',icon:'🥚',rarity:'epic',price:760.95,img:'./brainrots/bunny_eggy.png'},
+{id:'grabatron',name:'Grabatron',icon:'🦾',rarity:'epic',price:784,img:'./brainrots/grabatron.png'},
+{id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'./brainrots/sammyni_cak.png'},
+{id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'./brainrots/dragonc.png'},
+{id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'./brainrots/tirilikalika.png'},
+{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'./brainrots/jelly_moby.png'},
+{id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'./brainrots/pancake.png'},
+{id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'./brainrots/ginger.png'},
+{id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'./brainrots/hydra.png'},
+{id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'./brainrots/Hydra_Bunny.png'},
+{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'./brainrots/moby_bros.png'},
+{id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'./brainrots/kalika.png'},
+{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'./brainrots/digi_narwhal.png'},
+{id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'./brainrots/lasupreme.png'},
+{id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'./brainrots/fishino.png'},
+{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'./brainrots/kraken.png'},
+{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'./brainrots/dragon_aquanini.png'},
+{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'./brainrots/griffin.png'},
+{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'./brainrots/los_dragons.png'},
+{id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'./brainrots/antonio.png'},
+{id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'./brainrots/lovebear.png'},
+{id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'./brainrots/Arcadragon.png'},
+{id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'./brainrots/Elefanto_Frigo.png'},
+{id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'./brainrots/SkibidiToilet.png'},
+{id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'./brainrots/John_Pork.png'},
+{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'./brainrots/meowl.png'},
+{id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'./brainrots/signore.png'},
+{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'./brainrots/Strawberry_elephant.png'},
+{id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'./brainrots/Horseman.png'},
+{id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:'./brainrots/Gold_Guest666.png'},
+{id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:'./brainrots/Diamond_Guest666.png'},
+{id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:'./brainrots/Bloodrot_Guest666.png'},
+{id:'guest666_candy',name:'Candy Guest666',icon:'😈',rarity:'epic',price:411.94,img:'./brainrots/Candy_Guest666.png'},
+{id:'guest666_lava',name:'Lava Guest666',icon:'😈',rarity:'legendary',price:451.44,img:'./brainrots/Lava_Guest666.png'},
+{id:'guest666_galaxy',name:'Galaxy Guest666',icon:'😈',rarity:'legendary',price:464.61,img:'./brainrots/Galaxy_Guest666.png'},
+{id:'guest666_yinyang',name:'Yin Yang Guest666',icon:'😈',rarity:'legendary',price:507.87,img:'./brainrots/Yin_Yang_Guest666.png'},
+{id:'guest666_radioactive',name:'Radioactive Guest666',icon:'😈',rarity:'mythic',price:502.23,img:'./brainrots/Radioactive_Guest666.png'},
+{id:'guest666_cursed',name:'Cursed Guest666',icon:'😈',rarity:'mythic',price:487.18,img:'./brainrots/Cursed_Guest666.png'},
+{id:'guest666_divine',name:'Divine Guest666',icon:'😈',rarity:'mythic',price:451.44,img:'./brainrots/Divine_Guest666.png'},
+{id:'guest666_rainbow',name:'Rainbow Guest666',icon:'😈',rarity:'mythic',price:534.2,img:'./brainrots/Rainbow_Guest666.png'},
+{id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:'./brainrots/Cyber_Guest666.png'},
+{id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:'./brainrots/Phantom_Guest666.png'},
+{id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:'./brainrots/Crystal_Guest666.png'},
+{id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'./brainrots/Eclipse_Guest666.png'}
 ];
 
 const CASES=[
-  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков',price:100,category:'standard',
+  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'./cases/bronze.png',desc:'Стартовый кейс для новичков',price:100,category:'standard',
     items:[
       {id:'cashcard',c:100},{id:'garama',c:100},{id:'la_secret',c:100},{id:'pizza_ranch',c:100},
       {id:'la_food',c:100},{id:'fragola',c:100},{id:'popcuru',c:100},{id:'jolly',c:100},
@@ -708,7 +684,7 @@ const CASES=[
       {id:'fortunu',c:10},{id:'rubrikiko',c:10},{id:'los_sekolahs',c:10},
       {id:'rico',c:20},{id:'bumbatron',c:10}
     ]},
-  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:250,category:'standard',
+  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'./cases/silver.png',desc:'Больше шансов на редкое',price:250,category:'standard',
     items:[
       {id:'garama',c:50},{id:'jolly',c:50},{id:'cerberus',c:50},{id:'celestial',c:50},{id:'reinito',c:50},{id:'los_admins',c:50},
       {id:'guest666',c:50},{id:'los_amigos',c:50},{id:'los_chillis',c:50},{id:'fortunu',c:50},{id:'rubrikiko',c:50},{id:'los_sekolahs',c:50},{id:'rico',c:50},
@@ -716,7 +692,7 @@ const CASES=[
       {id:'lacasaboo',c:20},{id:'ketupat',c:20},{id:'bumbatron',c:20},{id:'los_secret',c:20},{id:'bunny_eggy',c:15},{id:'grabatron',c:20},
       {id:'sammyni_cak',c:20},{id:'dragonc',c:20},{id:'tirilikalika',c:20},{id:'jelly_moby',c:15}
     ]},
-  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
+  {id:'gold',name:'Золотой кейс',icon:'👑',img:'./cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
     items:[
       {id:'bumbatron',c:1000},{id:'los_secret',c:1000},{id:'bunny_eggy',c:1000},
       {id:'grabatron',c:1000},{id:'sammyni_cak',c:1000},{id:'dragonc',c:1000},
@@ -728,12 +704,12 @@ const CASES=[
       {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
       {id:'elefanto',c:20},{id:'skibidi',c:2}
     ]},
-  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
+  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'./cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
     items:[
       {id:'dragon_aquanini',c:50},{id:'antonio',c:50},{id:'lovebear',c:100},{id:'arcadragon',c:100},{id:'elefanto',c:100},
       {id:'skibidi',c:20},{id:'johnpork',c:10},{id:'meowl',c:10},{id:'signore',c:5},{id:'strawb',c:2},{id:'headless',c:0.5}
     ]},
-  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:199,vipPrice:3000,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
+  {id:'vip',name:'V.I.P',icon:'👑',img:'./cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:199,vipPrice:3000,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
     normalItems:[
       {id:'fragola',c:200},{id:'globa',c:150},{id:'spooky',c:150},{id:'cerberus',c:150},{id:'celestial',c:150},{id:'reinito',c:150},{id:'los_admins',c:150},
       {id:'guest666',c:120},{id:'los_amigos',c:120},{id:'los_chillis',c:80},{id:'fortunu',c:80},{id:'rubrikiko',c:80},{id:'los_sekolahs',c:80},
@@ -746,8 +722,8 @@ const CASES=[
       {id:'los_dragons',c:50},{id:'antonio',c:50},{id:'lovebear',c:30},{id:'arcadragon',c:30},{id:'elefanto',c:30},{id:'skibidi',c:15},
       {id:'johnpork',c:5},{id:'meowl',c:5},{id:'signore',c:1},{id:'strawb',c:0.2},{id:'headless',c:0.05}
     ]},
-  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
-  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:349,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
+  {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:'./cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
+  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'./cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:349,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
     items:[
       {id:'coin_100',c:386.66},{id:'guest666',c:150},{id:'guest666_gold',c:150},{id:'guest666_diamond',c:150},{id:'guest666_candy',c:100},{id:'guest666_lava',c:100},
       {id:'guest666_divine',c:100},{id:'guest666_galaxy',c:100},{id:'guest666_cursed',c:60},{id:'guest666_radioactive',c:60},{id:'guest666_yinyang',c:60},
@@ -771,11 +747,9 @@ const state={
   topDropDayCache:{date:'',itemId:'',user:'',price:0},
   adminTab:'users',
   fairness:{serverSeed:'',serverSeedHash:'',clientSeed:'',nonce:1,history:[],prevSeeds:[]},
-  globalDrops: [],
-  fakeTopDrop: null
+  globalDrops: []
 };
 
-/* ===== СЕТЕВЫЕ ФУНКЦИИ ДЛЯ СИНХРОНИЗАЦИИ С BONTO ===== */
 async function apiSync() {
   if (!state.user) return;
   try {
@@ -829,7 +803,6 @@ async function pushInventoryRemove(uids) {
   } catch(e) {}
 }
 
-/* ===== SHA-256 & HMAC ===== */
 function sha256(ascii){function rightRotate(v,a){return(v>>>a)|(v<<(32-a));}var mathPow=Math.pow;var maxWord=mathPow(2,32);var lengthProperty='length';var i,j;var result='';var words=[];var asciiBitLength=ascii[lengthProperty]*8;let hash=sha256.h=sha256.h||[];var k=sha256.k=sha256.k||[];var primeCounter=k[lengthProperty];var isComposite={};for(var candidate=2;primeCounter<64;candidate++){if(!isComposite[candidate]){for(i=0;i<313;i+=candidate){isComposite[i]=candidate;}hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0;k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0;}}ascii+='\x80';while(ascii[lengthProperty]%64-56)ascii+='\x00';for(i=0;i<ascii[lengthProperty];i++){j=ascii.charCodeAt(i);if(j>>8)return'';words[i>>2]|=j<<((3-i)%4)*8;}words[words[lengthProperty]]=((asciiBitLength/maxWord)|0);words[words[lengthProperty]]=(asciiBitLength);for(j=0;j<words[lengthProperty];){var w=words.slice(j,j+=16);var oldHash=hash.slice(0);for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2];var a=hash[0],e=hash[4];var temp1=hash[7]+(rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rightRotate(w15,7)^rightRotate(w15,18)^(w15>>>3))+w[i-7]+(rightRotate(w2,17)^rightRotate(w2,19)^(w2>>>10)))|0);var temp2=(rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(temp1+temp2)|0].concat(hash);hash[4]=(hash[4]+temp1)|0;}for(i=0;i<8;i++)hash[i]=(hash[i]+oldHash[i])|0;}for(i=0;i<8;i++){for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?'0':'')+b.toString(16);}}return result;}
 function hmacSha256(key,message){var blockSize=64;if(key.length>blockSize)key=sha256(key);while(key.length<blockSize)key+='\x00';var oKeyPad='',iKeyPad='';for(var i=0;i<blockSize;i++){var keyChar=key.charCodeAt(i);oKeyPad+=String.fromCharCode(keyChar^0x5c);iKeyPad+=String.fromCharCode(keyChar^0x36);}return sha256(oKeyPad+sha256(iKeyPad+message));}
 function getFairRoll(serverSeed,clientSeed,nonce){var msg=clientSeed+':'+nonce;var hash=hmacSha256(serverSeed,msg);var intVal=parseInt(hash.substring(0,8),16);return intVal/0xFFFFFFFF;}
@@ -881,11 +854,10 @@ const fmt=n=>Math.round(n).toLocaleString('ru-RU');
 const $=s=>document.querySelector(s);
 function coin(size=20){
   const s=Math.round(size*1.15);
-  return `<img src="sab-coin.png" alt="coin" style="width:${s}px;height:${s}px;object-fit:contain;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))" onerror="this.outerHTML='<span style=\\'font-size:${s}px;line-height:1;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 7px rgba(251,191,36,.55))\\'>🪙</span>'">`;
+  return `<img src="./sab-coin.png" alt="coin" style="width:${s}px;height:${s}px;object-fit:contain;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 8px rgba(251,191,36,.6))" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${s}px;line-height:1;vertical-align:middle;display:inline-block;filter:drop-shadow(0 0 7px rgba(251,191,36,.55))\\'>🪙</span>');">`;
 }
 document.getElementById('coinTop').innerHTML=coin(28);
 
-/* === Animated balance === */
 let __displayedBalance = 0;
 let __balanceTarget = 0;
 let __balanceAnimId = null;
@@ -909,7 +881,6 @@ function updateBalance(newVal){
   __balanceAnimId = requestAnimationFrame(step);
 }
 
-/* === Toast queue === */
 const __toastQueue = [];
 let __toastRunning = false;
 function processToastQueue(){
@@ -934,8 +905,7 @@ function toast(m,t=''){
 }
 function itemIcon(it,size=48){
   if(!it)return '';
-  // УБРАН loading="lazy" чтобы картинки в рулетке грузились сразу
-  if(it.img)return`<img src="${it.img}" alt="${esc(it.name)}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.outerHTML='<span style=\\'font-size:${size}px;line-height:1\\'>${it.icon}</span>'">`;
+  if(it.img)return`<img src="${it.img}" alt="${esc(it.name)}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${size}px;line-height:1;display:inline-block;vertical-align:middle;\\'>${it.icon}</span>');">`;
   return`<span style="font-size:${size}px;line-height:1">${it.icon}</span>`;
 }
 
@@ -943,7 +913,6 @@ let __caseTimers=[],__caseFinish=null,__upgTimers=[],__upgFinish=null,__pendingC
 let __allInTimerInt,__allInSoundInt,__caseTickInt,__upgTickTimer=null,__upgSkipTimeout=null;
 let __depositTimerInt = null;
 
-// СДЕЛАНО СИНХРОННЫМ, ЧТОБЫ НЕ ВЕШАТЬ ИГРУ
 function settlePendingCase(){
   const pending=__pendingCase;
   if(!pending||pending.settled)return[];
@@ -961,7 +930,6 @@ function settlePendingCase(){
     state.history.push({type:'case',caseId:pending.case.id,itemId:it.id,date:now});
     added.push(invItem);
     
-    // Отправляем на сервер в фоне (не блокируя UI)
     pushInventoryAdd(it.id); 
     fetch(`${SERVER_URL}/api/drops`, {
       method: 'POST',
@@ -1007,7 +975,6 @@ window.addEventListener('beforeunload',()=>{
 function goBackToCase(id){cancelAnimations();state.openingView=null;state.currentCase=id;render(true);window.scrollTo({top:0,behavior:'smooth'});}
 function goBackInventory(){cancelAnimations();state.openingView=null;setTab('inventory');}
 function skipCaseAnim(){if(typeof __caseFinish==='function')__caseFinish();}
-function skipUpgradeAnim(){if(typeof __upgFinish==='function')__upgFinish();}
 
 function getNavGroups(){
   const groups=[
@@ -1107,7 +1074,6 @@ function resetUpgradeSettings(){state.settings.multipliers=[2,5,10];state.settin
 function saveSettingsAndClose(){saveLocalState();closeModal();if(state.tab==='upgrade')render(false);toast('Настройки сохранены','ok');}
 function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); __depositTimerInt=null;} if(typeof __depositPollingInterval!=='undefined' && __depositPollingInterval){clearInterval(__depositPollingInterval); __depositPollingInterval=null;} $('#overlay').classList.remove('open'); }
 
-/* LOGIN */
 async function initTelegramLogin(){
   const tg = window.Telegram?.WebApp;
   
@@ -1249,7 +1215,7 @@ function adminClearInventory(){
 function adminApproveWithdrawal(id){
   if(!confirm('Подтвердить выдачу? Заявка будет закрыта.'))return;
   state.pendingWithdrawals=state.pendingWithdrawals.filter(r=>r.id!==id);
-  saveLocalState();sndWin();toast('Заявка выполнена','ok');render(false);
+  saveLocalState();sndWinRarity('epic');toast('Заявка выполнена','ok');render(false);
 }
 
 function renderAdmin(){
@@ -1343,7 +1309,7 @@ function renderProfile(){
       </div>
       <div class="profile-card"><div class="profile-card-title">ЛЮБИМЫЙ КЕЙС</div>
         <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:20px;display:flex;align-items:center;gap:20px;">
-          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;">`:favCase.icon}</div>
+          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;" onerror="this.style.display='none'">`:favCase.icon}</div>
           <div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.05em;margin-bottom:4px;">Кейс «${esc(favCase.name)}»</div><div style="font-size:18px;font-weight:900;color:#fff;">Открыт ${maxCount} раз</div></div>
         </div>
       </div>
@@ -1450,13 +1416,7 @@ function getTopDropOfTheDay(){
   if (best) {
     return { item: itemById(best.itemId) || {name: best.itemName, price: best.price, icon:'🎁'}, user: best.username };
   }
-  
-  // ФИКС: Кэшируем случайный предмет, чтобы он не менялся при каждой перерисовке
-  if (!state.fakeTopDrop) {
-      const fakePool = ITEMS.filter(i=>i.price>5000);
-      state.fakeTopDrop = fakePool.length ? fakePool[Math.floor(Math.random()*fakePool.length)] : ITEMS[0];
-  }
-  return { item: state.fakeTopDrop, user: 'Ожидание дропа...' };
+  return null; 
 }
 
 function renderCases(){
@@ -1479,20 +1439,26 @@ function renderCases(){
     return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
   }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
 
+  let topDropHtml = '';
+  if (topDrop) {
+    topDropHtml = `
+      <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}')">
+        <div><div class="top-drop-title">🏆 Топ дроп дня</div>
+          <div class="top-drop-content">
+            <div style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));">${itemIcon(topDrop.item,72)}</div>
+            <div class="top-drop-info"><div class="top-drop-name">${esc(topDrop.item.name)}</div><div class="top-drop-user">Владелец: ${esc(topDrop.user)}</div></div>
+          </div>
+        </div>
+        <div class="top-drop-price">${coin(36)} ${fmt(topDrop.item.price)}</div>
+      </div>`;
+  }
+
   return `<div class="hero">
     <h1>Открывай кейсы. Собирай брейнротов. Забирай банк.</h1>
     <p>Открывай кейсы, собирай редких брейнротов и выводи средства на реальный аккаунт.</p>
     <button class="btn btn-danger btn-lg" onclick="openCase('all_in')">ALL IN 🎰</button>
   </div>
-  <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}')">
-    <div><div class="top-drop-title">🏆 Топ дроп дня</div>
-      <div class="top-drop-content">
-        <div style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));">${itemIcon(topDrop.item,72)}</div>
-        <div class="top-drop-info"><div class="top-drop-name">${esc(topDrop.item.name)}</div><div class="top-drop-user">Владелец: ${esc(topDrop.user)}</div></div>
-      </div>
-    </div>
-    <div class="top-drop-price">${coin(36)} ${fmt(topDrop.item.price)}</div>
-  </div>
+  ${topDropHtml}
   <div class="live-bar"><div class="live-head"><span class="dot"></span><span style="font-size:16px;font-weight:800;letter-spacing:.02em;">Live дропы</span></div><div class="live-list">${live}</div></div>
   <div class="page-title" style="margin-top:48px;">Магазин кейсов</div>
   <div class="page-sub" style="margin-bottom:0;">Кейсы на любой вкус и кошелёк</div>
@@ -1526,74 +1492,62 @@ function renderCaseDetail(id){
     </div>`;
   }
   const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span style="font-size:120px;line-height:1">${c.icon}</span>`;
+  
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
+  const activeItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
-  let vipNormalPreview = '';
-  let vipPremiumPreview = '';
-  if (c.isVip) {
-    const normalTotal = c.normalItems.reduce((s,i)=>s+i.c,0);
-    vipNormalPreview = c.normalItems.map(ci => {
-      const it = itemById(ci.id); if(!it) return '';
-      const pct = (ci.c/normalTotal*100).toFixed(1);
-      return `<div style="position:relative;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;text-align:center;">
-        <div class="drop-chance-badge">${pct}%</div>
-        ${itemIcon(it,48)}
-        <div style="font-size:11px;font-weight:700;color:#fff;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
-        <div style="font-size:12px;color:var(--gold);font-weight:800;margin-top:2px;">${fmt(it.price)}</div>
-      </div>`;
-    }).join('');
-    const vipTotal = c.vipItems.reduce((s,i)=>s+i.c,0);
-    vipPremiumPreview = c.vipItems.map(ci => {
-      const it = itemById(ci.id); if(!it) return '';
-      const pct = (ci.c/vipTotal*100).toFixed(1);
-      return `<div style="position:relative;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;text-align:center;">
-        <div class="drop-chance-badge">${pct}%</div>
-        ${itemIcon(it,48)}
-        <div style="font-size:11px;font-weight:700;color:#fff;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
-        <div style="font-size:12px;color:var(--gold);font-weight:800;margin-top:2px;">${fmt(it.price)}</div>
-      </div>`;
-    }).join('');
-  } else {
-    const sortedItems = [...c.items].sort((a, b) => {
-      const priceA = itemById(a.id)?.price || 0;
-      const priceB = itemById(b.id)?.price || 0;
-      return priceB - priceA;
-    });
-    const totalW = sortedItems.reduce((s,i)=>s+i.c,0);
-    vipNormalPreview = sortedItems.map(ci => {
-      const it = itemById(ci.id);
-      if(!it) return '';
-      const pct = (ci.c/totalW*100).toFixed(1);
-      const isRare = it.price > c.price * 5;
-      const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
-      return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:12px;padding:12px;text-align:center;">
-        <div class="drop-chance-badge">${pct}%</div>
-        ${itemIcon(it,48)}
-        <div style="font-size:11px;font-weight:700;color:#fff;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
-        <div style="font-size:12px;color:var(--gold);font-weight:800;margin-top:2px;">${fmt(it.price)}</div>
-      </div>`;
-    }).join('');
-  }
+  
+  let itemsPreview = '';
+  const totalW = activeItems.reduce((s,i)=>s+i.c,0);
+  const sortedItems = [...activeItems].sort((a, b) => {
+    const priceA = itemById(a.id)?.price || 0;
+    const priceB = itemById(b.id)?.price || 0;
+    return priceB - priceA;
+  });
+  
+  itemsPreview = sortedItems.map(ci => {
+    const it = itemById(ci.id); if(!it) return '';
+    const pct = (ci.c/totalW*100).toFixed(1);
+    const isRare = it.price > activePrice * 5;
+    const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
+    return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:12px;padding:12px;text-align:center;">
+      <div class="drop-chance-badge">${pct}%</div>
+      ${itemIcon(it,48)}
+      <div style="font-size:11px;font-weight:700;color:#fff;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
+      <div style="font-size:12px;color:var(--gold);font-weight:800;margin-top:2px;">${fmt(it.price)}</div>
+    </div>`;
+  }).join('');
+
   return `<button class="case-back" onclick="backToCases()">← Все кейсы</button>
   <div class="case-detail">
     <div>
       <div class="case-detail-img">${imgHtml}</div>
-      ${!c.isVip ? `
       <div class="case-stat-grid">
-        <div class="case-stat"><div class="lbl">Цена</div><div class="val">${coin(18)} ${fmt(c.price)}</div></div>
-        <div class="case-stat"><div class="lbl">Дропов</div><div class="val">${c.items.length}</div></div>
-      </div>` : ''}
+        <div class="case-stat"><div class="lbl">Цена</div><div class="val">${coin(18)} ${fmt(activePrice)}</div></div>
+        <div class="case-stat"><div class="lbl">Дропов</div><div class="val">${activeItems.length}</div></div>
+      </div>
     </div>
     <div>
       <div><div class="case-title">${esc(c.name)}</div><div class="case-title-sub">${esc(c.desc)}</div></div>
-      ${!c.isVip ? `
+      
+      ${c.isVip ? `
+      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:16px;padding:16px;margin-bottom:24px;text-align:center;">
+          <div style="font-size:14px;color:var(--muted);margin-bottom:16px;">Выберите пул дропа для открытия.</div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+              <button class="btn ${!state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=false;render(false);" style="flex:1;">Обычный (199)</button>
+              <button class="btn ${state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=true;render(false);" style="flex:1;">VIP (3000)</button>
+          </div>
+      </div>
+      ` : ''}
+      
       <div style="margin-bottom:24px;">
         <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Возможные призы (шанс дропа)</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;max-height:350px;overflow-y:auto;padding-right:4px;">
-          ${vipNormalPreview}
+          ${itemsPreview}
         </div>
       </div>
+      
       <div class="case-open-panel">
         <div style="margin-bottom:20px;">
           <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Сколько открыть?</div>
@@ -1609,37 +1563,6 @@ function renderCaseDetail(id){
           ${canAfford?`Открыть ${state.caseOpens} кейс${state.caseOpens>1?'(а)':''}`:'Недостаточно средств'}
         </button>
       </div>
-      ` : `
-      <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:16px;padding:16px;margin-bottom:24px;text-align:center;">
-          <div style="font-size:18px;font-weight:900;color:#fbbf24;margin-bottom:8px;">👑 V.I.P КЕЙС</div>
-          <div style="font-size:14px;color:var(--muted);margin-bottom:16px;">Ниже показаны два пула дропа. Выберите режим для открытия.</div>
-          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-              <button class="btn ${!state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=false;render(false);" style="flex:1;">Обычный (199)</button>
-              <button class="btn ${state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=true;render(false);" style="flex:1;">VIP (3000)</button>
-          </div>
-      </div>
-      <div style="margin-bottom:24px;">
-        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">ОБЫЧНЫЙ ДРОП (199)</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-height:200px;overflow-y:auto;padding-right:4px;">
-          ${vipNormalPreview}
-        </div>
-      </div>
-      <div style="margin-bottom:24px;">
-        <div style="font-size:13px;color:#fbbf24;text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">ТОПОВЫЙ ДРОП (3000)</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-height:200px;overflow-y:auto;padding-right:4px;">
-          ${vipPremiumPreview}
-        </div>
-      </div>
-      <div class="case-open-panel" style="border-color:rgba(251,191,36,.3);">
-        <div style="text-align:center;padding:20px 0;">
-          <div style="font-size:14px;color:var(--muted);margin-bottom:8px;">Итого к оплате:</div>
-          <div style="font-size:42px;font-weight:900;color:${canAfford?'var(--gold)':'var(--red)'};display:flex;justify-content:center;align-items:center;gap:12px;">${coin(36)} ${fmt(total)}</div>
-        </div>
-        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:16px;" ${!canAfford?'disabled':''} onclick="openCaseNow()">
-          ${canAfford?`ОТКРЫТЬ КЕЙС`:'Недостаточно средств'}
-        </button>
-      </div>
-      `}
     </div>
   </div>`;
 }
@@ -1754,7 +1677,7 @@ function startAllInSequence(c,results){
         subtextEl.innerHTML = `Вы проиграли... Вам выпал <b>${targetItem.name}</b>`;
         sndLose();
       }
-      const addedItems=settlePendingCase(); // Теперь работает синхронно
+      const addedItems=settlePendingCase();
       document.getElementById('allInButtons').style.display='flex';
     }
   }
@@ -1780,9 +1703,10 @@ function startRoulette(c,results){
     const trackHtml=ids.map(id=>{
       const it=itemById(id);
       const iconSize=opens>1?60:100;
-      const itemStyle=opens>1?'min-width:140px;width:140px;height:140px;padding:10px;gap:8px;':'';
-      const nameStyle=opens>1?'font-size:14px;white-space:normal;line-height:1.2;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;':'';
-      return `<div class="roulette-item" style="${itemStyle}"><div style="display:flex;align-items:center;justify-content:center;flex:1;width:100%">${itemIcon(it,iconSize)}</div><div class="roulette-item-name" style="${nameStyle}">${esc(it.name)}</div></div>`;
+      // ЖЕСТКО ЗАДАЕМ РАЗМЕР БЛОКА ДЛЯ РУЛЕТКИ
+      const itemStyle=opens>1?'min-width:140px;width:140px;height:140px;padding:10px;gap:8px;':'min-width:130px;width:130px;height:130px;padding:10px;gap:8px;';
+      const nameStyle=opens>1?'font-size:14px;white-space:normal;line-height:1.2;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;':'font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+      return `<div class="roulette-item" style="${itemStyle}"><div style="display:flex;align-items:center;justify-content:center;flex:1;width:100%;overflow:hidden;">${itemIcon(it,iconSize)}</div><div class="roulette-item-name" style="${nameStyle}">${esc(it.name)}</div></div>`;
     }).join('');
     html+=`<div class="roulette-wrap" id="rouletteWrap_${idx}" style="height:${opens>1?'170px':'250px'};max-width:1000px;margin:0 auto;width:100%;"><div class="roulette-marker"></div><div class="roulette-particles" id="rouletteParticles_${idx}"></div><div class="roulette-track" id="track_${idx}" style="padding:${opens>1?'15px':'20px'}">${trackHtml}</div></div>`;
   });
@@ -1793,7 +1717,8 @@ function startRoulette(c,results){
   let animTime = state.settings.spinType==='fast' ? 300 : (isSpecialSpin ? 5500 : 3500);
   let easing = isSpecialSpin ? 'cubic-bezier(0.05, 1, 0.1, 1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
   
-  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+  // Даем время на загрузку картинок и пересчет layout
+  setTimeout(() => {
     results.forEach((win,idx)=>{
       const wrap=document.getElementById(`rouletteWrap_${idx}`);
       const track=document.getElementById(`track_${idx}`);
@@ -1811,7 +1736,8 @@ function startRoulette(c,results){
       const winItem = itemById(win.id);
       startSpinTracking(track, wrap, winEl, winItem, animTime);
     });
-  });});
+  }, 100); // Задержка 100мс
+
   if(state.settings.spinType==='normal'&&!isMuted){let t=0;__caseTickInt=setInterval(()=>{sndTick();t++;if(t>=25)clearInterval(__caseTickInt);},150);}
   let done=false;
   const finish=()=>{
@@ -2053,6 +1979,11 @@ function fuseDo(){
 
 /* UPGRADE */
 const MAX_UPG=4;
+
+function cleanUpgradeSelection() {
+  state.upgrade.froms = state.upgrade.froms.filter(uid => state.inventory.some(inv => inv.uid === uid));
+}
+
 function upgTV(){return state.upgrade.froms.reduce((s,u)=>{const i=state.inventory.find(x=>x.uid===u);return i?s+itemById(i.itemId).price:s;},0);}
 
 function updateUpgBalance(val){
@@ -2101,6 +2032,8 @@ function calcUC(fromVal,toPrice){
 }
 
 function renderUpgrade(){
+  cleanUpgradeSelection(); 
+  
   const inv=state.inventory.map(i=>({...i,item:itemById(i.itemId)})).filter(x=>x.item&&!x.item.id.startsWith('coin_')).sort((a,b)=>a.item.price-b.item.price);
   const tv=upgTV();
   const balAmount=state.upgrade.balanceAmount||0;
@@ -2159,7 +2092,7 @@ function renderUpgrade(){
     const sel=state.upgrade.froms.includes(i.uid);
     const idx=sel?state.upgrade.froms.indexOf(i.uid)+1:0;
     const dis=state.upgrade.animating?'disabled':'';
-    return `<div class="upg-item-card ${sel?'selected':''} ${dis}" ${state.upgrade.animating?'':`onclick="upgToggle('${i.uid}')"`}>
+    return `<div class="upg-item-card ${sel?'selected':''} ${dis}" ${state.upgrade.animating?'':`onclick="event.stopPropagation(); upgToggle('${i.uid}')"`}>
       ${sel?`<div style="position:absolute;top:6px;right:6px;background:var(--accent);color:#fff;font-size:11px;font-weight:900;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;z-index:2;box-shadow:0 0 10px var(--accent);">${idx}</div>`:''}
       <div class="upg-item-img">${itemIcon(i.item,60)}</div>
       <div class="upg-item-name">${esc(i.item.name)}</div>
@@ -2171,7 +2104,7 @@ function renderUpgrade(){
     const c=calcUC(totalVal,i.price);
     const cColor=c>60?'var(--green)':c>30?'var(--gold)':'var(--red)';
     const dis=state.upgrade.animating?'disabled':'';
-    return `<div class="upg-item-card ${sel?'selected':''} ${dis}" data-id="${i.id}" ${state.upgrade.animating?'':`onclick="upgPick('${i.id}')"`}>
+    return `<div class="upg-item-card ${sel?'selected':''} ${dis}" data-id="${i.id}" ${state.upgrade.animating?'':`onclick="event.stopPropagation(); upgPick('${i.id}')"`}>
       <div class="upg-item-img">${itemIcon(i,60)}</div>
       <div class="upg-item-name">${esc(i.name)}</div>
       <div class="upg-item-price">${coin(12)} ${fmt(i.price)}</div>
@@ -2252,15 +2185,24 @@ function renderUpgrade(){
   </div>`;
 }
 function upgToggle(u){
-  if(state.upgrade.animating)return;
-  state.upgrade.lastResult = null;
-  const l=state.upgrade.froms;
-  const i=l.indexOf(u);
-  if(i>=0)l.splice(i,1);
-  else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предмета`,'err');return;}l.push(u);}
-  state.upgrade.target=null;render(false);
+  try {
+    if(state.upgrade.animating)return;
+    state.upgrade.lastResult = null;
+    const l=state.upgrade.froms;
+    const i=l.indexOf(u);
+    if(i>=0)l.splice(i,1);
+    else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предмета`,'err');return;}l.push(u);}
+    state.upgrade.target=null;render(false);
+  } catch(e) { console.error('upgToggle error', e); }
 }
-function upgPick(id){if(state.upgrade.animating)return;state.upgrade.lastResult = null;state.upgrade.target=id;render(false);}
+function upgPick(id){
+  try {
+    if(state.upgrade.animating)return;
+    state.upgrade.lastResult = null;
+    state.upgrade.target=id;
+    render(false);
+  } catch(e) { console.error('upgPick error', e); }
+}
 function upgReset(){if(state.upgrade.animating)return;state.upgrade.lastResult = null;state.upgrade.froms=[];state.upgrade.target=null;state.upgrade.balanceAmount=0;render(false);}
 function upgMult(m){
   if(state.upgrade.animating)return;
