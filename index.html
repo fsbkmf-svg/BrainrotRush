@@ -436,8 +436,8 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 </style>
 </head>
 <body>
-<!-- Оптимизация видео (poster + preload) -->
-<video id="bg-video" autoplay loop muted playsinline preload="none" poster="logo-badge.png" src="fon.mp4"></video>
+<!-- Возвращен автоплей и убран постер -->
+<video id="bg-video" autoplay loop muted playsinline src="fon.mp4"></video>
 
 <div class="bg-layer"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
@@ -581,7 +581,6 @@ document.addEventListener('click',e=>{
 
 const RARITY={common:{label:'Обычный',color:'#94a3b8'},rare:{label:'Редкий',color:'#38bdf8'},epic:{label:'Эпический',color:'#a78bfa'},legendary:{label:'Легендарный',color:'#fbbf24'},mythic:{label:'Мифический',color:'#f43f5e'},god:{label:'Божественный',color:'#2dd4bf'}};
 
-// ВНИМАНИЕ: Массив ITEMS длинный. Оставил как было, чтобы не спамить. Скрипт будет работать.
 const ITEMS=[
 {id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
 {id:'coin_8',name:'8 Монет',icon:'🪙',rarity:'common',price:8,img:'sab-coin.png'},
@@ -767,13 +766,13 @@ const state={
   settings:{multipliers:[2,5,10],percentages:[5,33,75],upgradeSound:true,spinType:'normal'},
   inventorySort:'price_desc',
   inventoryFilter:'all',
-  // ИЗМЕНЕНИЕ: selected теперь Map, где ключ - itemId, значение - количество
   deposit:{step:1,selected:new Map(),searchQuery:'',sort:'asc',minPrice:'',maxPrice:'',robloxUsername:'',promo:'',timer:null,timerLeft:0},
   pendingWithdrawals:[],
   topDropDayCache:{date:'',itemId:'',user:'',price:0},
   adminTab:'users',
   fairness:{serverSeed:'',serverSeedHash:'',clientSeed:'',nonce:1,history:[],prevSeeds:[]},
-  globalDrops: []
+  globalDrops: [],
+  fakeTopDrop: null
 };
 
 /* ===== СЕТЕВЫЕ ФУНКЦИИ ДЛЯ СИНХРОНИЗАЦИИ С BONTO ===== */
@@ -935,8 +934,8 @@ function toast(m,t=''){
 }
 function itemIcon(it,size=48){
   if(!it)return '';
-  // Оптимизация: добавляем loading="lazy"
-  if(it.img)return`<img src="${it.img}" loading="lazy" alt="${esc(it.name)}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.outerHTML='<span style=\\'font-size:${size}px;line-height:1\\'>${it.icon}</span>'">`;
+  // УБРАН loading="lazy" чтобы картинки в рулетке грузились сразу
+  if(it.img)return`<img src="${it.img}" alt="${esc(it.name)}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.outerHTML='<span style=\\'font-size:${size}px;line-height:1\\'>${it.icon}</span>'">`;
   return`<span style="font-size:${size}px;line-height:1">${it.icon}</span>`;
 }
 
@@ -944,7 +943,8 @@ let __caseTimers=[],__caseFinish=null,__upgTimers=[],__upgFinish=null,__pendingC
 let __allInTimerInt,__allInSoundInt,__caseTickInt,__upgTickTimer=null,__upgSkipTimeout=null;
 let __depositTimerInt = null;
 
-async function settlePendingCase(){
+// СДЕЛАНО СИНХРОННЫМ, ЧТОБЫ НЕ ВЕШАТЬ ИГРУ
+function settlePendingCase(){
   const pending=__pendingCase;
   if(!pending||pending.settled)return[];
   pending.settled=true;
@@ -952,17 +952,17 @@ async function settlePendingCase(){
   const today=new Date().toDateString();
   if(state.topDropDayCache.date!==today){state.topDropDayCache={date:today,itemId:'',user:'',price:0};}
   
-  for (const r of pending.results) {
-    const it=itemById(r.id);if(!it)continue;
+  pending.results.forEach(r=>{
+    const it=itemById(r.id);if(!it)return;
     const now=Date.now();
+    const invItem={uid:uuid(),itemId:it.id,date:now};
     
-    const serverEntry = await pushInventoryAdd(it.id);
-    const invItem = serverEntry || {uid:uuid(),itemId:it.id,date:now};
-
     state.inventory.push(invItem);
     state.history.push({type:'case',caseId:pending.case.id,itemId:it.id,date:now});
     added.push(invItem);
     
+    // Отправляем на сервер в фоне (не блокируя UI)
+    pushInventoryAdd(it.id); 
     fetch(`${SERVER_URL}/api/drops`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -978,7 +978,7 @@ async function settlePendingCase(){
     if(it.price>(state.topDropDayCache.price||0)){
       state.topDropDayCache={date:today,itemId:it.id,user:state.user?state.user.username:'guest',price:it.price};
     }
-  }
+  });
   __pendingCase=null;
   saveLocalState();
   return added;
@@ -1201,7 +1201,6 @@ async function onTelegramAuth(user){
   if(isNew){ state.balance=0; } 
   state.user=userData;
   
-  // Синхронизация при входе
   await apiSync();
 
   const nameEl=document.getElementById('profileName');
@@ -1344,7 +1343,7 @@ function renderProfile(){
       </div>
       <div class="profile-card"><div class="profile-card-title">ЛЮБИМЫЙ КЕЙС</div>
         <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:20px;display:flex;align-items:center;gap:20px;">
-          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;" loading="lazy">`:favCase.icon}</div>
+          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;">`:favCase.icon}</div>
           <div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.05em;margin-bottom:4px;">Кейс «${esc(favCase.name)}»</div><div style="font-size:18px;font-weight:900;color:#fff;">Открыт ${maxCount} раз</div></div>
         </div>
       </div>
@@ -1451,9 +1450,13 @@ function getTopDropOfTheDay(){
   if (best) {
     return { item: itemById(best.itemId) || {name: best.itemName, price: best.price, icon:'🎁'}, user: best.username };
   }
-  const fakePool = ITEMS.filter(i=>i.price>5000);
-  const fake = fakePool.length ? fakePool[Math.floor(Math.random()*fakePool.length)] : ITEMS[0];
-  return { item: fake, user: 'Ожидание дропа...' };
+  
+  // ФИКС: Кэшируем случайный предмет, чтобы он не менялся при каждой перерисовке
+  if (!state.fakeTopDrop) {
+      const fakePool = ITEMS.filter(i=>i.price>5000);
+      state.fakeTopDrop = fakePool.length ? fakePool[Math.floor(Math.random()*fakePool.length)] : ITEMS[0];
+  }
+  return { item: state.fakeTopDrop, user: 'Ожидание дропа...' };
 }
 
 function renderCases(){
@@ -1465,7 +1468,7 @@ function renderCases(){
       const b=c.badge?`<div class="case-badge ${c.badge.cls}">${c.badge.text}</div>`:'';
       const isAllIn=c.isAllIn?'all-in-card':'';
       const priceStr=c.isAllIn?`Баланс: ${fmt(state.balance)} ${coin(18)}`:`${fmt(c.price)} ${coin(18)}`;
-      const imgHtml=c.img?`<img src="${c.img}" loading="lazy" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
+      const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
       return `<div class="case-card ${isAllIn}" onclick="openCase('${c.id}')"><div class="case-img">${b}${imgHtml}</div><div class="case-body"><div class="case-name">${esc(c.name)}</div><div class="case-footer"><div class="case-price">${priceStr}</div><button class="btn btn-primary" onclick="event.stopPropagation();openCase('${c.id}')">Открыть</button></div></div></div>`;
     }).join('');
     return `<div class="case-category"><div style="font-size:24px;font-weight:900;margin:40px 0 24px 0;letter-spacing:-0.02em;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.5);">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
@@ -1500,7 +1503,7 @@ function renderCaseDetail(id){
   const c=CASES.find(x=>x.id===id);if(!c)return '';
   if(c.isAllIn){
     const totalCost=state.balance;
-    const imgHtml=c.img?`<img src="${c.img}" loading="lazy" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
+    const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
     return `<button class="case-back" onclick="backToCases()">← Все кейсы</button>
     <div class="case-detail">
       <div><div class="case-detail-img" style="border-color:rgba(244,63,94,.5);background:radial-gradient(circle at 50% 50%,rgba(244,63,94,.15) 0%,#0f172a 75%)">${imgHtml}</div>
@@ -1522,7 +1525,7 @@ function renderCaseDetail(id){
       </div>
     </div>`;
   }
-  const imgHtml=c.img?`<img src="${c.img}" loading="lazy" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span style="font-size:120px;line-height:1">${c.icon}</span>`;
+  const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span style="font-size:120px;line-height:1">${c.icon}</span>`;
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
@@ -1667,7 +1670,7 @@ function openCaseNow(){
     const cost=state.balance;
     if(!confirm(`Вы уверены?\nСтавка: ${fmt(cost)} монет.\nВ случае неудачи потеряете всё.`))return;
     state.balance=0;renderHeader();
-    pushBalance(-cost); // Синхронизация
+    pushBalance(-cost);
     const result=rollAllInCase(cost);
     __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
     startAllInSequence(c,[result]);render(false);return;
@@ -1687,7 +1690,7 @@ function openCaseNow(){
   }
   if(!results.length){toast('Кейс пуст','err');return;}
   state.balance-=total;
-  pushBalance(-total); // Синхронизация
+  pushBalance(-total); 
   __pendingCase={case:c,opens:state.caseOpens,results,total,settled:false};
   startRoulette(c,results);render(false);
 }
@@ -1751,7 +1754,7 @@ function startAllInSequence(c,results){
         subtextEl.innerHTML = `Вы проиграли... Вам выпал <b>${targetItem.name}</b>`;
         sndLose();
       }
-      const addedItems=settlePendingCase();
+      const addedItems=settlePendingCase(); // Теперь работает синхронно
       document.getElementById('allInButtons').style.display='flex';
     }
   }
@@ -1912,8 +1915,8 @@ function sellResult(uid,caseId){
   const inv=state.inventory.find(i=>i.uid===uid);if(!inv)return;
   const it=itemById(inv.itemId);if(!it)return;
   state.balance+=it.price;state.inventory=state.inventory.filter(i=>i.uid!==uid);
-  pushBalance(it.price); // Синхронизация
-  pushInventoryRemove([uid]); // Синхронизация
+  pushBalance(it.price);
+  pushInventoryRemove([uid]);
   state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
   sndCash();toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`,'ok');
   haptic('success');
@@ -1925,8 +1928,8 @@ function sellMultiResult(uidsStr,caseId){
   toSell.forEach(inv=>{const it=itemById(inv.itemId);if(it){total+=it.price;state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});}});
   state.inventory=state.inventory.filter(i=>!uids.includes(i.uid));
   state.balance+=total;
-  pushBalance(total); // Синхронизация
-  pushInventoryRemove(uids); // Синхронизация
+  pushBalance(total);
+  pushInventoryRemove(uids);
   sndCash();toast(`Продано за ${coin(16)} ${fmt(total)}`,'ok');
   haptic('success');
   goBackToCase(caseId);
@@ -1979,7 +1982,7 @@ function minesStart(){
   const bet=Math.max(100,Math.floor(+$('#minesBet').value||0));
   if(bet>state.balance){toast('Мало монет','err');return;}
   state.balance-=bet;
-  pushBalance(-bet); // Синхронизация
+  pushBalance(-bet);
   m.active=true;m.bet=bet;m.revealed=new Set();m.exploded=false;m.multiplier=1;
   const s=new Set();while(s.size<m.mines)s.add(Math.floor(Math.random()*25));
   m.mineSet=s;render(false);saveLocalState();
@@ -1999,7 +2002,7 @@ function minesCashout(){
   if(!m.active||m.revealed.size===0)return;
   const w=Math.floor(m.bet*m.multiplier);
   state.balance+=w;
-  pushBalance(w); // Синхронизация
+  pushBalance(w);
   state.history.push({type:'mines_win',bet:m.bet,mult:m.multiplier,win:w,date:Date.now()});
   toast(`Забрано ${coin(16)} ${fmt(w)}`,'ok');sndCash();haptic('success');m.active=false;m.multiplier=1;render(false);saveLocalState();
 }
@@ -2032,9 +2035,9 @@ function fuseDo(){
   if(!pool.length){toast('Нет подходящих','err');return;}
   const res=pool[Math.floor(Math.random()*pool.length)];
   state.inventory=state.inventory.filter(i=>!state.fuseSelected.has(i.uid));
-  pushInventoryRemove(sel); // Синхронизация
+  pushInventoryRemove(sel);
   state.inventory.push({uid:uuid(),itemId:res.id,date:Date.now()});
-  pushInventoryAdd(res.id); // Синхронизация
+  pushInventoryAdd(res.id);
   state.history.push({type:'fuse',itemId:res.id,totalValue:t,date:Date.now()});
   state.fuseSelected.clear();
   $('#modal').innerHTML=`<div class="modal-head"><div class="modal-title">Результат фьюза</div><button class="modal-close" onclick="closeModal()">✕</button></div>
@@ -2405,7 +2408,7 @@ function finishUpgradeSpin(payload){
   }
   const {win, cp, roll, totalRotation, fromItems, toItem, froms, nonce, serverSeed, clientSeed} = payload;
   
-  pushInventoryRemove(froms); // Синхронизация
+  pushInventoryRemove(froms);
   state.inventory = state.inventory.filter(i => !froms.includes(i.uid));
   
   const historyEntry = {
@@ -2419,7 +2422,7 @@ function finishUpgradeSpin(payload){
   
   if(win){
     state.inventory.push({uid: uuid(), itemId: toItem.id, date: Date.now()});
-    pushInventoryAdd(toItem.id); // Синхронизация
+    pushInventoryAdd(toItem.id);
     state.history.push(historyEntry);
     if(state.settings.upgradeSound) sndWinRarity(toItem.rarity);
     haptic('success');
@@ -2505,7 +2508,7 @@ function upgDo(){
   state.upgrade.lastChance = cp;
   state.upgrade.lastAngle = totalRotation;
   state.balance -= balToSpend;
-  pushBalance(-balToSpend); // Синхронизация
+  pushBalance(-balToSpend);
   __upgTargetRot = totalRotation;
   renderHeader();
   const btn = document.getElementById('upgDoBtn');
@@ -2617,8 +2620,8 @@ function sellOne(uid){
   if(!confirm(`Продать «${it.name}» за ${fmt(it.price)}?`)) return;
   state.balance += it.price;
   state.inventory = state.inventory.filter(i=>i.uid!==uid);
-  pushBalance(it.price); // Синхронизация
-  pushInventoryRemove([uid]); // Синхронизация
+  pushBalance(it.price);
+  pushInventoryRemove([uid]);
   state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
   sndCash(); haptic('success');
   toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
@@ -2632,8 +2635,8 @@ function sellAll(){
   state.inventory.forEach(inv=>{const it=itemById(inv.itemId);if(it)state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});});
   state.inventory = [];
   state.balance += total;
-  pushBalance(total); // Синхронизация
-  pushInventoryRemove(uids); // Синхронизация
+  pushBalance(total);
+  pushInventoryRemove(uids);
   sndCash(); haptic('success');
   toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
   saveLocalState(); renderHeader(); render(false);
@@ -2654,7 +2657,6 @@ let __depositPollingInterval = null;
 
 function openDepositModal(preselectId) {
   state.deposit.step = 1;
-  // Инициализируем Map для хранения { itemId: count }
   state.deposit.selected = new Map();
   state.deposit.searchQuery = '';
   state.deposit.sort = 'asc';
@@ -2673,7 +2675,6 @@ function openDepositModal(preselectId) {
   $('#overlay').classList.add('open');
 }
 
-// Вспомогательная функция: сколько всего предметов выбрано
 function getTotalSelectedCount() {
   let total = 0;
   state.deposit.selected.forEach(count => total += count);
@@ -2682,7 +2683,6 @@ function getTotalSelectedCount() {
 
 function updateDepositQuantity(id, delta) {
   const current = state.deposit.selected.get(id) || 0;
-  // Считаем, сколько всего у игрока таких предметов
   const available = state.inventory.filter(i => i.itemId === id).length;
   
   if (delta > 0) {
@@ -2720,7 +2720,6 @@ function renderDepositModal() {
   `;
 
   if (d.step === 1) {
-    // Группируем инвентарь по itemId
     const grouped = {};
     state.inventory.forEach(inv => {
       if (inv.itemId.startsWith('coin_')) return;
@@ -2728,7 +2727,6 @@ function renderDepositModal() {
       grouped[inv.itemId]++;
     });
 
-    // Создаем список доступных предметов
     let pool = Object.keys(grouped).map(id => ({
       item: itemById(id),
       available: grouped[id]
@@ -2908,7 +2906,6 @@ async function submitDeposit() {
   let totalAmount = 0;
   const itemsPayload = [];
   
-  // Собираем реальные uid предметов, которые выбрал игрок
   const uidsToRemove = [];
   d.selected.forEach((count, id) => {
     const item = itemById(id);
@@ -2916,7 +2913,6 @@ async function submitDeposit() {
       totalAmount += item.price * count;
       itemsPayload.push({ name: item.name, price: item.price, count });
       
-      // Находим нужное кол-во uid в инвентаре
       let found = 0;
       state.inventory.forEach(inv => {
         if (inv.itemId === id && found < count) {
@@ -2937,7 +2933,7 @@ async function submitDeposit() {
         username: state.user.username,
         robloxName: d.robloxUsername,
         robloxId: 'Не указан',
-        items: itemsPayload, // отправляем по именам, сервер сверит
+        items: itemsPayload,
         totalAmount: finalAmount
       })
     });
@@ -2947,7 +2943,6 @@ async function submitDeposit() {
 
     if (state.user) state.user.robloxName = d.robloxUsername;
 
-    // НЕ начисляем баланс сразу! Ждем подтверждения в Discord.
     d.step = 3;
     renderDepositModal();
     startDepositTimer();
@@ -2963,7 +2958,6 @@ async function submitDeposit() {
   }
 }
 
-// Функция опроса сервера (ждем клик в Discord)
 function startStatusPolling(requestId, finalAmount, uidsToRemove) {
   if (__depositPollingInterval) clearInterval(__depositPollingInterval);
   
@@ -2976,7 +2970,6 @@ function startStatusPolling(requestId, finalAmount, uidsToRemove) {
         clearInterval(__depositPollingInterval);
         if (__depositTimerInt) clearInterval(__depositTimerInt);
         
-        // Админ нажал "Выдать" в Discord! Начисляем монеты и убираем предметы
         state.balance += finalAmount;
         state.inventory = state.inventory.filter(i => !uidsToRemove.includes(i.uid));
         state.history.push({ type: 'deposit', amount: finalAmount, date: Date.now() });
@@ -3007,7 +3000,6 @@ function startStatusPolling(requestId, finalAmount, uidsToRemove) {
           </div>
         `;
       }
-      // Если status === 'pending' — просто продолжаем ждать
     } catch (e) { console.log('Ожидание ответа...'); }
   }, 2000);
 }
@@ -3076,7 +3068,7 @@ async function withdrawItem(uid) {
         if (!response.ok) throw new Error('Ошибка сервера');
 
         state.inventory = state.inventory.filter(i => i.uid !== uid);
-        pushInventoryRemove([uid]); // Синхронизация
+        pushInventoryRemove([uid]);
         saveLocalState();
         render(false);
         toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
