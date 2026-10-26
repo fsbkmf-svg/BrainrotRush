@@ -6,11 +6,10 @@
 <title>Brainrot Rush</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', system-ui, -apple-system, sans-serif !important; -webkit-tap-highlight-color: transparent; }
 input, button, select, textarea, optgroup, option { font-family: inherit !important; }
 
 :root{
@@ -72,7 +71,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .profile-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
 .profile-status{font-size:12px;color:var(--accent);font-weight:600;display:flex;align-items:center;gap:4px;text-shadow:0 1px 2px rgba(0,0,0,.5)}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
-.header{height:72px;position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:16px;padding:0 32px;background:rgba(10,14,23,.8);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.header{height:72px;position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;padding:0 32px;background:rgba(10,14,23,.8);border-bottom:1px solid rgba(255,255,255,.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .balance{display:flex;align-items:center;gap:12px;padding:10px 20px;border-radius:16px;background:rgba(0,0,0,.5);border:1px solid rgba(251,191,36,.2);font-weight:800;font-size:18px;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.05);color:#fff;font-variant-numeric:tabular-nums}
 .balance .coin{display:grid;place-items:center;animation:cw 4s ease-in-out infinite}
 @keyframes cw{0%,45%,60%,100%{transform:rotate(0)}50%{transform:rotate(15deg)}55%{transform:rotate(-10deg)}}
@@ -278,7 +277,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* ДЕПОЗИТ */
+/* ДЕПОЗИТ & ВЫВОД */
 .dep-tabs { display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 20px; }
 .dep-tab { flex: 1; text-align: center; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; }
 .dep-tab.active { background: #ea580c; color: #fff; box-shadow: 0 4px 15px rgba(234,88,12,0.4); }
@@ -298,6 +297,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .dep-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.2s; min-height: 180px; }
 .dep-card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-2px); }
 .dep-card.selected { border-color: #ea580c; background: rgba(234,88,12,0.1); }
+.dep-card.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 .dep-img { flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
 .dep-img img { max-height: 70px; object-fit: contain; }
 .dep-name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
@@ -311,8 +311,8 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .dep-input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 .dep-input { width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 15px; outline: none; }
 .dep-input:focus { border-color: var(--accent); }
-.dep-submit-btn { width: 100%; padding: 18px; background: #1e1b4b; color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
-.dep-submit-btn:not(:disabled):hover { background: #312e81; }
+.dep-submit-btn { width: 100%; padding: 18px; background: #312e81; color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+.dep-submit-btn:not(:disabled):hover { background: #4338ca; }
 .dep-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .dep-queue-box { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; }
 .dep-queue-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px; }
@@ -469,6 +469,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
       <button class="btn btn-ghost btn-sm" id="soundToggle" style="margin-left:auto;padding:10px 14px;font-size:18px;border-radius:14px;" onclick="toggleSound()" title="Звук">🔊</button>
       <div class="balance"><span class="coin" id="coinTop"></span><span id="balanceEl">0</span></div>
       <button class="btn btn-primary" onclick="openDepositModal()">+ Пополнить</button>
+      <button class="btn btn-accent" onclick="openWithdrawModal()">Вывести</button>
     </header>
     <div class="content" id="content"></div>
   </div>
@@ -600,25 +601,25 @@ const ITEMS=[
 {id:'fragrama',name:'Fragrama',icon:'🐸',rarity:'common',price:118,img:'brainrots/Fragrama_and_Chocrama.png'},
 {id:'capitano_moby',name:'Capitano Moby',icon:'🐋',rarity:'common',price:120.75,img:'brainrots/Capitano_Moby.png'},
 {id:'cooki_milki',name:'Cooki and Milki',icon:'🍪',rarity:'common',price:125,img:'brainrots/Cooki_and_Milki.png'},
-{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/sammyni_fat.png'},
+{id:'sammyni_fat',name:'Sammyni Fattini',icon:'🐱',rarity:'common',price:141.55,img:'brainrots/Sammyni_Fattini.png'},
 {id:'globa',name:'Globa Steppa',icon:'🦒',rarity:'common',price:143.45,img:'brainrots/Globa_Steppa.png'},
-{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/spooky.png'},
+{id:'spooky',name:'Spooky and Pumpky',icon:'🎃',rarity:'common',price:151,img:'brainrots/Spooky.png'},
 {id:'cerberus',name:'Cerberus',icon:'🐕‍🦺',rarity:'rare',price:155.25,img:'brainrots/Cerberus.png'},
 {id:'celestial',name:'Celestial Pegasus',icon:'🦄',rarity:'rare',price:155.25,img:'brainrots/Celestial_Pegasus.png'},
-{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/reinito.png'},
+{id:'reinito',name:'Reinito Sleighito',icon:'🛷',rarity:'rare',price:168.15,img:'brainrots/Reinito.png'},
 {id:'los_admins',name:'Los Admins',icon:'🛡️',rarity:'rare',price:173.85,img:'brainrots/Los_Admins.png'},
 {id:'guest666',name:'Guest666',icon:'😈',rarity:'rare',price:188.1,img:'brainrots/Guest666.png'},
-{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/los_amigos.png'},
-{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/los_chillis.png'},
+{id:'los_amigos',name:'Los Amigos',icon:'👥',rarity:'rare',price:191.9,img:'brainrots/Los_Amigos.png'},
+{id:'los_chillis',name:'Los Chillis',icon:'🌶️',rarity:'rare',price:191.9,img:'brainrots/Los_Chillis.png'},
 {id:'fortunu',name:'Fortunu and Cashuru',icon:'🍀',rarity:'rare',price:204,img:'brainrots/Fortunu_and_Cashuru.png'},
-{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/rubrikiko.png'},
+{id:'rubrikiko',name:'Rubrikiko',icon:'🎲',rarity:'rare',price:204.25,img:'brainrots/Rubrikiko.png'},
 {id:'los_sekolahs',name:'Los Sekolahs',icon:'🎒',rarity:'rare',price:233.7,img:'brainrots/Los_Sekolahs.png'},
-{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/rico.png'},
+{id:'rico',name:'Rico Dinero',icon:'💵',rarity:'rare',price:316.35,img:'brainrots/Rico_Dinero.png'},
 {id:'la_breakfast',name:'La Breakfast Combinasion',icon:'🥐',rarity:'rare',price:320.15,img:'brainrots/La_Breakfast_Combinasion.png'},
 {id:'examen',name:'Examen Bros',icon:'📝',rarity:'rare',price:320.15,img:'brainrots/Examen_Bros.png'},
 {id:'foxini',name:'Foxini Lanternini',icon:'🦊',rarity:'rare',price:330,img:'brainrots/Foxini_Lanternini.png'},
 {id:'los_hackers',name:'Los Hackers',icon:'💻',rarity:'rare',price:363.85,img:'brainrots/los_hackers.png'},
-{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/rosy.png'},
+{id:'rosy',name:'Rosy and Teddy',icon:'🧸',rarity:'rare',price:380,img:'brainrots/Rosy.png'},
 {id:'dugdug',name:'Dug Dug Dug',icon:'⛏️',rarity:'rare',price:408.5,img:'brainrots/Dug_dug_dug.png'},
 {id:'venuspino',name:'Venuspino',icon:'🌹',rarity:'rare',price:421,img:'brainrots/venuspino.png'},
 {id:'duggy',name:'Duggy Bros',icon:'🚜',rarity:'rare',price:479.75,img:'brainrots/Duggy_Bros.png'},
@@ -631,30 +632,31 @@ const ITEMS=[
 {id:'sammyni_cak',name:'Sammyni Cakini',icon:'🎂',rarity:'epic',price:824.6,img:'brainrots/sammyni_cak.png'},
 {id:'dragonc',name:'Dragon Cannelloni',icon:'🐲',rarity:'epic',price:840,img:'brainrots/Dragon_Cannelloni.png'},
 {id:'tirilikalika',name:'Tirilikalika Tirilikalako',icon:'🎵',rarity:'epic',price:961.4,img:'brainrots/tirilikalika.png'},
-{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/jelly_moby.png'},
+{id:'jelly_moby',name:'Jelly Moby',icon:'🐙',rarity:'epic',price:1121,img:'brainrots/Jelly_Moby.png'},
 {id:'pancake',name:'Pancake and Syrup',icon:'🥞',rarity:'epic',price:1201.75,img:'brainrots/pancake.png'},
 {id:'ginger',name:'Ginger Gerat',icon:'🍪',rarity:'epic',price:1298,img:'brainrots/Ginger_Gerat.png'},
 {id:'hydra',name:'Hydra Dragon',icon:'🐍',rarity:'epic',price:1344,img:'brainrots/Hydra_Dragon_Cannelloni.png'},
 {id:'hydra_bunny',name:'Hydra Bunny',icon:'🐰',rarity:'epic',price:1509.55,img:'brainrots/Hydra_Bunny.png'},
-{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/moby_bros.png'},
+{id:'moby_bros',name:'Moby Bros',icon:'🐳',rarity:'epic',price:1922.8,img:'brainrots/Moby_Bros.png'},
 {id:'kalika',name:'Kalika Bros',icon:'🎶',rarity:'epic',price:1962.7,img:'brainrots/Kalika_Bros.png'},
-{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/digi_narwhal.png'},
+{id:'digi_narwhal',name:'Digi Narwhal',icon:'🦄',rarity:'legendary',price:2002.6,img:'brainrots/Digi_Narwhal.png'},
 {id:'lasupreme',name:'La Supreme Combinasion',icon:'👑',rarity:'legendary',price:2100,img:'brainrots/La_Supreme_Combinasion.png'},
 {id:'fishino',name:'Fishino Clownino',icon:'🐠',rarity:'legendary',price:2163.15,img:'brainrots/Fishino_Clownino.png'},
-{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/kraken.png'},
-{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/dragon_aquanini.png'},
-{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/griffin.png'},
-{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/los_dragons.png'},
+{id:'kraken',name:'Kraken',icon:'🦑',rarity:'legendary',price:2190,img:'brainrots/Kraken.png'},
+{id:'dragon_aquanini',name:'Dragon Aquanini',icon:'🐉',rarity:'legendary',price:3150,img:'brainrots/Dragon_Aquanini.png'},
+{id:'griffin',name:'Griffin',icon:'🦅',rarity:'legendary',price:4217,img:'brainrots/Griffin.png'},
+{id:'los_dragons',name:'Los Dragons',icon:'🐉',rarity:'legendary',price:4638,img:'brainrots/Los_Dragons.png'},
 {id:'antonio',name:'Antonio',icon:'🕴️',rarity:'legendary',price:5040,img:'brainrots/Antonio.png'},
 {id:'lovebear',name:'Love Love Bear',icon:'💖',rarity:'legendary',price:6720,img:'brainrots/lovebear.png'},
 {id:'arcadragon',name:'Arcadragon',icon:'🐲',rarity:'legendary',price:8330,img:'brainrots/Arcadragon.png'},
 {id:'elefanto',name:'Elefanto Frigo',icon:'🐘',rarity:'legendary',price:8850,img:'brainrots/Elefanto_Frigo.png'},
 {id:'skibidi',name:'Skibidi Toilet',icon:'🚽',rarity:'mythic',price:14280,img:'brainrots/SkibidiToilet.png'},
 {id:'johnpork',name:'John Pork',icon:'🐷',rarity:'mythic',price:15960,img:'brainrots/John_Pork.png'},
-{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/meowl.png'},
+{id:'meowl',name:'Meowl',icon:'🦉',rarity:'mythic',price:17640,img:'brainrots/Meowl.png'},
 {id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
-{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_elephant.png'},
+{id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_Elephant.png'},
 {id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'},
+// Мутации (исключены из депозита)
 {id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:'brainrots/Gold_Guest666.png'},
 {id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:'brainrots/Diamond_Guest666.png'},
 {id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:'brainrots/Bloodrot_Guest666.png'},
@@ -743,6 +745,7 @@ const state={
   inventorySort:'price_desc',
   inventoryFilter:'all',
   deposit:{step:1,selected:new Map(),searchQuery:'',sort:'asc',minPrice:'',maxPrice:'',robloxUsername:'',promo:'',timer:null,timerLeft:0},
+  withdraw:{step:1,selected:new Map(),searchQuery:'',sort:'asc',robloxUsername:''},
   pendingWithdrawals:[],
   topDropDayCache:{date:'',itemId:'',user:'',price:0},
   adminTab:'users',
@@ -903,10 +906,17 @@ function toast(m,t=''){
   __toastQueue.push({m,t});
   processToastQueue();
 }
+
+// НАДЕЖНЫЙ ВЫВОД ИКОНОК
 function itemIcon(it,size=48){
   if(!it)return '';
-  if(it.img)return`<img src="${it.img}" alt="${esc(it.name)}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;margin:0 auto" onerror="this.onerror=null; this.style.display='none'; this.insertAdjacentHTML('afterend','<span style=\\'font-size:${size}px;line-height:1;display:inline-block;vertical-align:middle;\\'>${it.icon}</span>');">`;
-  return`<span style="font-size:${size}px;line-height:1">${it.icon}</span>`;
+  if(it.img){
+    return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;">
+              <img src="${it.img}" alt="${esc(it.name)}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div style="display:none;font-size:${Math.round(size*0.8)}px;line-height:1;align-items:center;justify-content:center;">${it.icon}</div>
+            </div>`;
+  }
+  return `<div style="width:${size}px;height:${size}px;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:${Math.round(size*0.8)}px;">${it.icon}</div>`;
 }
 
 let __caseTimers=[],__caseFinish=null,__upgTimers=[],__upgFinish=null,__pendingCase=null,__upgTimer=null,__upgTargetRot=0;
@@ -1511,11 +1521,11 @@ function renderCaseDetail(id){
     const pct = (ci.c/totalW*100).toFixed(1);
     const isRare = it.price > activePrice * 5;
     const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
-    return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:12px;padding:12px;text-align:center;">
-      <div class="drop-chance-badge">${pct}%</div>
-      ${itemIcon(it,48)}
-      <div style="font-size:11px;font-weight:700;color:#fff;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
-      <div style="font-size:12px;color:var(--gold);font-weight:800;margin-top:2px;">${fmt(it.price)}</div>
+    return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:16px;padding:16px 10px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
+      <div class="drop-chance-badge" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:900;color:var(--accent);">${pct}%</div>
+      <div style="height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">${itemIcon(it,60)}</div>
+      <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
+      <div style="font-size:13px;color:var(--gold);font-weight:900;">${fmt(it.price)}</div>
     </div>`;
   }).join('');
 
@@ -1543,7 +1553,7 @@ function renderCaseDetail(id){
       
       <div style="margin-bottom:24px;">
         <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Возможные призы (шанс дропа)</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;max-height:350px;overflow-y:auto;padding-right:4px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;max-height:380px;overflow-y:auto;padding-right:8px;">
           ${itemsPreview}
         </div>
       </div>
@@ -1595,10 +1605,9 @@ function openCaseNow(){
     state.balance=0;renderHeader();
     pushBalance(-cost);
     
-    // Вместо старой анимации запускаем огромную рулетку
     const result=rollAllInCase(cost);
     __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
-    startRoulette(c, [result], true); // Передаем true для режима ALL IN
+    startRoulette(c, [result], true);
     render(false);
     return;
   }
@@ -1632,7 +1641,6 @@ function startRoulette(c,results, isAllIn){
   results.forEach((win,idx)=>{
     const pool=[];
     if(isAllIn){
-      // Для ALL IN подбираем только дорогие предметы (визуально)
       const nci=ITEMS.filter(i=>i.price>1000 && !i.id.startsWith('coin_'));
       for(let i=0;i<TRACK_LEN;i++) pool.push(nci[Math.floor(Math.random()*nci.length)].id);
     } else {
@@ -1646,7 +1654,6 @@ function startRoulette(c,results, isAllIn){
     const trackHtml=ids.map(id=>{
       const it=itemById(id);
       
-      // Для ALL IN делаем рулетку ОГРОМНОЙ
       const iconSize = isAllIn ? 140 : (opens>1 ? 60 : 100);
       const itemStyle = isAllIn 
         ? 'min-width:200px;width:200px;height:200px;padding:15px;gap:12px;'
@@ -1668,7 +1675,7 @@ function startRoulette(c,results, isAllIn){
   state.openingView=html;render(false);
   
   const isSpecialSpin = Math.random() < 0.3; 
-  let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 6000 : (isSpecialSpin ? 5500 : 3500)); // Для ALL IN дольше крутим
+  let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 6000 : (isSpecialSpin ? 5500 : 3500));
   let easing = isSpecialSpin ? 'cubic-bezier(0.05, 1, 0.1, 1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
   
   setTimeout(() => {
@@ -2367,12 +2374,9 @@ function upgDo(){
   const winDeg = cp * 3.6;
   let finalDeg;
   
-  // ИСПРАВЛЕНИЕ: Теперь стрелка останавливается в случайном месте внутри зоны
   if (win) {
-    // От 5% до 95% от зеленой зоны
     finalDeg = winDeg * (0.05 + Math.random() * 0.9);
   } else {
-    // От 5% до 95% от красной зоны
     finalDeg = winDeg + (360 - winDeg) * (0.05 + Math.random() * 0.9);
   }
 
@@ -2490,7 +2494,7 @@ function renderInventory(){
       <div class="acts" style="display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
         <button class="btn btn-accent btn-sm" style="flex:1; padding: 8px 4px; min-width: 60px;" onclick="sellOne('${i.uid}')">Продать</button>
         <button class="btn btn-primary btn-sm" style="padding: 8px 8px; background: #0ea5e9;" onclick="openDepositModal('${i.itemId}')" title="Внести в игру">📥</button>
-        <button class="btn btn-accent btn-sm" style="padding: 8px 8px; background: #fbbf24; color: #000;" onclick="withdrawItem('${i.uid}')" title="Вывести в Roblox">📤</button>
+        <button class="btn btn-accent btn-sm" style="padding: 8px 8px; background: #fbbf24; color: #000;" onclick="openWithdrawModal('${i.itemId}')" title="Вывести в Roblox">📤</button>
         <button class="btn btn-ghost btn-sm" style="padding:8px 8px;" onclick="quickUpg('${i.uid}')">📈</button>
       </div>
     </div>`;
@@ -2550,10 +2554,14 @@ function quickUpg(uid){
 }
 
 /* ============================================= */
-/* === 3-ШАГОВЫЙ ДЕПОЗИТ (С ВЫБОРОМ КОЛИЧЕСТВА) === */
+/* === ДЕПОЗИТ (ВСЕ БАЗОВЫЕ ПРЕДМЕТЫ) === */
 /* ============================================= */
 
 let __depositPollingInterval = null;
+
+function getBaseItems() {
+    return ITEMS.filter(i => !i.id.startsWith('coin_') && !i.id.includes('guest666_')).sort((a,b) => a.price - b.price);
+}
 
 function openDepositModal(preselectId) {
   state.deposit.step = 1;
@@ -2620,41 +2628,30 @@ function renderDepositModal() {
   `;
 
   if (d.step === 1) {
-    const grouped = {};
-    state.inventory.forEach(inv => {
-      if (inv.itemId.startsWith('coin_')) return;
-      if (!grouped[inv.itemId]) grouped[inv.itemId] = 0;
-      grouped[inv.itemId]++;
-    });
-
-    let pool = Object.keys(grouped).map(id => ({
-      item: itemById(id),
-      available: grouped[id]
-    })).filter(x => x.item);
+    let pool = getBaseItems();
     
-    if (d.searchQuery) pool = pool.filter(x => x.item.name.toLowerCase().includes(d.searchQuery.toLowerCase()));
-    if (d.minPrice !== '') pool = pool.filter(x => (x.item.price * 1.2) >= Number(d.minPrice));
-    if (d.maxPrice !== '') pool = pool.filter(x => (x.item.price * 1.2) <= Number(d.maxPrice));
+    if (d.searchQuery) pool = pool.filter(x => x.name.toLowerCase().includes(d.searchQuery.toLowerCase()));
     
-    if (d.sort === 'asc') pool.sort((a,b) => a.item.price - b.item.price);
-    else pool.sort((a,b) => b.item.price - a.item.price);
-
-    const cards = pool.map(data => {
-      const item = data.item;
+    const cards = pool.map(item => {
+      const ownedCount = state.inventory.filter(inv => inv.itemId === item.id).length;
       const selCount = d.selected.get(item.id) || 0;
       const finalPrice = item.price * 1.2;
-      return `<div class="dep-card ${selCount > 0 ? 'selected' : ''}">
+      
+      const isSelected = selCount > 0;
+      const isDisabled = ownedCount === 0;
+      
+      return `<div class="dep-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}">
         <div class="dep-img">${itemIcon(item, 60)}</div>
         <div class="dep-name">${esc(item.name)}</div>
         <div class="dep-price">${coin(12)} ${fmt(finalPrice)}</div>
         
         <div style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; background:rgba(0,0,0,0.3); border-radius:8px; padding:4px;">
-          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="updateDepositQuantity('${item.id}', -1)" ${selCount === 0 ? 'disabled' : ''}>-</button>
-          <span style="font-weight:900; font-size:14px; color:#fff;">${selCount} / ${data.available}</span>
-          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="updateDepositQuantity('${item.id}', 1)" ${selCount >= data.available ? 'disabled' : ''}>+</button>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="event.stopPropagation(); updateDepositQuantity('${item.id}', -1)" ${selCount === 0 ? 'disabled' : ''}>-</button>
+          <span style="font-weight:900; font-size:14px; color:#fff;">${selCount} / ${ownedCount}</span>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="event.stopPropagation(); updateDepositQuantity('${item.id}', 1)" ${selCount >= ownedCount ? 'disabled' : ''}>+</button>
         </div>
       </div>`;
-    }).join('') || '<div class="empty-state" style="grid-column:1/-1;padding:20px;">У вас нет предметов для депозита</div>';
+    }).join('');
 
     content = `
       ${d.selected.size > 0 ? `
@@ -2666,16 +2663,10 @@ function renderDepositModal() {
       
       <div class="dep-text-box">
         <div style="font-weight:800;font-size:14px;color:#fff;margin-bottom:4px;">Пополнение брейнротами</div>
-        <p>Выбери предметы и их количество (макс. 10 шт за раз). Стоимость зачислится монетами после приёма (цена уже с наценкой ×1.2).</p>
+        <p>Выбери предметы из своего инвентаря (макс. 10 шт за раз). Стоимость зачислится монетами после приёма (цена уже с наценкой ×1.2).</p>
       </div>
       
       <input class="dep-search" type="text" placeholder="🔍 Поиск брейнрота..." value="${esc(d.searchQuery)}" oninput="updateDepositSearch(this.value)">
-      
-      <div class="dep-filters">
-        <input type="number" placeholder="Цена от" value="${d.minPrice}" oninput="updateDepositFilter('min', this.value)">
-        <input type="number" placeholder="до" value="${d.maxPrice}" oninput="updateDepositFilter('max', this.value)">
-        <button class="dep-sort-btn" onclick="toggleDepositSort()">${d.sort === 'asc' ? 'Сначала дешёвые' : 'Сначала дорогие'}</button>
-      </div>
       
       <div class="dep-grid">${cards}</div>
     `;
@@ -2706,7 +2697,7 @@ function renderDepositModal() {
     });
 
     content = `
-      <span class="dep-back" onclick="depositBackStep()">‹ Назад</span>
+      <span class="dep-back" onclick="depositBackStep()">‹ НАЗАД</span>
       <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Депозит (${getTotalSelectedCount()} предм.)</div>
       
       <div style="margin-bottom:16px;max-height:200px;overflow-y:auto;">
@@ -2724,7 +2715,7 @@ function renderDepositModal() {
       </div>
       
       <div class="dep-input-group">
-        <label>🤝 Промокод партнёра</label>
+        <label>🤝 ПРОМОКОД ПАРТНЁРА</label>
         <input type="text" class="dep-input" id="depPromo" placeholder="Необязательно" value="${esc(d.promo)}" oninput="state.deposit.promo = this.value">
       </div>
       
@@ -2805,13 +2796,12 @@ async function submitDeposit() {
 
   let totalAmount = 0;
   const itemsPayload = [];
-  
   const uidsToRemove = [];
+  
   d.selected.forEach((count, id) => {
     const item = itemById(id);
     if (item) {
       totalAmount += item.price * count;
-      itemsPayload.push({ name: item.name, price: item.price, count });
       
       let found = 0;
       state.inventory.forEach(inv => {
@@ -2823,6 +2813,15 @@ async function submitDeposit() {
     }
   });
 
+  // Собираем payload с uid для сервера
+  uidsToRemove.forEach(uid => {
+    const inv = state.inventory.find(i => i.uid === uid);
+    if(inv) {
+        const item = itemById(inv.itemId);
+        itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
+    }
+  });
+
   const finalAmount = totalAmount * 1.2;
 
   try {
@@ -2830,6 +2829,7 @@ async function submitDeposit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        tgId: state.user.id,
         username: state.user.username,
         robloxName: d.robloxUsername,
         robloxId: 'Не указан',
@@ -2941,43 +2941,225 @@ function cancelDeposit() {
   closeModal();
 }
 
-/* === WITHDRAW === */
-async function withdrawItem(uid) {
-    const invItem = state.inventory.find(i => i.uid === uid);
-    if (!invItem) return;
-    const item = itemById(invItem.itemId);
-    if (!item) return;
+/* === ВЫВОД (КАК НА ФОТО) === */
+function openWithdrawModal(preselectId) {
+  state.withdraw.step = 1;
+  state.withdraw.selected = new Map();
+  state.withdraw.searchQuery = '';
+  state.withdraw.robloxUsername = state.user?.robloxName || '';
+  
+  if (preselectId) {
+    state.withdraw.selected.set(preselectId, 1);
+    state.withdraw.step = 2;
+  }
+  
+  renderWithdrawModal();
+  $('#overlay').classList.add('open');
+}
 
-    let robloxName = prompt('Введите ваш ник в Roblox для вывода:', state.user?.robloxName || '');
-    if (!robloxName) return;
+function getTotalWithdrawCount() {
+  let total = 0;
+  state.withdraw.selected.forEach(count => total += count);
+  return total;
+}
 
-    if (!confirm(`Вывести «${item.name}» в игру Roblox?\nУчтите, что вывод происходит вручную по расписанию.`)) return;
-
-    try {
-        const response = await fetch(`${SERVER_URL}/api/withdraw`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: state.user.username,
-                robloxName: robloxName,
-                robloxId: state.user?.robloxId || 'Не указан',
-                items: [{ uid: invItem.uid, name: item.name, price: item.price }]
-            })
-        });
-
-        if (!response.ok) throw new Error('Ошибка сервера');
-
-        state.inventory = state.inventory.filter(i => i.uid !== uid);
-        pushInventoryRemove([uid]);
-        saveLocalState();
-        render(false);
-        toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
-        haptic('success');
-
-    } catch (error) {
-        console.error(error);
-        toast('Ошибка связи с сервером. Проверьте заявку в Discord.', 'err');
+function updateWithdrawQuantity(id, delta) {
+  const current = state.withdraw.selected.get(id) || 0;
+  const available = state.inventory.filter(i => i.itemId === id).length;
+  
+  if (delta > 0) {
+    if (current >= available) {
+      return toast('У вас больше нет таких предметов', 'err');
     }
+  }
+  
+  const newCount = current + delta;
+  if (newCount <= 0) {
+    state.withdraw.selected.delete(id);
+  } else {
+    state.withdraw.selected.set(id, newCount);
+  }
+  renderWithdrawModal();
+}
+
+function renderWithdrawModal() {
+  const w = state.withdraw;
+  let content = '';
+  
+  const headerHtml = `
+    <div class="modal-head">
+      <div class="modal-title">Вывод в игру</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+  `;
+
+  if (w.step === 1) {
+    let pool = getBaseItems();
+    if (w.searchQuery) pool = pool.filter(x => x.name.toLowerCase().includes(w.searchQuery.toLowerCase()));
+    
+    const cards = pool.map(item => {
+      const ownedCount = state.inventory.filter(inv => inv.itemId === item.id).length;
+      const selCount = w.selected.get(item.id) || 0;
+      
+      const isSelected = selCount > 0;
+      const isDisabled = ownedCount === 0;
+      
+      return `<div class="dep-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}">
+        <div class="dep-img">${itemIcon(item, 60)}</div>
+        <div class="dep-name">${esc(item.name)}</div>
+        <div class="dep-price">${coin(12)} ${fmt(item.price)}</div>
+        
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; background:rgba(0,0,0,0.3); border-radius:8px; padding:4px;">
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="event.stopPropagation(); updateWithdrawQuantity('${item.id}', -1)" ${selCount === 0 ? 'disabled' : ''}>-</button>
+          <span style="font-weight:900; font-size:14px; color:#fff;">${selCount} / ${ownedCount}</span>
+          <button class="btn btn-ghost btn-sm" style="padding:4px 8px;" onclick="event.stopPropagation(); updateWithdrawQuantity('${item.id}', 1)" ${selCount >= ownedCount ? 'disabled' : ''}>+</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    content = `
+      ${w.selected.size > 0 ? `
+        <div class="dep-select-bar" onclick="withdrawNextStep()">
+          <span>Выбрано: ${getTotalWithdrawCount()}</span>
+          <span>Продолжить ></span>
+        </div>
+      ` : ''}
+      
+      <div class="dep-text-box">
+        <div style="font-weight:800;font-size:14px;color:#fff;margin-bottom:4px;">Вывод предметов</div>
+        <p>Выбери предметы из своего инвентаря и укажи ник. Админ выдаст их в игре.</p>
+      </div>
+      
+      <input class="dep-search" type="text" placeholder="🔍 Поиск брейнрота..." value="${esc(w.searchQuery)}" oninput="updateWithdrawSearch(this.value)">
+      
+      <div class="dep-grid">${cards}</div>
+    `;
+  } 
+  else if (w.step === 2) {
+    let itemsHtml = '';
+    
+    w.selected.forEach((count, id) => {
+      const item = itemById(id);
+      if (!item) return;
+      
+      itemsHtml += `
+        <div class="dep-sum-item">
+          <div class="dep-sum-left">
+            ${itemIcon(item, 32)}
+            <span style="font-weight:700;font-size:14px;color:#fff;">${esc(item.name)}</span>
+            <span style="color:var(--accent); font-weight:900; margin-left:8px;">x${count}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="dep-sum-remove" onclick="updateWithdrawQuantity('${id}', -${count})">✕</button>
+          </div>
+        </div>
+      `;
+    });
+
+    content = `
+      <span class="dep-back" onclick="withdrawBackStep()">‹ НАЗАД</span>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Вывод (${getTotalWithdrawCount()} предм.)</div>
+      
+      <div style="margin-bottom:16px;max-height:200px;overflow-y:auto;">
+        ${itemsHtml}
+      </div>
+      
+      <div class="dep-input-group">
+        <label>ROBLOX-ЮЗЕРНЕЙМ</label>
+        <input type="text" class="dep-input" id="wdRobloxName" placeholder="Например: daveminioniscool" value="${esc(w.robloxUsername)}" oninput="updateWithdrawRoblox(this.value)">
+      </div>
+      
+      <button class="dep-submit-btn" id="wdSubmitBtn" onclick="submitWithdraw()" ${!w.robloxUsername.trim() ? 'disabled' : ''} style="background:#fbbf24; color:#000;">ВЫВЕСТИ В РОБЛОКС</button>
+    `;
+  }
+
+  $('#modal').innerHTML = headerHtml + content;
+}
+
+function updateWithdrawSearch(val) {
+  state.withdraw.searchQuery = val;
+  renderWithdrawModal();
+  document.querySelector('.dep-search').focus();
+}
+
+function updateWithdrawRoblox(val) {
+  state.withdraw.robloxUsername = val;
+  const btn = document.getElementById('wdSubmitBtn');
+  if (btn) btn.disabled = !val.trim();
+}
+
+function withdrawNextStep() {
+  if (state.withdraw.selected.size === 0) return;
+  state.withdraw.step = 2;
+  renderWithdrawModal();
+}
+
+function withdrawBackStep() {
+  state.withdraw.step = 1;
+  renderWithdrawModal();
+}
+
+async function submitWithdraw() {
+  const w = state.withdraw;
+  const btn = document.getElementById('wdSubmitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'ОТПРАВКА...'; }
+
+  const itemsPayload = [];
+  const uidsToRemove = [];
+  
+  w.selected.forEach((count, id) => {
+    let found = 0;
+    state.inventory.forEach(inv => {
+      if (inv.itemId === id && found < count) {
+        uidsToRemove.push(inv.uid);
+        found++;
+      }
+    });
+  });
+
+  uidsToRemove.forEach(uid => {
+    const inv = state.inventory.find(i => i.uid === uid);
+    if(inv) {
+        const item = itemById(inv.itemId);
+        itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
+    }
+  });
+
+  try {
+    const response = await fetch(`${SERVER_URL}/api/withdraw`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tgId: state.user.id,
+        username: state.user.username,
+        robloxName: w.robloxUsername,
+        robloxId: state.user?.robloxId || 'Не указан',
+        items: itemsPayload
+      })
+    });
+
+    if (!response.ok) throw new Error('Ошибка сервера');
+
+    state.inventory = state.inventory.filter(i => !uidsToRemove.includes(i.uid));
+    saveLocalState();
+    render(false);
+    
+    haptic('success');
+    $('#modal').innerHTML = `
+      <div style="text-align:center; padding:40px 20px;">
+        <div style="font-size:80px; margin-bottom:20px;">✅</div>
+        <h2 style="font-size:28px; font-weight:900; color:#fff; margin-bottom:10px;">Заявка создана!</h2>
+        <p style="color:var(--muted); margin-bottom:24px;">Ожидайте выдачи предметов в игре Roblox.</p>
+        <button class="btn btn-primary" style="width:100%;" onclick="closeModal()">Отлично</button>
+      </div>
+    `;
+
+  } catch (error) {
+    console.error(error);
+    toast('Ошибка связи с сервером. Проверьте заявку в Discord.', 'err');
+    haptic('error');
+    if (btn) { btn.disabled = false; btn.textContent = 'ВЫВЕСТИ В РОБЛОКС'; }
+  }
 }
 
 /* === INITIALIZATION === */
