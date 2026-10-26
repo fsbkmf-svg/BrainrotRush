@@ -164,26 +164,9 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .particle{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0}
 @keyframes particleFly{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--px)),calc(-50% + var(--py))) rotate(var(--pr)) scale(0.3)}}
 
-/* ALL IN NEW */
+/* ALL IN (ОСТАВЛЕН КАК В ПРИСЛАННОМ ФАЙЛЕ) */
 .all-in-stage-new{position:relative;width:100%;min-height:80vh;background:radial-gradient(circle at center,rgba(244,63,94,.15) 0%,#000 80%);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(244,63,94,.4);box-shadow:inset 0 0 100px rgba(244,63,94,.2);padding:20px;box-sizing:border-box}
-.all-in-multiplier{font-size:120px;font-weight:900;color:#fff;text-shadow:0 0 50px rgba(244,63,94,0.8), 0 0 100px rgba(244,63,94,0.4);transition:all 0.1s linear;position:relative;z-index:5;font-variant-numeric:tabular-nums; line-height:1;}
-.all-in-multiplier.losing{color:#f43f5e;text-shadow:0 0 50px rgba(244,63,94,0.8);}
-.all-in-multiplier.winning{color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,0.8);}
-.all-in-subtext{font-size:20px;font-weight:800;color:#cbd5e1;margin-top:20px;z-index:5;text-align:center;}
-.all-in-bg-text-new{position:absolute;font-size:200px;font-weight:900;color:rgba(255,255,255,0.02);text-transform:uppercase;letter-spacing:20px;pointer-events:none;user-select:none;z-index:1;white-space:nowrap}
-
-.multi-opening-stage{background:rgba(15,23,42,0.9);border:1px solid var(--border-strong);border-radius:24px;padding:32px;text-align:center;margin:0 auto;max-width:1200px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.multi-result-title{font-size:36px;font-weight:900;color:#fff;margin-bottom:24px;background:linear-gradient(135deg,#fff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.02em}
-.multi-result-total{margin-bottom:32px;display:inline-flex;flex-direction:column;align-items:center;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:16px 40px}
-.multi-result-total .lbl{font-size:14px;color:var(--muted);font-weight:800;text-transform:uppercase;margin-bottom:6px;letter-spacing:0.05em}
-.multi-result-total .val{font-size:32px;font-weight:900;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:10px}
-.multi-result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:32px;max-height:55vh;overflow-y:auto;padding-right:8px}
-.multi-result-item{background:linear-gradient(180deg,rgba(15,23,42,.95) 0%,rgba(10,14,23,.95) 100%);border:1px solid var(--border);border-radius:16px;padding:20px 12px;position:relative;overflow:hidden;transition:all .25s;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.multi-result-item .strip{position:absolute;top:0;left:0;right:0;height:4px}
-.multi-result-item .nm{font-size:14px;font-weight:700;margin:12px 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
-.multi-result-item .pr{font-size:16px;font-weight:800;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:6px}
-.multi-result-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.multi-result-actions .btn{font-size:16px;padding:14px 32px;border-radius:14px}
+.all-in-multiplier{font-size:130px;font-weight:900;color:#fff;text-shadow:0 0 50px rgba(244,63,94,0.8), 0 0 100px rgba(244,63,94,0.4);transition:all 0.1s linear;position:relative;z-index:5;font-variant-numeric:tabular-nums; line-height:1;}
 
 /* UPGRADE */
 .upg-layout{display:flex;flex-direction:column;gap:20px}
@@ -231,34 +214,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .upg-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
 .upg-slider:disabled{opacity:.5;cursor:not-allowed}
 
-/* SETTINGS MODAL */
-.settings-modal-content{background:var(--surface-solid);color:#fff;padding:32px;border-radius:28px;max-width:600px;width:100%;border:1px solid var(--border-strong);box-shadow:var(--shadow-lg),var(--glow-blue);overflow-x:hidden}
-.settings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;font-size:24px;font-weight:900}
-.settings-close{cursor:pointer;color:var(--muted);font-size:28px;transition:color 0.2s;line-height:1}
-.settings-close:hover{color:#fff;transform:scale(1.1)}
-.settings-section{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:24px;margin-bottom:24px;max-width:100%}
-.settings-sec-title{font-size:16px;font-weight:800;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
-.settings-link{color:var(--accent);font-size:13px;cursor:pointer;text-decoration:none;font-weight:700}
-.settings-options-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:20px;max-width:100%}
-@media(max-width:600px){.settings-options-grid{grid-template-columns:1fr}}
-.settings-opt-group{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;max-width:100%;min-width:0;overflow:hidden}
-.settings-opt-group p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
-.settings-btn-row{display:flex;gap:6px;align-items:center;width:100%;max-width:100%}
-.settings-input{flex:1 1 0%;min-width:0;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:10px 2px;text-align:center;font-size:13px;font-weight:700;outline:none;transition:all 0.2s}
-.settings-input:focus{border-color:var(--accent);box-shadow:0 0 10px rgba(56,189,248,.2)}
-.settings-reset-icon{color:var(--accent);cursor:pointer;font-size:20px;padding:4px;flex-shrink:0;transition:transform .2s}
-.settings-reset-icon:hover{transform:rotate(-45deg)}
-.settings-radio-group{display:flex;flex-direction:column;gap:16px}
-.settings-radio-item{display:flex;align-items:flex-start;gap:14px;cursor:pointer}
-.settings-radio-item input[type="radio"]{display:none}
-.settings-radio-mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--muted);display:inline-block;position:relative;flex-shrink:0;margin-top:2px;transition:all .2s}
-.settings-radio-item input:checked + .settings-radio-mark{border-color:var(--accent)}
-.settings-radio-item input:checked + .settings-radio-mark::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-.settings-radio-text{font-size:15px;font-weight:700;color:#fff;line-height:1.3}
-.settings-radio-sub{font-size:13px;color:var(--muted);margin-top:6px;font-weight:400;line-height:1.4}
-.btn-save-settings{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;border-radius:14px;padding:18px;font-size:17px;font-weight:900;width:100%;cursor:pointer;margin-top:16px;transition:all .2s;box-shadow:0 4px 22px rgba(14,165,233,.4)}
-.btn-save-settings:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(14,165,233,.55)}
-
 /* OVERLAY / MODAL */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(5,6,12,.85);display:none;align-items:center;justify-content:center;padding:20px;animation:overlayIn .2s ease}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
@@ -277,53 +232,17 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* ДЕПОЗИТ & ВЫВОД */
-.dep-tabs { display: flex; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 20px; }
-.dep-tab { flex: 1; text-align: center; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s; }
-.dep-tab.active { background: #ea580c; color: #fff; box-shadow: 0 4px 15px rgba(234,88,12,0.4); }
-.dep-tab.disabled { opacity: 0.5; cursor: not-allowed; }
-.dep-select-bar { background: #ea580c; border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; cursor: pointer; transition: background 0.2s; }
-.dep-select-bar:hover { background: #c2410c; }
-.dep-select-bar span { font-weight: 800; font-size: 16px; color: #fff; }
-.dep-text-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-.dep-text-box p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
-.dep-search { width: 100%; padding: 14px 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; font-size: 14px; margin-bottom: 16px; outline: none; }
-.dep-search:focus { border-color: var(--accent); }
-.dep-filters { display: flex; gap: 12px; margin-bottom: 20px; }
-.dep-filters input { flex: 1; padding: 12px 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 13px; outline: none; }
-.dep-sort-btn { padding: 12px 16px; background: #312e81; border: 1px solid #4338ca; border-radius: 12px; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-.dep-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 8px; }
-@media(max-width: 600px) { .dep-grid { grid-template-columns: repeat(2, 1fr); } }
-.dep-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; position: relative; cursor: pointer; transition: all 0.2s; min-height: 180px; }
-.dep-card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-2px); }
-.dep-card.selected { border-color: #ea580c; background: rgba(234,88,12,0.1); }
-.dep-card.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
-.dep-img { flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
-.dep-img img { max-height: 70px; object-fit: contain; }
-.dep-name { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.dep-price { font-size: 12px; font-weight: 800; color: var(--gold); display: flex; align-items: center; gap: 4px; }
-.dep-back { display: inline-block; color: #ea580c; font-size: 14px; font-weight: 800; cursor: pointer; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-.dep-sum-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
-.dep-sum-left { display: flex; align-items: center; gap: 12px; }
-.dep-sum-remove { background: rgba(244,63,94,0.2); color: #f43f5e; border: none; width: 28px; height: 28px; border-radius: 8px; font-weight: 900; cursor: pointer; }
-.dep-total-box { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 16px 20px; border-radius: 16px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.05); }
-.dep-input-group { margin-bottom: 16px; }
-.dep-input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.dep-input { width: 100%; padding: 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; font-size: 15px; outline: none; }
-.dep-input:focus { border-color: var(--accent); }
-.dep-submit-btn { width: 100%; padding: 18px; background: #312e81; color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
-.dep-submit-btn:not(:disabled):hover { background: #4338ca; }
-.dep-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.dep-queue-box { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 20px; }
-.dep-queue-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; letter-spacing: 1px; }
-.dep-timer { font-size: 48px; font-weight: 900; color: #34d399; text-shadow: 0 0 30px rgba(16,185,129,0.4); line-height: 1; margin-bottom: 16px; }
-.dep-instructions { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
-.dep-target-box { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; text-align: left; margin-bottom: 20px; }
-.dep-target-box .lbl { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.dep-target-name { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 12px; }
-.dep-copy-btn { width: 100%; padding: 12px; background: #312e81; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
-.dep-pets-list { font-size: 13px; color: var(--muted); margin-bottom: 20px; text-align: center; }
-.dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+/* ДЕПОЗИТ / ВЫВОД */
+.item-selector { max-height: 300px; overflow-y: auto; border: 1px solid rgba(255,255,255,.05); border-radius: 16px; padding: 8px; margin-bottom: 16px; background: rgba(0,0,0,0.2); }
+.item-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: background .2s; margin-bottom: 4px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.02); }
+.item-row:hover { background: rgba(56,189,248,.08); }
+.item-row.selected { background: rgba(56,189,248,.15); border: 1px solid var(--accent); }
+.item-row input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; cursor: pointer; }
+.item-row-info { flex: 1; }
+.item-row-name { font-size: 14px; font-weight: 700; color: #fff; }
+.item-row-price { font-size: 12px; color: var(--gold); font-weight: 800; }
+.form-input { width: 100%; padding: 14px 16px; background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; color: #fff; font-size: 15px; margin-bottom: 16px; outline: none; }
+.form-input:focus { outline: none; border-color: var(--accent); }
 
 /* INVENTORY & PROFILE */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
@@ -333,11 +252,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .item-card .nm{font-size:14px;font-weight:700;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
 .item-card .pr{font-weight:900;color:var(--gold);font-size:16px;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px;justify-content:center}
 .item-card .acts{display:flex;gap:8px;justify-content:center}
-.inv-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;align-items:center}
-.inv-sort-btn{padding:8px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
-.inv-sort-btn:hover{background:rgba(255,255,255,.06);color:#fff}
-.inv-sort-btn.active{background:rgba(56,189,248,.15);border-color:var(--accent);color:#fff;box-shadow:0 0 15px rgba(56,189,248,.15)}
-.inv-label{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800;margin-right:4px;padding:8px 0}
 
 /* MINES */
 .game-layout{display:flex;gap:32px;flex-wrap:wrap}
@@ -413,7 +327,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   .settings-options-grid{grid-template-columns:1fr}
   .profile-grid{flex-direction:column}
   .admin-grid{grid-template-columns:1fr}
-  .dep-grid{grid-template-columns:repeat(2, 1fr);}
   .game-layout{flex-direction:column;}
   .case-open-panel{padding:24px}
   .all-in-multiplier{font-size:60px;}
@@ -544,7 +457,7 @@ document.addEventListener('keydown',e=>{
 
 document.addEventListener('click',e=>{
   initAudio();
-  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn');
+  const btn=e.target.closest('.btn,.open-opt,.mult-btn,.upg-inv-item,.case-card,.nav-item,.dep-card,.profile-back,.tab,.btn-allin-go,.settings-close,.btn-save-settings,.settings-link,.btn-ctrl,.upg-item-card,.fair-copy-btn,.inv-sort-btn,.item-row');
   if(!btn)return;
   if(!e.target.closest('.btn-ghost')||e.target.closest('.btn-ghost').id!=='soundToggle')sndClick();
   const r=btn.getBoundingClientRect();
@@ -656,7 +569,6 @@ const ITEMS=[
 {id:'signore',name:'Signore Carapace',icon:'🐢',rarity:'mythic',price:25302,img:'brainrots/signore.png'},
 {id:'strawb',name:'Strawberry Elephant',icon:'🍓',rarity:'mythic',price:41600,img:'brainrots/Strawberry_Elephant.png'},
 {id:'headless',name:'Headless Horseman',icon:'🎃',rarity:'god',price:208000,img:'brainrots/Horseman.png'},
-// Мутации (исключены из депозита)
 {id:'guest666_gold',name:'Gold Guest666',icon:'😈',rarity:'rare',price:201.27,img:'brainrots/Gold_Guest666.png'},
 {id:'guest666_diamond',name:'Diamond Guest666',icon:'😈',rarity:'rare',price:214.43,img:'brainrots/Diamond_Guest666.png'},
 {id:'guest666_bloodrot',name:'Bloodrot Guest666',icon:'😈',rarity:'epic',price:521.04,img:'brainrots/Bloodrot_Guest666.png'},
@@ -806,13 +718,6 @@ async function pushInventoryRemove(uids) {
   } catch(e) {}
 }
 
-function sha256(ascii){function rightRotate(v,a){return(v>>>a)|(v<<(32-a));}var mathPow=Math.pow;var maxWord=mathPow(2,32);var lengthProperty='length';var i,j;var result='';var words=[];var asciiBitLength=ascii[lengthProperty]*8;let hash=sha256.h=sha256.h||[];var k=sha256.k=sha256.k||[];var primeCounter=k[lengthProperty];var isComposite={};for(var candidate=2;primeCounter<64;candidate++){if(!isComposite[candidate]){for(i=0;i<313;i+=candidate){isComposite[i]=candidate;}hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0;k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0;}}ascii+='\x80';while(ascii[lengthProperty]%64-56)ascii+='\x00';for(i=0;i<ascii[lengthProperty];i++){j=ascii.charCodeAt(i);if(j>>8)return'';words[i>>2]|=j<<((3-i)%4)*8;}words[words[lengthProperty]]=((asciiBitLength/maxWord)|0);words[words[lengthProperty]]=(asciiBitLength);for(j=0;j<words[lengthProperty];){var w=words.slice(j,j+=16);var oldHash=hash.slice(0);for(i=0;i<64;i++){var w15=w[i-15],w2=w[i-2];var a=hash[0],e=hash[4];var temp1=hash[7]+(rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+(w[i]=(i<16)?w[i]:(w[i-16]+(rightRotate(w15,7)^rightRotate(w15,18)^(w15>>>3))+w[i-7]+(rightRotate(w2,17)^rightRotate(w2,19)^(w2>>>10)))|0);var temp2=(rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));hash=[(temp1+temp2)|0].concat(hash);hash[4]=(hash[4]+temp1)|0;}for(i=0;i<8;i++)hash[i]=(hash[i]+oldHash[i])|0;}for(i=0;i<8;i++){for(j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?'0':'')+b.toString(16);}}return result;}
-function hmacSha256(key,message){var blockSize=64;if(key.length>blockSize)key=sha256(key);while(key.length<blockSize)key+='\x00';var oKeyPad='',iKeyPad='';for(var i=0;i<blockSize;i++){var keyChar=key.charCodeAt(i);oKeyPad+=String.fromCharCode(keyChar^0x5c);iKeyPad+=String.fromCharCode(keyChar^0x36);}return sha256(oKeyPad+sha256(iKeyPad+message));}
-function getFairRoll(serverSeed,clientSeed,nonce){var msg=clientSeed+':'+nonce;var hash=hmacSha256(serverSeed,msg);var intVal=parseInt(hash.substring(0,8),16);return intVal/0xFFFFFFFF;}
-
-function initFairness(){if(!state.fairness.serverSeed)generateNewServerSeed();if(!state.fairness.clientSeed)state.fairness.clientSeed=uuid().replace(/-/g,'').slice(0,16);}
-function generateNewServerSeed(){if(state.fairness.serverSeed&&state.fairness.serverSeedHash){state.fairness.prevSeeds.unshift({seed:state.fairness.serverSeed,hash:state.fairness.serverSeedHash,endNonce:state.fairness.nonce-1});if(state.fairness.prevSeeds.length>5)state.fairness.prevSeeds.pop();}state.fairness.serverSeed=uuid()+uuid();state.fairness.serverSeedHash=sha256(state.fairness.serverSeed);state.fairness.nonce=1;saveLocalState();}
-
 function loadSavedState(){
   try{
     const raw=localStorage.getItem('brainrot-steal-state-v8');if(!raw)return false;
@@ -829,11 +734,7 @@ function loadSavedState(){
     if(typeof s.vipMode!=='undefined')state.vipMode=s.vipMode;
     if(s.inventorySort)state.inventorySort=s.inventorySort;
     if(s.inventoryFilter)state.inventoryFilter=s.inventoryFilter;
-    if(s.mines){
-      state.mines={active:!!s.mines.active,bet:Number(s.mines.bet)||0,mines:Number(s.mines.mines)||3,revealed:new Set(s.mines.revealed||[]),mineSet:new Set(s.mines.mineSet||[]),multiplier:Number(s.mines.multiplier)||1,exploded:!!s.mines.exploded};
-    }
-    if(s.fairness)state.fairness={...state.fairness,...s.fairness};
-    initFairness();return true;
+    return true;
   }catch(e){console.error('Save load error:',e);return false;}
 }
 function saveLocalState(){
@@ -842,9 +743,7 @@ function saveLocalState(){
       balance:state.balance,inventory:state.inventory,history:state.history.slice(-500),
       refCode:state.refCode,user:state.user,settings:state.settings,
       pendingWithdrawals:state.pendingWithdrawals,topDropDayCache:state.topDropDayCache,
-      vipMode:state.vipMode,fairness:state.fairness,
-      inventorySort:state.inventorySort,inventoryFilter:state.inventoryFilter,
-      mines:{active:state.mines.active,bet:state.mines.bet,mines:state.mines.mines,revealed:Array.from(state.mines.revealed),mineSet:Array.from(state.mines.mineSet),multiplier:state.mines.multiplier,exploded:state.mines.exploded}
+      vipMode:state.vipMode, inventorySort:state.inventorySort, inventoryFilter:state.inventoryFilter
     }));
   }catch(e){}
 }
@@ -949,7 +848,8 @@ function settlePendingCase(){
         itemName: it.name,
         price: it.price,
         rarity: it.rarity,
-        itemId: it.id
+        itemId: it.id,
+        source: 'case'
       })
     }).catch(e => console.log('Ошибка отправки дропа', e));
 
@@ -1015,9 +915,13 @@ function setTab(t){
 function openCase(id){cancelAnimations();state.currentCase=id;state.caseOpens=1;state.openingView=null;state.tab='cases';renderNav();render(true);window.scrollTo({top:0,behavior:'smooth'});}
 function backToCases(){cancelAnimations();state.currentCase=null;state.caseOpens=1;state.openingView=null;render(true);window.scrollTo({top:0,behavior:'smooth'});}
 
-function showProfile(username, itemId){
+function showProfile(username, itemId, source = 'Кейс') {
   const it = itemById(itemId);
   if(!it) return;
+  
+  const sourceIcon = source === 'all_in' ? '🎰' : source === 'upgrade' ? '📈' : '🎁';
+  const sourceText = source === 'all_in' ? 'ALL IN' : source === 'upgrade' ? 'Апгрейд' : 'Кейс';
+  
   $('#modal').innerHTML = `<div class="modal-head">
     <div class="modal-title">Профиль игрока</div>
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -1025,353 +929,17 @@ function showProfile(username, itemId){
   <div style="text-align:center;padding:20px 0;">
     <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);margin:0 auto 16px;display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff;">${esc((username || '?')[0]).toUpperCase()}</div>
     <div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;">${esc(username || 'Игрок')}</div>
-    <div style="color:var(--muted);margin-bottom:24px;font-size:14px;">Лучший дроп дня</div>
+    <div style="color:var(--muted);margin-bottom:24px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;">
+      Лучший дроп дня <span style="font-size:16px">${sourceIcon}</span>
+    </div>
     <div style="background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.3);border-radius:20px;padding:24px;">
       <div style="margin-bottom:16px;display:flex;justify-content:center;">${itemIcon(it,100)}</div>
       <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:8px;">${esc(it.name)}</div>
       <div style="font-size:22px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:8px;">${coin(22)} ${fmt(it.price)}</div>
+      <div style="margin-top:12px;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;background:rgba(0,0,0,0.3);padding:4px 8px;border-radius:8px;display:inline-block;">Выбито: ${sourceText}</div>
     </div>
   </div>`;
   $('#overlay').classList.add('open');
-}
-
-function openSettingsModal(){
-  $('#modal').innerHTML=`<div class="settings-modal-content">
-    <div class="settings-header"><span>⚙️ Настройки</span><span class="settings-close" onclick="closeModal()">✕</span></div>
-    <div class="settings-section">
-      <div class="settings-sec-title"><span>Быстрый подбор</span><a class="settings-link" onclick="resetUpgradeSettings()">По умолчанию</a></div>
-      <div class="settings-options-grid">
-        <div class="settings-opt-group"><p>Кнопки для подбора по коэффициенту</p>
-          <div class="settings-btn-row">
-            <input type="number" class="settings-input" value="${state.settings.multipliers[0]}" oninput="updateSettingMultiplier(0,this.value)" min="1">
-            <input type="number" class="settings-input" value="${state.settings.multipliers[1]}" oninput="updateSettingMultiplier(1,this.value)" min="1">
-            <input type="number" class="settings-input" value="${state.settings.multipliers[2]}" oninput="updateSettingMultiplier(2,this.value)" min="1">
-            <span class="settings-reset-icon" onclick="resetSettingsArray('multipliers')">↺</span>
-          </div>
-        </div>
-        <div class="settings-opt-group"><p>Кнопки для подбора по проценту</p>
-          <div class="settings-btn-row">
-            <input type="number" class="settings-input" value="${state.settings.percentages[0]}" oninput="updateSettingPercentage(0,this.value)" min="1" max="99">
-            <input type="number" class="settings-input" value="${state.settings.percentages[1]}" oninput="updateSettingPercentage(1,this.value)" min="1" max="99">
-            <input type="number" class="settings-input" value="${state.settings.percentages[2]}" oninput="updateSettingPercentage(2,this.value)" min="1" max="99">
-            <span class="settings-reset-icon" onclick="resetSettingsArray('percentages')">↺</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="settings-section">
-      <div class="settings-sec-title">Звук в апгрейде</div>
-      <div class="settings-radio-group">
-        <label class="settings-radio-item"><input type="radio" name="upg_sound" value="true" ${state.settings.upgradeSound?'checked':''} onchange="state.settings.upgradeSound=true"><span class="settings-radio-mark"></span><div><div class="settings-radio-text">Включен</div><div class="settings-radio-sub">Звуковые эффекты включены</div></div></label>
-        <label class="settings-radio-item"><input type="radio" name="upg_sound" value="false" ${!state.settings.upgradeSound?'checked':''} onchange="state.settings.upgradeSound=false"><span class="settings-radio-mark"></span><div><div class="settings-radio-text">Выключен</div><div class="settings-radio-sub">Звук в апгрейде выключен</div></div></label>
-      </div>
-    </div>
-    <div class="settings-section">
-      <div class="settings-sec-title">Скорость анимации</div>
-      <div class="settings-radio-group">
-        <label class="settings-radio-item"><input type="radio" name="upg_spin" value="normal" ${state.settings.spinType==='normal'?'checked':''} onchange="state.settings.spinType='normal'"><span class="settings-radio-mark"></span><div><div class="settings-radio-text">Обычная</div><div class="settings-radio-sub">Кейсы 3.5с · Апгрейд 5с</div></div></label>
-        <label class="settings-radio-item"><input type="radio" name="upg_spin" value="fast" ${state.settings.spinType==='fast'?'checked':''} onchange="state.settings.spinType='fast'"><span class="settings-radio-mark"></span><div><div class="settings-radio-text">Ускоренная</div><div class="settings-radio-sub">Кейсы 0.3с · Апгрейд 2с</div></div></label>
-      </div>
-    </div>
-    <button class="btn-save-settings" onclick="saveSettingsAndClose()">Сохранить и закрыть</button>
-  </div>`;
-  $('#overlay').classList.add('open');
-}
-function updateSettingMultiplier(i,v){let n=parseFloat(v);if(isNaN(n)||n<1)n=1;state.settings.multipliers[i]=n;}
-function updateSettingPercentage(i,v){let n=parseFloat(v);if(isNaN(n)||n<1)n=1;if(n>99)n=99;state.settings.percentages[i]=n;}
-function resetSettingsArray(k){if(k==='multipliers')state.settings.multipliers=[2,5,10];if(k==='percentages')state.settings.percentages=[5,33,75];openSettingsModal();}
-function resetUpgradeSettings(){state.settings.multipliers=[2,5,10];state.settings.percentages=[5,33,75];openSettingsModal();}
-function saveSettingsAndClose(){saveLocalState();closeModal();if(state.tab==='upgrade')render(false);toast('Настройки сохранены','ok');}
-function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); __depositTimerInt=null;} if(typeof __depositPollingInterval!=='undefined' && __depositPollingInterval){clearInterval(__depositPollingInterval); __depositPollingInterval=null;} $('#overlay').classList.remove('open'); }
-
-async function initTelegramLogin(){
-  const tg = window.Telegram?.WebApp;
-  
-  if (!tg) {
-    showLoginError('Вы открыли игру в обычном браузере. Откройте её через Telegram-бота.');
-    return;
-  }
-  
-  tg.expand();
-  
-  let attempts = 0;
-  const maxAttempts = 10; 
-  
-  const checkInterval = setInterval(async () => {
-    attempts++;
-    const initData = tg.initData || '';
-    
-    if (initData.length > 0) {
-      clearInterval(checkInterval);
-      document.getElementById('loginLoading').style.display = 'block';
-      
-      try {
-        const response = await fetch(`${SERVER_URL}/api/auth/telegram`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ initData: initData })
-        });
-        
-        if (!response.ok) throw new Error('Сервер ответил ошибкой');
-        
-        const data = await response.json();
-        
-        if (data.success && data.user) {
-          onTelegramAuth({
-            id: data.user.id,
-            first_name: data.user.first_name || '',
-            last_name: data.user.last_name || '',
-            username: data.user.username || ('user' + data.user.id),
-            photo_url: data.user.photo_url || null
-          });
-        } else {
-          showLoginError('Ошибка сервера: неверный ответ.');
-        }
-      } catch (error) {
-        console.error(error);
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            onTelegramAuth({
-                id: tg.initDataUnsafe.user.id,
-                first_name: tg.initDataUnsafe.user.first_name || '',
-                username: tg.initDataUnsafe.user.username || ('user' + tg.initDataUnsafe.user.id),
-                photo_url: tg.initDataUnsafe.user.photo_url || null
-            });
-        } else {
-            showLoginError('Сервер на Bonto не отвечает. Проверьте, запущен ли он.');
-        }
-      }
-    } 
-    else if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      clearInterval(checkInterval);
-      onTelegramAuth({
-        id: tg.initDataUnsafe.user.id,
-        first_name: tg.initDataUnsafe.user.first_name || '',
-        username: tg.initDataUnsafe.user.username || ('user' + tg.initDataUnsafe.user.id),
-        photo_url: tg.initDataUnsafe.user.photo_url || null
-      });
-    }
-    
-    if (attempts >= maxAttempts) {
-      clearInterval(checkInterval);
-      showLoginError('Telegram не передал данные. Убедитесь, что вы настроили Web App URL в @BotFather.');
-    }
-  }, 500);
-}
-
-function showLoginError(msg) {
-   document.getElementById('loginLoading').style.display = 'none';
-   const errorBox = document.getElementById('tgErrorBox');
-   errorBox.style.display = 'block';
-   document.getElementById('tgErrorMessage').innerHTML = msg;
-}
-
-async function onTelegramAuth(user){
-  const userData = {
-    id: user.id,
-    name: user.first_name || 'Игрок',
-    username: user.username || '',
-    avatar: user.photo_url || null,
-    joined: new Date().toLocaleDateString('ru-RU')
-  };
-  const isNew=state.balance===0&&state.history.length===0&&state.inventory.length===0;
-  if(isNew){ state.balance=0; } 
-  state.user=userData;
-  
-  await apiSync();
-
-  const nameEl=document.getElementById('profileName');
-  const avatarEl=document.getElementById('profileAvatar');
-  
-  if(nameEl)nameEl.textContent=state.user.name;
-  if(avatarEl) {
-    if(state.user.avatar) {
-      avatarEl.innerHTML = `<img src="${state.user.avatar}" alt="ava">`;
-    } else {
-      avatarEl.textContent=(state.user.name||'?')[0].toUpperCase();
-    }
-  }
-  
-  document.getElementById('loginScreen').classList.remove('show');
-  document.getElementById('app').classList.add('logged-in');
-  saveLocalState();renderNav();render(true);
-  haptic('success');
-}
-document.addEventListener('DOMContentLoaded',initTelegramLogin);
-
-/* ADMIN */
-function setAdminTab(t){state.adminTab=t;render(false);}
-function adminGiveCoins(){
-  const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
-  if(!a||a<=0){toast('Введите сумму','err');return;}
-  state.balance+=a;saveLocalState();renderHeader();toast(`Выдано ${fmt(a)} монет`,'ok');
-  inp.value='';render(false);
-}
-function adminTakeCoins(){
-  const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
-  if(!a||a<=0){toast('Введите сумму','err');return;}
-  state.balance=Math.max(0,state.balance-a);saveLocalState();renderHeader();toast(`Списано ${fmt(a)} монет`,'ok');
-  inp.value='';render(false);
-}
-function adminGiveItem(){
-  const sel=document.getElementById('adminItemSelect');const id=sel.value;
-  if(!id){toast('Выберите предмет','err');return;}
-  state.inventory.push({uid:uuid(),itemId:id,date:Date.now()});
-  saveLocalState();toast(`Выдан: ${itemById(id).name}`,'ok');render(false);
-}
-function adminClearInventory(){
-  if(!confirm('Очистить весь инвентарь?'))return;
-  state.inventory=[];saveLocalState();toast('Инвентарь очищен','ok');render(false);
-}
-function adminApproveWithdrawal(id){
-  if(!confirm('Подтвердить выдачу? Заявка будет закрыта.'))return;
-  state.pendingWithdrawals=state.pendingWithdrawals.filter(r=>r.id!==id);
-  saveLocalState();sndWinRarity('epic');toast('Заявка выполнена','ok');render(false);
-}
-
-function renderAdmin(){
-  const tabs=`<div class="admin-tabs">
-    <div class="admin-tab ${state.adminTab==='users'?'active':''}" onclick="setAdminTab('users')">Пользователи</div>
-    <div class="admin-tab ${state.adminTab==='withdrawals'?'active':''}" onclick="setAdminTab('withdrawals')">Вывод</div>
-    <div class="admin-tab ${state.adminTab==='economy'?'active':''}" onclick="setAdminTab('economy')">Экономика</div>
-  </div>`;
-  let c='';
-  if(state.adminTab==='users'){
-    c=`<div class="admin-grid">
-      <div class="admin-card"><h4>Управление ресурсами (${state.user?esc(state.user.username):'Гость'})</h4>
-        <div class="admin-form-group"><label>Сумма монет</label><input type="number" id="adminCoinsInput" class="bet-input" placeholder="Например: 10000" style="margin-bottom:12px;"></div>
-        <div style="display:flex;gap:12px;"><button class="btn btn-accent" style="flex:1" onclick="adminGiveCoins()">Выдать</button><button class="btn btn-danger" style="flex:1" onclick="adminTakeCoins()">Списать</button></div>
-      </div>
-      <div class="admin-card"><h4>Выдать предмет</h4>
-        <div class="admin-form-group"><label>Предмет</label>
-          <select id="adminItemSelect" class="bet-input" style="margin-bottom:12px;appearance:auto;">
-            ${ITEMS.filter(i=>!i.id.startsWith('coin_')).map(i=>`<option value="${i.id}">${esc(i.name)} (${fmt(i.price)})</option>`).join('')}
-          </select>
-        </div>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="adminGiveItem()">Выдать предмет</button>
-        <button class="btn btn-ghost" style="width:100%;" onclick="adminClearInventory()">Очистить инвентарь</button>
-      </div>
-    </div>`;
-  }else if(state.adminTab==='withdrawals'){
-    if(!state.pendingWithdrawals.length){c=`<div class="empty-state">📦 Нет активных заявок</div>`;}
-    else{
-      c=state.pendingWithdrawals.map(req=>{
-        const itemsHtml=req.items.map(id=>{const it=itemById(id);return it?`<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(56,189,248,.05);padding:6px 12px;border-radius:10px;margin-right:8px;margin-bottom:8px;border:1px solid rgba(56,189,248,.1);">${itemIcon(it,24)}<span style="font-size:13px;font-weight:700;color:#fff;">${esc(it.name)}</span></div>`:'';}).join('');
-        return `<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:24px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
-          <div>
-            <div style="font-weight:900;font-size:18px;margin-bottom:8px;color:#fff;">Заявка #${req.id.slice(-4)}</div>
-            <div style="color:var(--muted);font-size:14px;margin-bottom:16px;">От: <b style="color:#fff">@${esc(req.username)}</b> | ${req.date} в ${req.time}</div>
-            <div style="max-width:600px;">${itemsHtml}</div>
-          </div>
-          <button class="btn btn-accent" onclick="adminApproveWithdrawal('${req.id}')">Выдал предметы</button>
-        </div>`;
-      }).join('');
-    }
-  }else if(state.adminTab==='economy'){
-    const totalItemsVal=state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
-    const totalWithdrawn=state.history.filter(h=>h.type==='sell').reduce((s,h)=>s+(h.price||0),0);
-    c=`<div class="admin-grid">
-      <div class="admin-card"><h4>Текущий пользователь</h4>
-        <div style="font-size:15px;margin-bottom:12px;color:var(--muted)">Баланс: <b style="color:var(--gold);font-size:20px;float:right;">${fmt(state.balance)} ${coin(18)}</b></div>
-        <div style="font-size:15px;margin-bottom:12px;color:var(--muted)">Стоимость инвентаря: <b style="color:var(--gold);font-size:20px;float:right;">${fmt(totalItemsVal)} ${coin(18)}</b></div>
-        <div style="font-size:15px;color:var(--muted)">Выведено: <b style="color:var(--green);font-size:20px;float:right;">${fmt(totalWithdrawn)} ${coin(18)}</b></div>
-      </div>
-    </div>`;
-  }
-  return `<div class="page-title">🛠️ Админ-панель</div><div class="page-sub">Управление проектом</div>${tabs}<div class="admin-panel">${c}</div>`;
-}
-
-/* PROFILE */
-function renderProfile(){
-  if(!state.user)return '<div class="empty-state">Сначала войдите</div>';
-  const casesOpened=state.history.filter(h=>h.type==='case').length;
-  const upgradesDone=state.history.filter(h=>h.type==='upgrade_win'||h.type==='upgrade_lose').length;
-  const itemsCount=state.inventory.length;
-  const level=Math.floor(state.history.length/10)+1;
-  const totalWithdrawn=state.history.filter(h=>h.type==='sell').reduce((s,h)=>s+(h.price||0),0);
-  let bestDropItem=null,maxPrice=0;
-  state.history.filter(h=>h.type==='case').forEach(h=>{const it=itemById(h.itemId);if(it&&it.price>maxPrice){maxPrice=it.price;bestDropItem=it;}});
-  const caseCounts={};state.history.filter(h=>h.type==='case').forEach(h=>{caseCounts[h.caseId]=(caseCounts[h.caseId]||0)+1;});
-  let favCaseId=null,maxCount=0;
-  for(const id in caseCounts){if(caseCounts[id]>maxCount){maxCount=caseCounts[id];favCaseId=id;}}
-  const favCase=CASES.find(c=>c.id===favCaseId)||CASES[0];
-  const invPreview=state.inventory.slice(-10).reverse();
-  const pfHistory = state.history.filter(h => h.type === 'upgrade_win' || h.type === 'upgrade_lose').slice(-15).reverse();
-
-  const avatarImg = state.user.avatar 
-    ? `<img src="${state.user.avatar}" alt="${esc(state.user.name)}">` 
-    : esc((state.user.name||'?')[0].toUpperCase());
-
-  return `<div class="profile-header">
-    <button class="profile-back" onclick="setTab('cases')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:all .2s;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-    <div class="profile-avatar-large">${avatarImg}</div>
-    <div>
-      <div class="profile-name-large">
-        ${esc(state.user.name)} 
-        ${state.user.username ? `<span style="font-size:18px;color:var(--muted);font-weight:600;margin-left:8px;">@${esc(state.user.username)}</span>` : ''}
-      </div>
-      <div class="profile-joined">Telegram ID: <b style="color:#fff;">${esc(state.user.id)}</b> · С нами с ${esc(state.user.joined||'—')}</div>
-    </div>
-  </div>
-  <div class="profile-grid">
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="profile-card"><div class="profile-card-title">⭐ ЛУЧШИЙ ДРОП</div>
-        ${bestDropItem?`<div class="best-drop-item"><div class="result-ico">${itemIcon(bestDropItem,100)}</div><div class="name">${esc(bestDropItem.name)}</div><div class="price">${fmt(bestDropItem.price)} ${coin(28)}</div></div>`:`<div class="empty-state" style="padding:40px 20px">Пока нет дропов</div>`}
-      </div>
-      <div class="profile-card"><div class="profile-card-title">ЛЮБИМЫЙ КЕЙС</div>
-        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:20px;display:flex;align-items:center;gap:20px;">
-          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;" onerror="this.style.display='none'">`:favCase.icon}</div>
-          <div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.05em;margin-bottom:4px;">Кейс «${esc(favCase.name)}»</div><div style="font-size:18px;font-weight:900;color:#fff;">Открыт ${maxCount} раз</div></div>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="profile-card"><div class="profile-card-title">📊 СТАТИСТИКА</div>
-        <div class="profile-stats">
-          <div class="stat-box"><div class="stat-icon">📦</div><div><div class="stat-val">${casesOpened}</div><div class="stat-lbl">Кейсы</div></div></div>
-          <div class="stat-box"><div class="stat-icon">📈</div><div><div class="stat-val">${upgradesDone}</div><div class="stat-lbl">Апгрейды</div></div></div>
-          <div class="stat-box"><div class="stat-icon">🎒</div><div><div class="stat-val">${itemsCount}</div><div class="stat-lbl">Предметы</div></div></div>
-          <div class="stat-box"><div class="stat-icon">⭐</div><div><div class="stat-val">${level}</div><div class="stat-lbl">Уровень</div></div></div>
-          <div class="stat-box" style="grid-column:span 2;"><div class="stat-icon">💰</div><div><div class="stat-val">${fmt(totalWithdrawn)} ${coin(16)}</div><div class="stat-lbl">Выведено средств</div></div></div>
-        </div>
-      </div>
-    </div>
-    <div class="profile-card" style="flex: 1 1 400px;">
-      <div class="profile-card-title" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>🕒 ИСТОРИЯ АПГРЕЙДОВ</span>
-        <span style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Provably Fair</span>
-      </div>
-      <div class="profile-history" style="display:flex;flex-direction:column;gap:12px;max-height:420px;overflow-y:auto;padding-right:8px;">
-        ${pfHistory.length ? pfHistory.map(h => {
-          let ico='❓', title='';
-          const d = new Date(h.date).toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-          if(h.type === 'upgrade_win') {
-            const it = itemById(h.toId);
-            ico = `<div style="color:var(--green);font-size:20px;">↑</div>`;
-            title = `<span style="color:var(--green);font-weight:900;">Выиграл</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${it?it.name:'?'}</span>`;
-          } else {
-            const toIt = itemById(h.toId);
-            ico = `<div style="color:var(--red);font-size:20px;">↑</div>`;
-            title = `<span style="color:var(--red);font-weight:900;">Проиграл</span><br><span style="font-size:12px;color:var(--muted);">${h.fromId==='coins'?'Монеты':itemById(h.fromId)?.name||'?'} → ${toIt?toIt.name:'?'}</span>`;
-          }
-          const canVerify = !!h.pf;
-          return `<div onclick="${canVerify ? `openHistoryFairnessModal('${h.id || h.date}')` : ''}" style="cursor:${canVerify?'pointer':'default'}; display:flex;align-items:flex-start;gap:16px;padding:12px 16px;background:rgba(255,255,255,.02);border-radius:16px;border:1px solid rgba(255,255,255,.04); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
-            <div style="font-size:24px;width:40px;display:flex;justify-content:center;">${ico}</div>
-            <div style="flex:1;font-size:14px;font-weight:700;line-height:1.3;color:#fff;">${title}</div>
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-              <div style="font-size:12px;color:var(--muted);">${d}</div>
-              ${canVerify ? `<div style="font-size:10px;color:var(--accent);text-transform:uppercase;font-weight:800;display:flex;align-items:center;gap:2px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Check</div>` : ''}
-            </div>
-          </div>`;
-        }).join('') : '<div class="empty-state" style="padding:20px">Нет истории</div>'}
-      </div>
-    </div>
-  </div>
-  <div class="profile-card" style="margin-top:24px;">
-    <div class="profile-card-title">🎒 ПРЕДМЕТЫ (${state.inventory.length})</div>
-    ${state.inventory.length?`<div class="profile-items-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;">
-      ${invPreview.map(invItem=>{const it=itemById(invItem.itemId);return it?`<div class="profile-item" style="border-color:${RARITY[it.rarity].color}40;background:linear-gradient(180deg,${RARITY[it.rarity].color}15,rgba(15,23,42,.95));padding:16px;border-radius:16px;text-align:center;"><div class="ico">${itemIcon(it,48)}</div><div class="nm" style="font-size:13px;font-weight:700;margin-top:10px;margin-bottom:4px;color:#fff;">${esc(it.name)}</div><div class="pr" style="font-size:14px;font-weight:900;color:var(--gold);display:flex;justify-content:center;gap:4px;">${fmt(it.price)} ${coin(14)}</div></div>`:'';}).join('')}
-    </div>`:`<div class="empty-state">Инвентарь пуст</div>`}
-  </div>`;
 }
 
 function render(fresh){
@@ -1424,7 +992,7 @@ function getTopDropOfTheDay(){
     }
   });
   if (best) {
-    return { item: itemById(best.itemId) || {name: best.itemName, price: best.price, icon:'🎁'}, user: best.username };
+    return { item: itemById(best.itemId) || {name: best.itemName, price: best.price, icon:'🎁'}, user: best.username, source: best.source || 'case' };
   }
   return null; 
 }
@@ -1446,13 +1014,14 @@ function renderCases(){
   
   const live = state.globalDrops.length ? state.globalDrops.map(d => {
     const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
-    return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
+    const sourceIcon = d.source === 'all_in' ? '🎰' : d.source === 'upgrade' ? '📈' : '🎁';
+    return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}','${d.source}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)} ${sourceIcon}</div></div></div>`;
   }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
 
   let topDropHtml = '';
   if (topDrop) {
     topDropHtml = `
-      <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}')">
+      <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}','${topDrop.source}')">
         <div><div class="top-drop-title">🏆 Топ дроп дня</div>
           <div class="top-drop-content">
             <div style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));">${itemIcon(topDrop.item,72)}</div>
@@ -1522,7 +1091,7 @@ function renderCaseDetail(id){
     const isRare = it.price > activePrice * 5;
     const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
     return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:16px;padding:16px 10px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
-      <div class="drop-chance-badge" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:900;color:var(--accent);">${pct}%</div>
+      ${isAdmin() ? `<div class="drop-chance-badge" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:900;color:var(--accent);">${pct}%</div>` : ''}
       <div style="height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">${itemIcon(it,60)}</div>
       <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
       <div style="font-size:13px;color:var(--gold);font-weight:900;">${fmt(it.price)}</div>
@@ -1552,7 +1121,7 @@ function renderCaseDetail(id){
       ` : ''}
       
       <div style="margin-bottom:24px;">
-        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Возможные призы (шанс дропа)</div>
+        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Возможные призы</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;max-height:380px;overflow-y:auto;padding-right:8px;">
           ${itemsPreview}
         </div>
@@ -1607,7 +1176,7 @@ function openCaseNow(){
     
     const result=rollAllInCase(cost);
     __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
-    startRoulette(c, [result], true);
+    startAllInSequence(cost);
     render(false);
     return;
   }
@@ -1798,9 +1367,9 @@ function triggerLandingEffects(wrap, item){
 
 function goBackToCases(){cancelAnimations();state.currentCase=null;state.openingView=null;render(true);window.scrollTo({top:0,behavior:'smooth'});}
 function sellResult(uid,caseId){
-  const inv=state.inventory.find(i=>i.uid===uid);if(!inv)return;
+  const inv=state.inventory.find(i=>String(i.uid)===String(uid));if(!inv)return;
   const it=itemById(inv.itemId);if(!it)return;
-  state.balance+=it.price;state.inventory=state.inventory.filter(i=>i.uid!==uid);
+  state.balance+=it.price;state.inventory=state.inventory.filter(i=>String(i.uid)!==String(uid));
   pushBalance(it.price);
   pushInventoryRemove([uid]);
   state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
@@ -1810,9 +1379,9 @@ function sellResult(uid,caseId){
 }
 function sellMultiResult(uidsStr,caseId){
   const uids=uidsStr.split(',');let total=0;
-  const toSell=state.inventory.filter(i=>uids.includes(i.uid));
+  const toSell=state.inventory.filter(i=>uids.includes(String(i.uid)));
   toSell.forEach(inv=>{const it=itemById(inv.itemId);if(it){total+=it.price;state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});}});
-  state.inventory=state.inventory.filter(i=>!uids.includes(i.uid));
+  state.inventory=state.inventory.filter(i=>!uids.includes(String(i.uid)));
   state.balance+=total;
   pushBalance(total);
   pushInventoryRemove(uids);
@@ -1979,7 +1548,7 @@ function updateUpgBalance(val){
           const c=calcUC(totalVal,item.price);
           const cColor=c>60?'var(--green)':c>30?'var(--gold)':'var(--red)';
           const badge=card.querySelector('.upg-item-chance');
-          if(badge){badge.textContent=c.toFixed(1)+'%';badge.style.color=cColor;}
+          if(badge && isAdmin()){badge.textContent=c.toFixed(1)+'%';badge.style.color=cColor;}
         }
       }
     });
@@ -2068,7 +1637,7 @@ function renderUpgrade(){
       <div class="upg-item-img">${itemIcon(i,60)}</div>
       <div class="upg-item-name">${esc(i.name)}</div>
       <div class="upg-item-price">${coin(12)} ${fmt(i.price)}</div>
-      <div class="upg-item-chance" style="color:${cColor}">${c.toFixed(1)}%</div>
+      ${isAdmin() ? `<div class="upg-item-chance" style="color:${cColor}">${c.toFixed(1)}%</div>` : ''}
     </div>`;
   }).join('')||'<div class="empty-state" style="grid-column:1/-1"><div class="es-ico">🎯</div>Выбери предметы слева</div>';
   const sliderPercent=state.balance>0?(balAmount/state.balance)*100:0;
@@ -2517,13 +2086,34 @@ function renderInventory(){
   <div class="inv-grid">${cards}</div>`;
 }
 function sellOne(uid){
-  const inv = state.inventory.find(i=>i.uid===uid);
+  const inv = state.inventory.find(i=>String(i.uid)===String(uid));
   if(!inv) return;
   const it = itemById(inv.itemId);
   if(!it) return;
-  if(!confirm(`Продать «${it.name}» за ${fmt(it.price)}?`)) return;
+  
+  openModal(`
+    <div class="modal-head"><div class="modal-title">Продажа</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="text-align:center;padding:20px 0;">
+      ${itemIcon(it, 100)}
+      <div style="font-size:20px;font-weight:900;color:#fff;margin:16px 0 8px;">${esc(it.name)}</div>
+      <div style="font-size:18px;font-weight:900;color:var(--gold);margin-bottom:24px;">${fmt(it.price)} ${coin(18)}</div>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+        <button class="btn btn-accent" onclick="confirmSell('${uid}')">Продать</button>
+      </div>
+    </div>
+  `);
+}
+
+function confirmSell(uid) {
+  closeModal();
+  const inv = state.inventory.find(i=>String(i.uid)===String(uid));
+  if(!inv) return;
+  const it = itemById(inv.itemId);
+  if(!it) return;
+  
   state.balance += it.price;
-  state.inventory = state.inventory.filter(i=>i.uid!==uid);
+  state.inventory = state.inventory.filter(i=>String(i.uid)!==String(uid));
   pushBalance(it.price);
   pushInventoryRemove([uid]);
   state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
@@ -2531,10 +2121,26 @@ function sellOne(uid){
   toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
   saveLocalState(); renderHeader(); render(false);
 }
+
 function sellAll(){
   const total = state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
   if(total<=0) return;
-  if(!confirm(`Продать все предметы за ${fmt(total)} монет?`)) return;
+  openModal(`
+    <div class="modal-head"><div class="modal-title">Продать всё?</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:24px;font-weight:900;color:var(--gold);margin-bottom:24px;">${fmt(total)} ${coin(24)}</div>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-ghost" onclick="closeModal()">Отмена</button>
+        <button class="btn btn-danger" onclick="confirmSellAll()">Продать всё</button>
+      </div>
+    </div>
+  `);
+}
+
+function confirmSellAll() {
+  closeModal();
+  const total = state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
+  if(total<=0) return;
   const uids = state.inventory.map(i=>i.uid);
   state.inventory.forEach(inv=>{const it=itemById(inv.itemId);if(it)state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});});
   state.inventory = [];
@@ -2545,6 +2151,7 @@ function sellAll(){
   toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
   saveLocalState(); renderHeader(); render(false);
 }
+
 function quickUpg(uid){
   state.upgrade.froms = [uid];
   state.upgrade.target = null;
@@ -2554,13 +2161,14 @@ function quickUpg(uid){
 }
 
 /* ============================================= */
-/* === ДЕПОЗИТ (ВСЕ БАЗОВЫЕ ПРЕДМЕТЫ) === */
+/* === ДЕПОЗИТ И ВЫВОД (ТОЛЬКО СВОИ ПРЕДМЕТЫ) === */
 /* ============================================= */
 
 let __depositPollingInterval = null;
 
-function getBaseItems() {
-    return ITEMS.filter(i => !i.id.startsWith('coin_') && !i.id.includes('guest666_')).sort((a,b) => a.price - b.price);
+function getOwnedItems() {
+    const ownedIds = [...new Set(state.inventory.map(i => i.itemId))];
+    return ITEMS.filter(i => ownedIds.includes(i.id)).sort((a,b) => a.price - b.price);
 }
 
 function openDepositModal(preselectId) {
@@ -2620,15 +2228,10 @@ function renderDepositModal() {
       <div class="modal-title">Депозит</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="dep-tabs">
-      <div class="dep-tab disabled">⭐<br><span style="font-size:10px;opacity:0.7;">Фиат</span></div>
-      <div class="dep-tab active">🐒<br><span style="font-size:10px;">Брейнроты</span></div>
-      <div class="dep-tab disabled">⚙️<br><span style="font-size:10px;opacity:0.7;">Gears</span></div>
-    </div>
   `;
 
   if (d.step === 1) {
-    let pool = getBaseItems();
+    let pool = getOwnedItems();
     
     if (d.searchQuery) pool = pool.filter(x => x.name.toLowerCase().includes(d.searchQuery.toLowerCase()));
     
@@ -2638,9 +2241,8 @@ function renderDepositModal() {
       const finalPrice = item.price * 1.2;
       
       const isSelected = selCount > 0;
-      const isDisabled = ownedCount === 0;
       
-      return `<div class="dep-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}">
+      return `<div class="dep-card ${isSelected ? 'selected' : ''}">
         <div class="dep-img">${itemIcon(item, 60)}</div>
         <div class="dep-name">${esc(item.name)}</div>
         <div class="dep-price">${coin(12)} ${fmt(finalPrice)}</div>
@@ -2668,7 +2270,7 @@ function renderDepositModal() {
       
       <input class="dep-search" type="text" placeholder="🔍 Поиск брейнрота..." value="${esc(d.searchQuery)}" oninput="updateDepositSearch(this.value)">
       
-      <div class="dep-grid">${cards}</div>
+      <div class="dep-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 8px;">${cards || '<div class="empty-state" style="grid-column:1/-1;padding:20px;">У вас нет предметов для депозита</div>'}</div>
     `;
   } 
   else if (d.step === 2) {
@@ -2761,17 +2363,6 @@ function updateDepositSearch(val) {
   document.querySelector('.dep-search').focus();
 }
 
-function updateDepositFilter(type, val) {
-  if (type === 'min') state.deposit.minPrice = val;
-  if (type === 'max') state.deposit.maxPrice = val;
-  renderDepositModal();
-}
-
-function toggleDepositSort() {
-  state.deposit.sort = state.deposit.sort === 'asc' ? 'desc' : 'asc';
-  renderDepositModal();
-}
-
 function updateDepositRoblox(val) {
   state.deposit.robloxUsername = val;
   const btn = document.getElementById('depSubmitBtn');
@@ -2813,9 +2404,8 @@ async function submitDeposit() {
     }
   });
 
-  // Собираем payload с uid для сервера
   uidsToRemove.forEach(uid => {
-    const inv = state.inventory.find(i => i.uid === uid);
+    const inv = state.inventory.find(i => String(i.uid) === String(uid));
     if(inv) {
         const item = itemById(inv.itemId);
         itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
@@ -2941,7 +2531,7 @@ function cancelDeposit() {
   closeModal();
 }
 
-/* === ВЫВОД (КАК НА ФОТО) === */
+/* === ВЫВОД === */
 function openWithdrawModal(preselectId) {
   state.withdraw.step = 1;
   state.withdraw.selected = new Map();
@@ -2994,7 +2584,7 @@ function renderWithdrawModal() {
   `;
 
   if (w.step === 1) {
-    let pool = getBaseItems();
+    let pool = getOwnedItems();
     if (w.searchQuery) pool = pool.filter(x => x.name.toLowerCase().includes(w.searchQuery.toLowerCase()));
     
     const cards = pool.map(item => {
@@ -3002,9 +2592,8 @@ function renderWithdrawModal() {
       const selCount = w.selected.get(item.id) || 0;
       
       const isSelected = selCount > 0;
-      const isDisabled = ownedCount === 0;
       
-      return `<div class="dep-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}">
+      return `<div class="dep-card ${isSelected ? 'selected' : ''}">
         <div class="dep-img">${itemIcon(item, 60)}</div>
         <div class="dep-name">${esc(item.name)}</div>
         <div class="dep-price">${coin(12)} ${fmt(item.price)}</div>
@@ -3032,7 +2621,7 @@ function renderWithdrawModal() {
       
       <input class="dep-search" type="text" placeholder="🔍 Поиск брейнрота..." value="${esc(w.searchQuery)}" oninput="updateWithdrawSearch(this.value)">
       
-      <div class="dep-grid">${cards}</div>
+      <div class="dep-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 8px;">${cards || '<div class="empty-state" style="grid-column:1/-1;padding:20px;">У вас нет предметов для вывода</div>'}</div>
     `;
   } 
   else if (w.step === 2) {
@@ -3118,7 +2707,7 @@ async function submitWithdraw() {
   });
 
   uidsToRemove.forEach(uid => {
-    const inv = state.inventory.find(i => i.uid === uid);
+    const inv = state.inventory.find(i => String(i.uid) === String(uid));
     if(inv) {
         const item = itemById(inv.itemId);
         itemsPayload.push({ uid: inv.uid, name: item.name, price: item.price });
