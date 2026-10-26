@@ -579,6 +579,9 @@ document.addEventListener('click',e=>{
 
 const RARITY={common:{label:'Обычный',color:'#94a3b8'},rare:{label:'Редкий',color:'#38bdf8'},epic:{label:'Эпический',color:'#a78bfa'},legendary:{label:'Легендарный',color:'#fbbf24'},mythic:{label:'Мифический',color:'#f43f5e'},god:{label:'Божественный',color:'#2dd4bf'}};
 
+// ... (Массив ITEMS и CASES остается без изменений, так как он слишком большой, 
+// я вставил его в начало скрипта, чтобы не ломать логику)
+
 const ITEMS=[
 {id:'coin_5',name:'5 Монет',icon:'🪙',rarity:'common',price:5,img:'sab-coin.png'},
 {id:'coin_8',name:'8 Монет',icon:'🪙',rarity:'common',price:8,img:'sab-coin.png'},
@@ -1052,7 +1055,10 @@ function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); _
 /* LOGIN */
 async function initTelegramLogin(){
   const tg = window.Telegram?.WebApp;
+  const loginLoading = document.getElementById('loginLoading');
+  const loginSub = document.querySelector('.login-sub');
   
+<<<<<<< HEAD
   if (!tg) {
     showLoginError('Вы открыли игру в обычном браузере. Откройте её через Telegram-бота.');
     return;
@@ -1131,6 +1137,60 @@ async function initTelegramLogin(){
 
 function showLoginError(msg) {
    document.getElementById('loginLoading').style.display = 'none';
+=======
+  if (tg && tg.initData && tg.initData.length > 0) {
+    loginLoading.style.display = 'block';
+    loginSub.style.display = 'none';
+    
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 7000); // 7 сек таймаут
+
+      const response = await fetch('https://brainrot-server.bonto.run/api/auth/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: tg.initData }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success && data.user) {
+        onTelegramAuth({
+          id: data.user.id,
+          first_name: data.user.first_name || '',
+          last_name: data.user.last_name || '',
+          username: data.user.username || ('user' + data.user.id),
+          photo_url: data.user.photo_url || null
+        });
+      } else {
+        showLoginError('Ошибка сервера: Неверный ответ. Проверьте логи Bonto.');
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+      if (error.name === 'AbortError') {
+        showLoginError('Сервер не отвечает (таймаут). Возможно, Bonto "уснул" или в коде ошибка.');
+      } else {
+        showLoginError('Не удалось связаться с сервером. Проверьте, запущен ли бэкенд и правильный ли URL.');
+      }
+    }
+  } else {
+     // Not in Telegram
+     document.getElementById('tgErrorBox').style.display = 'block';
+     document.getElementById('tgErrorMessage').innerHTML = 'Brainrot Rush подключается только к проверенной серверной сессии Telegram.<br><br>Открой Brainrot Rush из Telegram через кнопку Mini App.<br><br><span style="color:var(--muted); font-size:13px;">Вход через случайный ID отключен. Демо-вход и стартовые монеты отключены.</span>';
+     loginSub.style.display = 'none';
+  }
+}
+
+function showLoginError(msg) {
+   const loginLoading = document.getElementById('loginLoading');
+   loginLoading.style.display = 'none';
+>>>>>>> 54c94682e124000875bae146fc6303fb2b19fd32
    const errorBox = document.getElementById('tgErrorBox');
    errorBox.style.display = 'block';
    document.getElementById('tgErrorMessage').innerHTML = msg;
@@ -1417,12 +1477,17 @@ function renderCases(){
     }).join('');
     return `<div class="case-category"><div style="font-size:24px;font-weight:900;margin:40px 0 24px 0;letter-spacing:-0.02em;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.5);">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
   }).join('');
+<<<<<<< HEAD
   
   // Рендерим реальные Live дропы
   const live = state.globalDrops.length ? state.globalDrops.map(d => {
     const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
     return `<div class="live-item" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
   }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
+=======
+  const drops=state.history.filter(h=>h.type==='case').slice(-8).reverse();
+  const live=drops.length?drops.map(h=>{const it=itemById(h.itemId);if(!it)return '';const fakeUser=state.user.username||('user_'+Math.random().toString(36).slice(2,4));return `<div class="live-item" onclick="showProfile('${fakeUser}','${it.id}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${fakeUser}</div></div></div>`;}).join(''):'<div style="color:var(--muted);font-size:14px;padding:10px 16px">Дропов пока нет</div>';
+>>>>>>> 54c94682e124000875bae146fc6303fb2b19fd32
 
   return `<div class="hero">
     <h1>Открывай кейсы. Собирай брейнротов. Забирай банк.</h1>
