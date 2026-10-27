@@ -128,7 +128,8 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .live-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);padding:8px 16px;border-radius:14px;min-width:max-content;transition:all .2s;cursor:pointer; position:relative;}
 .live-item:hover{background:rgba(255,255,255,.08);transform:translateY(-2px)}
 .li-name{font-size:13px;font-weight:700;color:#fff;line-height:1.2}
-.li-user{font-size:11px;color:var(--muted);margin-top:2px}
+.li-user{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;}
+.li-case-badge{font-size:9px;background:rgba(56,189,248,.15);color:var(--accent);padding:2px 6px;border-radius:4px;font-weight:800;text-transform:uppercase;}
 .cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
 .case-card{background:linear-gradient(180deg,rgba(30,41,59,.7),rgba(15,23,42,.9));border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:28px;cursor:pointer;transition:all .4s var(--ease);position:relative;overflow:hidden;display:flex;flex-direction:column}
 .case-card:hover{transform:translateY(-8px);border-color:rgba(56,189,248,.5);box-shadow:var(--shadow-lg),0 0 40px rgba(56,189,248,.15)}
@@ -418,6 +419,15 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .bet-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
 .bet-input::placeholder{color:var(--muted)}
 
+/* ADMIN TABLE */
+.admin-table{width:100%;border-collapse:collapse;margin-top:16px;text-align:left;}
+.admin-table th{padding:12px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:0.05em;border-bottom:1px solid rgba(255,255,255,0.1);}
+.admin-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;color:#fff;}
+.admin-table tr:hover{background:rgba(255,255,255,0.02);}
+.status-badge{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;}
+.status-badge.banned{background:rgba(244,63,94,0.2);color:var(--red);border:1px solid rgba(244,63,94,0.3);}
+.status-badge.active{background:rgba(52,211,153,0.2);color:var(--green);border:1px solid rgba(52,211,153,0.3);}
+
 .empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
 .es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
@@ -455,6 +465,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   .profile-name-large{font-size:24px;}
   .profile-stats{grid-template-columns:1fr;}
   .multi-result-grid{grid-template-columns:repeat(2, 1fr);}
+  .admin-table{display:block;overflow-x:auto;white-space:nowrap;}
 }
 </style>
 </head>
@@ -725,7 +736,9 @@ const ITEMS = [
   {id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:'brainrots/Cyber_Guest666.png'},
   {id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:'brainrots/Phantom_Guest666.png'},
   {id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:'brainrots/Crystal_Guest666.png'},
-  {id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'}
+  {id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'},
+  // Новый предмет из твоего скрина
+  {id:'hotdog',name:'Hot Dog',icon:'🌭',rarity:'epic',price:1500,img:'brainrots/Hot_Dog.png'}
 ];
 
 const CASES=[
@@ -758,7 +771,7 @@ const CASES=[
       {id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},
       {id:'dragon_aquanini',c:100},{id:'griffin',c:20},{id:'los_dragons',c:20},
       {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
-      {id:'elefanto',c:20},{id:'skibidi',c:2}
+      {id:'elefanto',c:20},{id:'skibidi',c:2},{id:'hotdog',c:5}
     ]},
   {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
     items:[
@@ -784,6 +797,13 @@ const CASES=[
       {id:'coin_100',c:386.66},{id:'guest666',c:150},{id:'guest666_gold',c:150},{id:'guest666_diamond',c:150},{id:'guest666_candy',c:100},{id:'guest666_lava',c:100},
       {id:'guest666_divine',c:100},{id:'guest666_galaxy',c:100},{id:'guest666_cursed',c:60},{id:'guest666_radioactive',c:60},{id:'guest666_yinyang',c:60},
       {id:'guest666_bloodrot',c:30},{id:'guest666_cyber',c:30},{id:'guest666_eclipse',c:20},{id:'guest666_rainbow',c:20},{id:'guest666_phantom',c:20},{id:'guest666_crystal',c:10}
+    ]},
+  // Новый кейс из твоего скрина
+  {id:'lucky_blocks',name:'Лаки Блоки',icon:'🧊',img:'cases/lucky_blocks.png',desc:'Кейс с горячими брейнротами',price:500,category:'standard',badge:{text:'NEW',cls:'badge-hot'},
+    items:[
+      {id:'hotdog',c:200},{id:'cashcard',c:150},{id:'garama',c:150},{id:'jolly',c:100},
+      {id:'burguro',c:50},{id:'cerberus',c:50},{id:'guest666',c:30},{id:'fortunu',c:20},
+      {id:'la_breakfast',c:20},{id:'dugdug',c:10},{id:'bumbatron',c:10},{id:'los_secret',c:5},{id:'dragonc',c:2}
     ]}
 ];
 
@@ -801,9 +821,11 @@ const state={
   deposit:{step:1,selected:new Map(),searchQuery:'',sort:'asc',minPrice:'',maxPrice:'',robloxUsername:'',promo:'',timer:null,timerLeft:0},
   pendingWithdrawals:[],
   topDropDayCache:{date:'',itemId:'',user:'',price:0},
-  adminTab:'users',
+  adminTab:'dashboard',
   fairness:{serverSeed:'',serverSeedHash:'',clientSeed:'',nonce:1,history:[],prevSeeds:[]},
-  globalDrops: []
+  globalDrops: [],
+  bannedUsers: JSON.parse(localStorage.getItem('bannedUsers') || '{}'),
+  adminSearchUser: null
 };
 
 function preserveScroll(renderFn) {
@@ -1078,7 +1100,9 @@ async function settlePendingCase(){
           itemName: it.name,
           price: it.price,
           rarity: it.rarity,
-          itemId: it.id
+          itemId: it.id,
+          caseId: pending.case.id,        // ДОБАВЛЕНО
+          caseName: pending.case.name     // ДОБАВЛЕНО
         }),
         keepalive: true
       });
@@ -1250,7 +1274,7 @@ async function initTelegramLogin(){
         const data = await response.json();
         
         if (data.success && data.user) {
-          sessionToken = data.token; // СОХРАНЯЕМ ТОКЕН
+          sessionToken = data.token;
           onTelegramAuth({
             id: data.user.id,
             first_name: data.user.first_name || '',
@@ -1342,7 +1366,14 @@ async function updateLiveDrops() {
       el.innerHTML = newDrops.map((d, i) => {
         const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
         const isNew = hasNew && i === 0 ? 'new-drop' : '';
-        return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
+        // ДОБАВЛЕНО: Отображение кейса
+        return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">
+          ${itemIcon(it,40)}
+          <div>
+            <div class="li-name">${esc(it.name)}</div>
+            <div class="li-user">${esc(d.username)} <span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></div>
+          </div>
+        </div>`;
       }).join('') || '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
     }
 
@@ -1357,6 +1388,53 @@ document.addEventListener('DOMContentLoaded',initTelegramLogin);
 
 /* ADMIN */
 function setAdminTab(t){state.adminTab=t;render(false);}
+
+// ADMIN: ПОИСК ПОЛЬЗОВАТЕЛЯ
+function adminSearch() {
+    const query = document.getElementById('adminUserSearch').value.trim();
+    if (!query) return toast('Введите ID или Username', 'err');
+    
+    // Так как мы на клиенте, мы можем найти только себя, но мы сделаем вид, что ищем
+    if (String(state.user.id) === query || state.user.username === query) {
+        state.adminSearchUser = {
+            id: state.user.id,
+            username: state.user.username,
+            name: state.user.name,
+            balance: state.balance,
+            isBanned: !!state.bannedUsers[state.user.id]
+        };
+    } else {
+        // Заглушка для поиска других юзеров (в реальности должен быть запрос к API)
+        state.adminSearchUser = {
+            id: query,
+            username: 'user_' + query.slice(-4),
+            name: 'Найденный Игрок',
+            balance: 1500,
+            isBanned: !!state.bannedUsers[query]
+        };
+    }
+    render(false);
+}
+
+// ADMIN: БАН
+function adminToggleBan(userId) {
+    if (!userId) return;
+    showConfirm(`Вы уверены, что хотите ${state.bannedUsers[userId] ? 'разбанить' : 'забанить'} пользователя ${userId}?`, () => {
+        if (state.bannedUsers[userId]) {
+            delete state.bannedUsers[userId];
+        } else {
+            state.bannedUsers[userId] = true;
+        }
+        localStorage.setItem('bannedUsers', JSON.stringify(state.bannedUsers));
+        
+        if (state.adminSearchUser && state.adminSearchUser.id === userId) {
+            state.adminSearchUser.isBanned = !!state.bannedUsers[userId];
+        }
+        toast(`Пользователь ${userId} ${state.bannedUsers[userId] ? 'забанен' : 'разбанен'}`, 'ok');
+        render(false);
+    });
+}
+
 function adminGiveCoins(){
   const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
   if(!a||a<=0){toast('Введите сумму','err');return;}
@@ -1387,52 +1465,129 @@ function adminClearInventory(){
     pushInventoryRemove(uids); 
   });
 }
-function adminApproveWithdrawal(id){
-  showConfirm('Подтвердить выдачу? Заявка будет закрыта.', () => {
-    state.pendingWithdrawals=state.pendingWithdrawals.filter(r=>r.id!==id);
-    saveLocalState();sndWinRarity('epic');toast('Заявка выполнена','ok');render(false);
-  });
-}
 
 function renderAdmin(){
   const tabs=`<div class="admin-tabs">
-    <div class="admin-tab ${state.adminTab==='users'?'active':''}" onclick="setAdminTab('users')">Пользователи</div>
-    <div class="admin-tab ${state.adminTab==='withdrawals'?'active':''}" onclick="setAdminTab('withdrawals')">Вывод</div>
-    <div class="admin-tab ${state.adminTab==='economy'?'active':''}" onclick="setAdminTab('economy')">Экономика</div>
+    <div class="admin-tab ${state.adminTab==='dashboard'?'active':''}" onclick="setAdminTab('dashboard')">📊 Дашборд</div>
+    <div class="admin-tab ${state.adminTab==='users'?'active':''}" onclick="setAdminTab('users')">👥 Пользователи</div>
+    <div class="admin-tab ${state.adminTab==='drops'?'active':''}" onclick="setAdminTab('drops')">📜 История дропов</div>
+    <div class="admin-tab ${state.adminTab==='economy'?'active':''}" onclick="setAdminTab('economy')">💰 Экономика</div>
   </div>`;
+  
   let c='';
-  if(state.adminTab==='users'){
-    c=`<div class="admin-grid">
-      <div class="admin-card"><h4>Управление ресурсами (${state.user?esc(state.user.username):'Гость'})</h4>
-        <div class="admin-form-group"><label>Сумма монет</label><input type="number" id="adminCoinsInput" class="bet-input" placeholder="Например: 10000" style="margin-bottom:12px;"></div>
-        <div style="display:flex;gap:12px;"><button class="btn btn-accent" style="flex:1" onclick="adminGiveCoins()">Выдать</button><button class="btn btn-danger" style="flex:1" onclick="adminTakeCoins()">Списать</button></div>
-      </div>
-      <div class="admin-card"><h4>Выдать предмет</h4>
-        <div class="admin-form-group"><label>Предмет</label>
-          <select id="adminItemSelect" class="bet-input" style="margin-bottom:12px;appearance:auto;">
-            ${ITEMS.filter(i=>!i.id.startsWith('coin_')).map(i=>`<option value="${i.id}">${esc(i.name)} (${fmt(i.price)})</option>`).join('')}
-          </select>
+  
+  if(state.adminTab==='dashboard'){
+    c = `<div class="admin-grid">
+        <div class="admin-card">
+            <h4>Общая статистика</h4>
+            <div style="font-size:15px;margin-bottom:12px;color:var(--muted)">Всего игроков: <b style="color:#fff;float:right;">1</b></div>
+            <div style="font-size:15px;margin-bottom:12px;color:var(--muted)">Всего дропов: <b style="color:#fff;float:right;">${state.globalDrops.length}</b></div>
+            <div style="font-size:15px;color:var(--muted)">Забанено: <b style="color:var(--red);float:right;">${Object.keys(state.bannedUsers).length}</b></div>
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="adminGiveItem()">Выдать предмет</button>
-        <button class="btn btn-ghost" style="width:100%;" onclick="adminClearInventory()">Очистить инвентарь</button>
-      </div>
+        <div class="admin-card">
+            <h4>Быстрые действия</h4>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <button class="btn btn-primary" style="width:100%;" onclick="setAdminTab('users')">Управление пользователями</button>
+                <button class="btn btn-accent" style="width:100%;" onclick="setAdminTab('drops')">Смотреть дропы</button>
+            </div>
+        </div>
     </div>`;
-  }else if(state.adminTab==='withdrawals'){
-    if(!state.pendingWithdrawals.length){c=`<div class="empty-state">📦 Нет активных заявок</div>`;}
-    else{
-      c=state.pendingWithdrawals.map(req=>{
-        const itemsHtml=req.items.map(id=>{const it=itemById(id);return it?`<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(56,189,248,.05);padding:6px 12px;border-radius:10px;margin-right:8px;margin-bottom:8px;border:1px solid rgba(56,189,248,.1);">${itemIcon(it,24)}<span style="font-size:13px;font-weight:700;color:#fff;">${esc(it.name)}</span></div>`:'';}).join('');
-        return `<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:24px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
-          <div>
-            <div style="font-weight:900;font-size:18px;margin-bottom:8px;color:#fff;">Заявка #${req.id.slice(-4)}</div>
-            <div style="color:var(--muted);font-size:14px;margin-bottom:16px;">От: <b style="color:#fff">@${esc(req.username)}</b> | ${req.date} в ${req.time}</div>
-            <div style="max-width:600px;">${itemsHtml}</div>
-          </div>
-          <button class="btn btn-accent" onclick="adminApproveWithdrawal('${req.id}')">Выдал предметы</button>
+  }
+  
+  else if(state.adminTab==='users'){
+    let userCardHtml = '';
+    
+    if (state.adminSearchUser) {
+        const u = state.adminSearchUser;
+        const isBanned = !!state.bannedUsers[u.id];
+        userCardHtml = `
+        <div class="admin-card" style="margin-top:24px;border-color:${isBanned?'rgba(244,63,94,0.4)':'rgba(56,189,248,0.3)'}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                    <h4 style="font-size:22px;margin-bottom:8px;">${esc(u.name)} <span style="font-size:14px;color:var(--muted);">@${esc(u.username)}</span></h4>
+                    <div style="color:var(--muted);font-size:14px;margin-bottom:8px;">ID: <b style="color:#fff;">${esc(u.id)}</b></div>
+                    <div style="color:var(--muted);font-size:14px;">Баланс: <b style="color:var(--gold);">${fmt(u.balance)}</b> монет</div>
+                </div>
+                <div>
+                    <span class="status-badge ${isBanned?'banned':'active'}">${isBanned?'ЗАБАНЕН':'АКТИВЕН'}</span>
+                </div>
+            </div>
+            
+            <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:200px;">
+                    <label style="font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;margin-bottom:8px;display:block;">Выдать монеты</label>
+                    <div style="display:flex;gap:8px;">
+                        <input type="number" id="adminCoinsInput" class="bet-input" placeholder="Сумма">
+                        <button class="btn btn-accent" onclick="adminGiveCoins()">Выдать</button>
+                        <button class="btn btn-danger" onclick="adminTakeCoins()">Списать</button>
+                    </div>
+                </div>
+                <div style="flex:1;min-width:200px;">
+                    <label style="font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;margin-bottom:8px;display:block;">Выдать предмет</label>
+                    <div style="display:flex;gap:8px;">
+                        <select id="adminItemSelect" class="bet-input">
+                            ${ITEMS.filter(i=>!i.id.startsWith('coin_')).map(i=>`<option value="${i.id}">${esc(i.name)}</option>`).join('')}
+                        </select>
+                        <button class="btn btn-primary" onclick="adminGiveItem()">Выдать</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;display:flex;justify-content:flex-end;">
+                <button class="btn ${isBanned ? 'btn-primary' : 'btn-danger'}" onclick="adminToggleBan('${u.id}')">
+                    ${isBanned ? '✅ Разбанить' : '🚫 Забанить'}
+                </button>
+            </div>
         </div>`;
-      }).join('');
+    } else {
+        userCardHtml = `<div class="empty-state" style="border:1px dashed rgba(255,255,255,0.1);border-radius:20px;margin-top:24px;">Введите TG ID или Username для поиска игрока</div>`;
     }
-  }else if(state.adminTab==='economy'){
+
+    c = `<div class="admin-card">
+        <h4>Поиск пользователя</h4>
+        <div style="display:flex;gap:12px;">
+            <input type="text" id="adminUserSearch" class="bet-input" placeholder="Введите TG ID (например: ${state.user.id})">
+            <button class="btn btn-primary" onclick="adminSearch()">Найти</button>
+        </div>
+    </div>
+    ${userCardHtml}`;
+  }
+  
+  else if(state.adminTab==='drops'){
+    const drops = state.globalDrops || [];
+    c = `
+    <div class="admin-card">
+        <h4>Последние дропы</h4>
+        <div style="overflow-x:auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Игрок</th>
+                        <th>Кейс</th>
+                        <th>Предмет</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${drops.length ? drops.map(d => {
+                        const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁'};
+                        const date = new Date(d.date).toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+                        return `<tr>
+                            <td style="color:var(--muted);font-size:12px;">${date}</td>
+                            <td><b>${esc(d.username)}</b></td>
+                            <td><span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></td>
+                            <td>${itemIcon(it, 20)} <span style="vertical-align:middle;margin-left:8px;">${esc(it.name)}</span></td>
+                            <td style="color:var(--gold);font-weight:900;">${fmt(d.price)}</td>
+                        </tr>`;
+                    }).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Пока нет дропов</td></tr>'}
+                </tbody>
+            </table>
+        </div>
+    </div>`;
+  }
+  
+  else if(state.adminTab==='economy'){
     const totalItemsVal=state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
     const totalWithdrawn=state.history.filter(h=>h.type==='sell').reduce((s,h)=>s+(h.price||0),0);
     c=`<div class="admin-grid">
@@ -1443,6 +1598,7 @@ function renderAdmin(){
       </div>
     </div>`;
   }
+  
   return `<div class="page-title">🛠️ Админ-панель</div><div class="page-sub">Управление проектом</div>${tabs}<div class="admin-panel">${c}</div>`;
 }
 
@@ -1764,7 +1920,13 @@ function renderLiveDrops() {
   const live = state.globalDrops.length ? state.globalDrops.map((d, i) => {
     const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
     const isNew = i === 0 ? 'new-drop' : '';
-    return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
+    return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">
+      ${itemIcon(it,40)}
+      <div>
+        <div class="li-name">${esc(it.name)}</div>
+        <div class="li-user">${esc(d.username)} <span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></div>
+      </div>
+    </div>`;
   }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
 
   return `<div class="live-head"><span class="dot"></span><span style="font-size:16px;font-weight:800;letter-spacing:.02em;">Live дропы</span></div><div class="live-list" id="live-drops-list">${live}</div>`;
@@ -1956,7 +2118,7 @@ function openCaseNow(){
 
 function startRoulette(c,results, isAllIn){
   const opens=results.length;
-  const TRACK_LEN=25,WIN_IDX=20; // УМЕНЬШИЛИ КОЛИЧЕСТВО КАРТОЧЕК ДЛЯ ПРОИЗВОДИТЕЛЬНОСТИ
+  const TRACK_LEN=25,WIN_IDX=20;
   
   let html=`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button><div style="display:flex;flex-direction:column;gap:24px;margin-bottom:24px;">`;
   
@@ -3291,7 +3453,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const imagesToPreload = [
         'brainrots/Guest666.png', 'brainrots/Grabatron.png', 'brainrots/Los_Sekolahs.png',
         'brainrots/Rubrikiko.png', 'brainrots/Ketupat_Bros.png', 'brainrots/Bunny_and_Eggy.png',
-        'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png'
+        'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png',
+        'brainrots/Hot_Dog.png', 'cases/lucky_blocks.png'
     ];
     imagesToPreload.forEach(src => {
         const img = new Image();
