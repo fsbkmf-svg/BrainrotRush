@@ -736,9 +736,7 @@ const ITEMS = [
   {id:'guest666_cyber',name:'Cyber Guest666',icon:'😈',rarity:'mythic',price:521.04,img:'brainrots/Cyber_Guest666.png'},
   {id:'guest666_phantom',name:'Phantom Guest666',icon:'😈',rarity:'god',price:534.2,img:'brainrots/Phantom_Guest666.png'},
   {id:'guest666_crystal',name:'Crystal Guest666',icon:'😈',rarity:'god',price:537.97,img:'brainrots/Crystal_Guest666.png'},
-  {id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'},
-  // Новый предмет из твоего скрина
-  {id:'hotdog',name:'Hot Dog',icon:'🌭',rarity:'epic',price:1500,img:'brainrots/Hot_Dog.png'}
+  {id:'guest666_eclipse',name:'Eclipse Guest666',icon:'😈',rarity:'god',price:526.68,img:'brainrots/Eclipse_Guest666.png'}
 ];
 
 const CASES=[
@@ -771,7 +769,7 @@ const CASES=[
       {id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},
       {id:'dragon_aquanini',c:100},{id:'griffin',c:20},{id:'los_dragons',c:20},
       {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
-      {id:'elefanto',c:20},{id:'skibidi',c:2},{id:'hotdog',c:5}
+      {id:'elefanto',c:20},{id:'skibidi',c:2}
     ]},
   {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
     items:[
@@ -797,13 +795,6 @@ const CASES=[
       {id:'coin_100',c:386.66},{id:'guest666',c:150},{id:'guest666_gold',c:150},{id:'guest666_diamond',c:150},{id:'guest666_candy',c:100},{id:'guest666_lava',c:100},
       {id:'guest666_divine',c:100},{id:'guest666_galaxy',c:100},{id:'guest666_cursed',c:60},{id:'guest666_radioactive',c:60},{id:'guest666_yinyang',c:60},
       {id:'guest666_bloodrot',c:30},{id:'guest666_cyber',c:30},{id:'guest666_eclipse',c:20},{id:'guest666_rainbow',c:20},{id:'guest666_phantom',c:20},{id:'guest666_crystal',c:10}
-    ]},
-  // Новый кейс из твоего скрина
-  {id:'lucky_blocks',name:'Лаки Блоки',icon:'🧊',img:'cases/lucky_blocks.png',desc:'Кейс с горячими брейнротами',price:500,category:'standard',badge:{text:'NEW',cls:'badge-hot'},
-    items:[
-      {id:'hotdog',c:200},{id:'cashcard',c:150},{id:'garama',c:150},{id:'jolly',c:100},
-      {id:'burguro',c:50},{id:'cerberus',c:50},{id:'guest666',c:30},{id:'fortunu',c:20},
-      {id:'la_breakfast',c:20},{id:'dugdug',c:10},{id:'bumbatron',c:10},{id:'los_secret',c:5},{id:'dragonc',c:2}
     ]}
 ];
 
@@ -3453,8 +3444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imagesToPreload = [
         'brainrots/Guest666.png', 'brainrots/Grabatron.png', 'brainrots/Los_Sekolahs.png',
         'brainrots/Rubrikiko.png', 'brainrots/Ketupat_Bros.png', 'brainrots/Bunny_and_Eggy.png',
-        'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png',
-        'brainrots/Hot_Dog.png', 'cases/lucky_blocks.png'
+        'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png'
     ];
     imagesToPreload.forEach(src => {
         const img = new Image();
