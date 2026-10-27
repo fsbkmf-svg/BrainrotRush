@@ -787,6 +787,30 @@ const state={
   globalDrops: []
 };
 
+// Вспомогательная функция для сохранения скролла
+function preserveScroll(renderFn) {
+  const scrollY = window.scrollY;
+  const modal = document.querySelector('.modal');
+  const modalScroll = modal ? modal.scrollTop : 0;
+  const depGrid = document.querySelector('.dep-grid');
+  const depScroll = depGrid ? depGrid.scrollTop : 0;
+  const upgLeft = document.querySelector('.upg-left-body');
+  const upgLeftScroll = upgLeft ? upgLeft.scrollTop : 0;
+  const upgGrids = Array.from(document.querySelectorAll('.upg-inv-grid')).map(g => g.scrollTop);
+
+  renderFn();
+
+  window.scrollTo(0, scrollY);
+  const newModal = document.querySelector('.modal');
+  if (newModal) newModal.scrollTop = modalScroll;
+  const newDepGrid = document.querySelector('.dep-grid');
+  if (newDepGrid) newDepGrid.scrollTop = depScroll;
+  const newUpgLeft = document.querySelector('.upg-left-body');
+  if (newUpgLeft) newUpgLeft.scrollTop = upgLeftScroll;
+  const newUpgGrids = document.querySelectorAll('.upg-inv-grid');
+  newUpgGrids.forEach((g, idx) => { if(upgGrids[idx] !== undefined) g.scrollTop = upgGrids[idx]; });
+}
+
 async function apiSync() {
   if (!state.user) return;
   try {
@@ -1258,11 +1282,9 @@ async function onTelegramAuth(user){
   };
   state.user=userData;
   
-  // Загружаем локальный кэш перед синхронизацией
   loadSavedState();
-  
-  // Синхронизация с сервером
   await apiSync();
+  await fetchGlobalDrops(); // <--- WAIT FOR DROPS BEFORE RENDERING
 
   const nameEl=document.getElementById('profileName');
   const avatarEl=document.getElementById('profileAvatar');
@@ -1281,7 +1303,6 @@ async function onTelegramAuth(user){
   saveLocalState();renderNav();render(true);
   haptic('success');
 
-  // Запуск автообновления дропов (каждые 3 секунды)
   setInterval(() => {
     if (state.tab === 'cases') {
       updateLiveDrops();
@@ -1289,7 +1310,6 @@ async function onTelegramAuth(user){
   }, 3000);
 }
 
-// ФУНКЦИЯ ДЛЯ ПЛАВНОГО ОБНОВЛЕНИЯ LIVE ДРОПОВ
 async function updateLiveDrops() {
   try {
     const res = await fetch(`${SERVER_URL}/api/drops`);
@@ -1311,6 +1331,11 @@ async function updateLiveDrops() {
         const isNew = hasNew && i === 0 ? 'new-drop' : '';
         return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">${itemIcon(it,40)}<div><div class="li-name">${esc(it.name)}</div><div class="li-user">${esc(d.username)}</div></div></div>`;
       }).join('') || '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
+    }
+
+    const topDropContainer = document.getElementById('top-drop-container');
+    if (topDropContainer) {
+      topDropContainer.innerHTML = getTopDropHtml();
     }
   } catch(e) {}
 }
@@ -1498,7 +1523,7 @@ function renderProfile(){
 /* HISTORY */
 function setHistoryFilter(f) {
   state.historyFilter = f;
-  render(false);
+  preserveScroll(() => render(false));
 }
 
 function renderHistory() {
@@ -1700,6 +1725,21 @@ function getTopDropOfTheDay(){
   return null; 
 }
 
+function getTopDropHtml() {
+  const topDrop = getTopDropOfTheDay();
+  if (!topDrop) return '';
+  return `
+    <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}')">
+      <div><div class="top-drop-title">🏆 Топ дроп дня</div>
+        <div class="top-drop-content">
+          <div style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));">${itemIcon(topDrop.item,72)}</div>
+          <div class="top-drop-info"><div class="top-drop-name">${esc(topDrop.item.name)}</div><div class="top-drop-user">Владелец: ${esc(topDrop.user)}</div></div>
+        </div>
+      </div>
+      <div class="top-drop-price">${coin(36)} ${fmt(topDrop.item.price)}</div>
+    </div>`;
+}
+
 function renderLiveDrops() {
   const live = state.globalDrops.length ? state.globalDrops.map((d, i) => {
     const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
@@ -1711,7 +1751,6 @@ function renderLiveDrops() {
 }
 
 function renderCases(){
-  const topDrop = getTopDropOfTheDay();
   const categories={standard:'📦 Премиум кейсы',special:'🔥 Особые',mutagen:'🧬 Мутагенные кейсы'};
   const grouped=CASES.reduce((acc,c)=>{(acc[c.category]=acc[c.category]||[]).push(c);return acc;},{});
   const cards=Object.entries(grouped).map(([cat,catCases])=>{
@@ -1725,26 +1764,12 @@ function renderCases(){
     return `<div class="case-category"><div style="font-size:24px;font-weight:900;margin:40px 0 24px 0;letter-spacing:-0.02em;color:#fff;text-shadow:0 2px 5px rgba(0,0,0,.5);">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
   }).join('');
 
-  let topDropHtml = '';
-  if (topDrop) {
-    topDropHtml = `
-      <div class="top-drop-banner" onclick="showProfile('${esc(topDrop.user)}','${topDrop.item.id || topDrop.item.itemId}')">
-        <div><div class="top-drop-title">🏆 Топ дроп дня</div>
-          <div class="top-drop-content">
-            <div style="filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));">${itemIcon(topDrop.item,72)}</div>
-            <div class="top-drop-info"><div class="top-drop-name">${esc(topDrop.item.name)}</div><div class="top-drop-user">Владелец: ${esc(topDrop.user)}</div></div>
-          </div>
-        </div>
-        <div class="top-drop-price">${coin(36)} ${fmt(topDrop.item.price)}</div>
-      </div>`;
-  }
-
   return `<div class="hero">
     <h1>Открывай кейсы. Собирай брейнротов. Забирай банк.</h1>
     <p>Открывай кейсы, собирай редких брейнротов и выводи средства на реальный аккаунт.</p>
     <button class="btn btn-danger btn-lg" onclick="openCase('all_in')">ALL IN 🎰</button>
   </div>
-  ${topDropHtml}
+  <div id="top-drop-container">${getTopDropHtml()}</div>
   <div class="live-bar" id="live-drops-container">${renderLiveDrops()}</div>
   <div class="page-title" style="margin-top:48px;">Магазин кейсов</div>
   <div class="page-sub" style="margin-bottom:0;">Кейсы на любой вкус и кошелёк</div>
@@ -1931,7 +1956,6 @@ function startRoulette(c,results, isAllIn){
     const trackHtml=ids.map(id=>{
       const it=itemById(id);
       
-      // УМЕНЬШИЛ РАЗМЕР ДЛЯ ALL IN, ЧТОБЫ НЕ ЛАГАЛО
       const iconSize = isAllIn ? 100 : (opens>1 ? 60 : 100);
       const itemStyle = isAllIn 
         ? 'min-width:130px;width:130px;height:130px;padding:10px;gap:8px;' 
@@ -1957,7 +1981,6 @@ function startRoulette(c,results, isAllIn){
   let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 5000 : (isSpecialSpin ? 5500 : 3500));
   let easing = isSpecialSpin ? 'cubic-bezier(0.05, 1, 0.1, 1)' : 'cubic-bezier(0.08,0.85,0.18,1)';
   
-  // ИСПОЛЬЗУЕМ requestAnimationFrame, ЧТОБЫ АНИМАЦИЯ ЗАПУСКАЛАСЬ ПОСЛЕ ОТРИСОВКИ
   requestAnimationFrame(() => {
     setTimeout(() => {
       results.forEach((win,idx)=>{
@@ -1982,11 +2005,11 @@ function startRoulette(c,results, isAllIn){
 
   if(state.settings.spinType==='normal'&&!isMuted){let t=0;__caseTickInt=setInterval(()=>{sndTick();t++;if(t>=25)clearInterval(__caseTickInt);},150);}
   let done=false;
-  const finish=()=>{
+  const finish=async()=>{ // <--- ASYNC
     if(done)return;done=true;
     if(__caseTickInt)clearInterval(__caseTickInt);
     __caseTimers.forEach(t=>clearTimeout(t));__caseTimers=[];__caseFinish=null;
-    const addedItems=settlePendingCase();
+    const addedItems = await settlePendingCase(); // <--- AWAIT
     const itemsWon=addedItems.map(invItem=>itemById(invItem.itemId)).filter(Boolean);
     const totalVal=itemsWon.reduce((s,i)=>s+i.price,0);
     const bestItem = itemsWon.length ? itemsWon.reduce((a,b)=>a.price>b.price?a:b) : null;
@@ -2144,7 +2167,7 @@ function renderMines(){
   </div>`;
 }
 function calcMM(rv,mn){let m=1,t=25;for(let i=0;i<rv;i++)m*=(t-i)/(t-mn-i);return m*.97;}
-function setMines(n){if(state.mines.active)return;state.mines.mines=n;render(false);}
+function setMines(n){if(state.mines.active)return;state.mines.mines=n;preserveScroll(() => render(false));}
 function minesStart(){
   const m=state.mines;
   const bet=Math.max(100,Math.floor(+$('#minesBet').value||0));
@@ -2194,7 +2217,7 @@ function renderFuse(){
   </div>
   <div class="inv-grid">${cards}</div>`;
 }
-function fuseToggle(u){if(state.fuseSelected.has(u))state.fuseSelected.delete(u);else state.fuseSelected.add(u);render(false);}
+function fuseToggle(u){if(state.fuseSelected.has(u))state.fuseSelected.delete(u);else state.fuseSelected.add(u);preserveScroll(() => render(false));}
 function fuseClear(){state.fuseSelected.clear();render(false);}
 function fuseDo(){
   const sel=[...state.fuseSelected];if(sel.length<2)return;
@@ -2235,7 +2258,7 @@ function updateUpgBalance(val){
   state.upgrade.balanceAmount=Number(val);
   const totalVal=upgTV()+state.upgrade.balanceAmount;
   const targetItem=state.upgrade.target?itemById(state.upgrade.target):null;
-  if(targetItem&&targetItem.price<=totalVal){state.upgrade.target=null;render(false);return;}
+  if(targetItem&&targetItem.price<=totalVal){state.upgrade.target=null;preserveScroll(() => render(false));return;}
   const ch=targetItem?calcUC(totalVal,targetItem.price):0;
   const balText=document.getElementById('upgSliderBalanceText');
   if(balText)balText.innerHTML=`${coin(14)} ${fmt(state.upgrade.balanceAmount)}`;
@@ -2435,7 +2458,8 @@ function upgToggle(u){
     const i=l.indexOf(u);
     if(i>=0)l.splice(i,1);
     else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предметов`,'err');return;}l.push(u);}
-    state.upgrade.target=null;render(false);
+    state.upgrade.target=null;
+    preserveScroll(() => render(false));
   } catch(e) { console.error('upgToggle error', e); }
 }
 function upgPick(id){
@@ -2443,10 +2467,10 @@ function upgPick(id){
     if(state.upgrade.animating)return;
     state.upgrade.lastResult = null;
     state.upgrade.target=id;
-    render(false);
+    preserveScroll(() => render(false));
   } catch(e) { console.error('upgPick error', e); }
 }
-function upgReset(){if(state.upgrade.animating)return;state.upgrade.lastResult = null;state.upgrade.froms=[];state.upgrade.target=null;state.upgrade.balanceAmount=0;render(false);}
+function upgReset(){if(state.upgrade.animating)return;state.upgrade.lastResult = null;state.upgrade.froms=[];state.upgrade.target=null;state.upgrade.balanceAmount=0;preserveScroll(() => render(false));}
 function upgMult(m){
   if(state.upgrade.animating)return;
   state.upgrade.lastResult = null;
@@ -2455,7 +2479,7 @@ function upgMult(m){
   if(!el.length){toast('Нет подходящих','err');return;}
   const ideal=t*m;
   const sorted=el.sort((a,b)=>Math.abs(a.price-ideal)-Math.abs(b.price-ideal));
-  state.upgrade.target=sorted[0].id;render(false);
+  state.upgrade.target=sorted[0].id;preserveScroll(() => render(false));
 }
 function upgMultPct(pct){
   if(state.upgrade.animating)return;
@@ -2465,7 +2489,7 @@ function upgMultPct(pct){
   if(!el.length){toast('Нет подходящих','err');return;}
   const ideal=t/(pct/100);
   const sorted=el.sort((a,b)=>Math.abs(a.price-ideal)-Math.abs(b.price-ideal));
-  state.upgrade.target=sorted[0].id;render(false);
+  state.upgrade.target=sorted[0].id;preserveScroll(() => render(false));
 }
 
 /* === FAIRNESS MODAL === */
@@ -2758,8 +2782,8 @@ function upgDo(){
 }
 
 /* === INVENTORY === */
-function setInventorySort(s){ state.inventorySort = s; saveLocalState(); render(false); }
-function setInventoryFilter(f){ state.inventoryFilter = f; saveLocalState(); render(false); }
+function setInventorySort(s){ state.inventorySort = s; saveLocalState(); preserveScroll(() => render(false)); }
+function setInventoryFilter(f){ state.inventoryFilter = f; saveLocalState(); preserveScroll(() => render(false)); }
 function renderInventory(){
   let items = state.inventory.map(i=>({...i,item:itemById(i.itemId)})).filter(x=>x.item);
   if(state.inventoryFilter && state.inventoryFilter !== 'all') items = items.filter(x => x.item.rarity === state.inventoryFilter);
@@ -2814,7 +2838,7 @@ function sellOne(uid){
     state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
     sndCash(); haptic('success');
     toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
-    saveLocalState(); renderHeader(); render(false);
+    saveLocalState(); renderHeader(); preserveScroll(() => render(false));
   });
 }
 function sellAll(){
@@ -2829,7 +2853,7 @@ function sellAll(){
     pushInventoryRemove(uids);
     sndCash(); haptic('success');
     toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
-    saveLocalState(); renderHeader(); render(false);
+    saveLocalState(); renderHeader(); preserveScroll(() => render(false));
   });
 }
 function quickUpg(uid){
@@ -2874,7 +2898,6 @@ function getTotalSelectedCount() {
 
 function updateDepositQuantity(id, delta) {
   const current = state.deposit.selected.get(id) || 0;
-  // УБРАНА ПРОВЕРКА ИНВЕНТАРЯ. ТЕПЕРЬ ДОСТУПНО ДО 10 ШТУК ЛЮБЫХ ПРЕДМЕТОВ.
   const available = 10; 
   
   if (delta > 0) {
@@ -2892,7 +2915,7 @@ function updateDepositQuantity(id, delta) {
   } else {
     state.deposit.selected.set(id, newCount);
   }
-  renderDepositModal();
+  preserveScroll(() => renderDepositModal());
 }
 
 function renderDepositModal() {
@@ -2907,13 +2930,12 @@ function renderDepositModal() {
   `;
 
   if (d.step === 1) {
-    // БЕРЕМ ВСЕ ПРЕДМЕТЫ ИЗ ITEMS, А НЕ ИЗ ИНВЕНТАРЯ
     let pool = ITEMS.filter(item => 
       !item.id.startsWith('coin_') && 
-      item.price >= 45 // От Garama и выше (как на скрине)
+      item.price >= 45 
     ).map(item => ({
       item: item,
-      available: 10 // Лимит на выбор
+      available: 10 
     }));
     
     if (d.searchQuery) pool = pool.filter(x => x.item.name.toLowerCase().includes(d.searchQuery.toLowerCase()));
@@ -2924,7 +2946,7 @@ function renderDepositModal() {
     const cards = pool.map(data => {
       const item = data.item;
       const selCount = d.selected.get(item.id) || 0;
-      const finalPrice = Math.floor(item.price * 1.3); // 130% от цены
+      const finalPrice = Math.floor(item.price * 1.3);
       return `<div class="dep-card ${selCount > 0 ? 'selected' : ''}">
         <div class="dep-img">${itemIcon(item, 60)}</div>
         <div class="dep-name">${esc(item.name)}</div>
@@ -2978,7 +3000,6 @@ function renderDepositModal() {
       const finalPrice = Math.floor(item.price * 1.3);
       total += finalPrice * count;
       
-      // ИСПРАВЛЕНА ВЕРСТКА ВЫБРАННЫХ ПРЕДМЕТОВ
       itemsHtml += `
         <div class="dep-sum-item">
           <div class="dep-sum-left">
@@ -3059,7 +3080,7 @@ function renderDepositModal() {
 
 function updateDepositSearch(val) {
   state.deposit.searchQuery = val;
-  renderDepositModal();
+  preserveScroll(() => renderDepositModal());
   const input = document.querySelector('.dep-search');
   if(input) {
     input.focus();
@@ -3114,7 +3135,6 @@ async function submitDeposit() {
       })
     });
 
-    // ЧИТАЕМ РЕАЛЬНУЮ ОШИБКУ С СЕРВЕРА
     if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
         throw new Error(errData.error || 'Сервер вернул ошибку ' + response.status);
@@ -3133,7 +3153,6 @@ async function submitDeposit() {
 
   } catch (error) {
     console.error(error);
-    // ВЫВОДИМ РЕАЛЬНУЮ ОШИБКУ В ТОСТ
     toast(`Ошибка: ${error.message}`, 'err');
     haptic('error');
     if (btn) { btn.disabled = false; btn.textContent = 'СОЗДАТЬ ЗАЯВКУ'; }
@@ -3249,7 +3268,7 @@ async function withdrawItem(uid) {
                 state.inventory = state.inventory.filter(i => i.uid !== uid);
                 pushInventoryRemove([uid]);
                 saveLocalState();
-                render(false);
+                preserveScroll(() => render(false));
                 toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
                 haptic('success');
 
