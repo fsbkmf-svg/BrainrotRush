@@ -811,15 +811,15 @@ function preserveScroll(renderFn) {
   newUpgGrids.forEach((g, idx) => { if(upgGrids[idx] !== undefined) g.scrollTop = upgGrids[idx]; });
 }
 
+// ФИКС: Теперь сервер - единственный источник правды. Клиент слепо доверяет серверу.
 async function apiSync() {
   if (!state.user) return;
   try {
     const res = await fetch(`${SERVER_URL}/api/state/${state.user.id}`);
     if (res.ok) {
       const data = await res.json();
-      if (data.balance > 0 || state.balance === 0) {
-        state.balance = data.balance;
-      }
+      // Сервер перезаписывает локальный стейт
+      state.balance = data.balance || 0;
       state.inventory = data.inventory || [];
       saveLocalState();
       updateBalance(state.balance);
@@ -1219,7 +1219,7 @@ async function initTelegramLogin(){
           body: JSON.stringify({ initData: initData })
         });
         
-        if (!response.ok) throw new Error('Сервер ответил ошибкой');
+        if (!response.ok) throw new Error('Сервер отклонил авторизацию');
         
         const data = await response.json();
         
@@ -1236,27 +1236,11 @@ async function initTelegramLogin(){
         }
       } catch (error) {
         console.error(error);
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            onTelegramAuth({
-                id: tg.initDataUnsafe.user.id,
-                first_name: tg.initDataUnsafe.user.first_name || '',
-                username: tg.initDataUnsafe.user.username || ('user' + tg.initDataUnsafe.user.id),
-                photo_url: tg.initDataUnsafe.user.photo_url || null
-            });
-        } else {
-            showLoginError('Сервер на Bonto не отвечает. Проверьте, запущен ли он.');
-        }
+        // ФИКС: УДАЛЕН FALLBACK initDataUnsafe. Теперь без валидной подписи зайти нельзя.
+        showLoginError('Ошибка авторизации. Сервер отклонил запрос или недоступен.');
       }
     } 
-    else if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      clearInterval(checkInterval);
-      onTelegramAuth({
-        id: tg.initDataUnsafe.user.id,
-        first_name: tg.initDataUnsafe.user.first_name || '',
-        username: tg.initDataUnsafe.user.username || ('user' + tg.initDataUnsafe.user.id),
-        photo_url: tg.initDataUnsafe.user.photo_url || null
-      });
-    }
+    // ФИКС: УДАЛЕН ВТОРОЙ FALLBACK initDataUnsafe
     
     if (attempts >= maxAttempts) {
       clearInterval(checkInterval);
@@ -1283,8 +1267,8 @@ async function onTelegramAuth(user){
   state.user=userData;
   
   loadSavedState();
-  await apiSync();
-  await fetchGlobalDrops(); // <--- WAIT FOR DROPS BEFORE RENDERING
+  await apiSync(); // Сразу подтягиваем актуальные данные с сервера
+  await fetchGlobalDrops(); 
 
   const nameEl=document.getElementById('profileName');
   const avatarEl=document.getElementById('profileAvatar');
@@ -1303,11 +1287,17 @@ async function onTelegramAuth(user){
   saveLocalState();renderNav();render(true);
   haptic('success');
 
+  // Обновление лайв-дропов
   setInterval(() => {
     if (state.tab === 'cases') {
       updateLiveDrops();
     }
   }, 3000);
+
+  // ФИКС: Автосинхронизация каждые 15 секунд, чтобы локальный взломанный стейт откатывался
+  setInterval(() => {
+    apiSync();
+  }, 15000);
 }
 
 async function updateLiveDrops() {
@@ -1348,23 +1338,30 @@ function adminGiveCoins(){
   const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
   if(!a||a<=0){toast('Введите сумму','err');return;}
   state.balance+=a;saveLocalState();renderHeader();toast(`Выдано ${fmt(a)} монет`,'ok');
+  pushBalance(a); // ФИКС: Отправляем на сервер
   inp.value='';render(false);
 }
 function adminTakeCoins(){
   const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
   if(!a||a<=0){toast('Введите сумму','err');return;}
   state.balance=Math.max(0,state.balance-a);saveLocalState();renderHeader();toast(`Списано ${fmt(a)} монет`,'ok');
+  pushBalance(-a); // ФИКС: Отправляем на сервер
   inp.value='';render(false);
 }
 function adminGiveItem(){
   const sel=document.getElementById('adminItemSelect');const id=sel.value;
   if(!id){toast('Выберите предмет','err');return;}
-  state.inventory.push({uid:uuid(),itemId:id,date:Date.now()});
+  const uid = uuid();
+  const now = Date.now();
+  state.inventory.push({uid,itemId:id,date:now});
+  pushInventoryAdd(id, uid, now); // ФИКС: Отправляем на сервер
   saveLocalState();toast(`Выдан: ${itemById(id).name}`,'ok');render(false);
 }
 function adminClearInventory(){
   showConfirm('Очистить весь инвентарь?', () => {
+    const uids = state.inventory.map(i=>i.uid);
     state.inventory=[];saveLocalState();toast('Инвентарь очищен','ok');render(false);
+    pushInventoryRemove(uids); // ФИКС: Отправляем на сервер
   });
 }
 function adminApproveWithdrawal(id){
@@ -3265,8 +3262,10 @@ async function withdrawItem(uid) {
 
                 if (!response.ok) throw new Error('Ошибка сервера');
 
+                // Сервер уже удалил предмет из БД
                 state.inventory = state.inventory.filter(i => i.uid !== uid);
-                pushInventoryRemove([uid]);
+                // ФИКС: Синхронизируемся, чтобы удалить предмет из локального стейта
+                await apiSync();
                 saveLocalState();
                 preserveScroll(() => render(false));
                 toast(`Заявка на вывод ${item.name} создана! Ожидайте выдачи в игре.`, 'ok');
