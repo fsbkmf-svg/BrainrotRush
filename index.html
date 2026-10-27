@@ -819,6 +819,39 @@ const state={
   adminSearchUser: null
 };
 
+// НОВАЯ ФУНКЦИЯ ДЛЯ БАЛАНСИРОВКИ RTP (83%)
+function getBalancedItems(activeItems, activePrice, rtp = 0.83) {
+    if (!activeItems || activeItems.length === 0) return [];
+    const targetEV = activePrice * rtp;
+    let lowK = 0.01;
+    let highK = 10.0;
+    
+    for (let i = 0; i < 30; i++) {
+        let k = (lowK + highK) / 2;
+        let tempWeights = activeItems.map(item => Math.pow(item.c, k));
+        let totalW = tempWeights.reduce((s, w) => s + w, 0);
+        let currentEV = activeItems.reduce((s, item, idx) => {
+            const price = itemById(item.id)?.price || 0;
+            return s + (tempWeights[idx] / totalW) * price;
+        }, 0);
+        
+        if (currentEV > targetEV) {
+            lowK = k;
+        } else {
+            highK = k;
+        }
+    }
+    
+    let finalK = (lowK + highK) / 2;
+    let finalWeights = activeItems.map(item => Math.pow(item.c, finalK));
+    let totalFinalW = finalWeights.reduce((s, w) => s + w, 0);
+    
+    return activeItems.map((item, idx) => ({
+        ...item,
+        c: (finalWeights[idx] / totalFinalW) * 1000
+    }));
+}
+
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -1092,8 +1125,8 @@ async function settlePendingCase(){
           price: it.price,
           rarity: it.rarity,
           itemId: it.id,
-          caseId: pending.case.id,        // ДОБАВЛЕНО
-          caseName: pending.case.name     // ДОБАВЛЕНО
+          caseId: pending.case.id,
+          caseName: pending.case.name
         }),
         keepalive: true
       });
@@ -1357,7 +1390,6 @@ async function updateLiveDrops() {
       el.innerHTML = newDrops.map((d, i) => {
         const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
         const isNew = hasNew && i === 0 ? 'new-drop' : '';
-        // ДОБАВЛЕНО: Отображение кейса
         return `<div class="live-item ${isNew}" onclick="showProfile('${d.username}','${d.itemId}')">
           ${itemIcon(it,40)}
           <div>
@@ -1380,12 +1412,10 @@ document.addEventListener('DOMContentLoaded',initTelegramLogin);
 /* ADMIN */
 function setAdminTab(t){state.adminTab=t;render(false);}
 
-// ADMIN: ПОИСК ПОЛЬЗОВАТЕЛЯ
 function adminSearch() {
     const query = document.getElementById('adminUserSearch').value.trim();
     if (!query) return toast('Введите ID или Username', 'err');
     
-    // Так как мы на клиенте, мы можем найти только себя, но мы сделаем вид, что ищем
     if (String(state.user.id) === query || state.user.username === query) {
         state.adminSearchUser = {
             id: state.user.id,
@@ -1395,7 +1425,6 @@ function adminSearch() {
             isBanned: !!state.bannedUsers[state.user.id]
         };
     } else {
-        // Заглушка для поиска других юзеров (в реальности должен быть запрос к API)
         state.adminSearchUser = {
             id: query,
             username: 'user_' + query.slice(-4),
@@ -1407,7 +1436,6 @@ function adminSearch() {
     render(false);
 }
 
-// ADMIN: БАН
 function adminToggleBan(userId) {
     if (!userId) return;
     showConfirm(`Вы уверены, что хотите ${state.bannedUsers[userId] ? 'разбанить' : 'забанить'} пользователя ${userId}?`, () => {
@@ -1977,8 +2005,10 @@ function renderCaseDetail(id){
   }
   const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span style="font-size:120px;line-height:1">${c.icon}</span>`;
   
+  const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const activeItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
+  
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
   
@@ -1992,7 +2022,7 @@ function renderCaseDetail(id){
   
   itemsPreview = sortedItems.map(ci => {
     const it = itemById(ci.id); if(!it) return '';
-    const pct = (ci.c/totalW*100).toFixed(1);
+    const pct = (ci.c/totalW*100).toFixed(2);
     const isRare = it.price > activePrice * 5;
     const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
     return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:16px;padding:16px 10px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
@@ -2057,11 +2087,11 @@ function rollAllInCase(balance){
   if(balance<10)return ITEMS[0];
   const roll=Math.random();
   let mult=0;
-  if(roll<0.55)mult=0.1+Math.random()*0.5;
-  else if(roll<0.85)mult=0.7+Math.random()*0.3;
+  if(roll<0.55)mult=0.1+Math.random()*0.46;
+  else if(roll<0.85)mult=0.66+Math.random()*0.34;
   else if(roll<0.95)mult=1.1+Math.random()*0.9;
   else if(roll<0.99)mult=2.0+Math.random()*3.0;
-  else mult=5.0+Math.random()*15.0;
+  else mult=5.0+Math.random()*11.0;
   const targetPrice=balance*mult;
   const nonCoinItems=ITEMS.filter(i=>!i.id.startsWith('coin_'));
   let closest=nonCoinItems[0],minDiff=Infinity;
@@ -2087,7 +2117,8 @@ function openCaseNow(){
     return;
   }
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const activeItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
+  const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
   if(!activeItems||activeItems.length===0){toast('Кейс пуст','err');return;}
   const total=activePrice*state.caseOpens;
   if(state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
@@ -2119,8 +2150,10 @@ function startRoulette(c,results, isAllIn){
       const nci=ITEMS.filter(i=>i.price>1000 && !i.id.startsWith('coin_'));
       for(let i=0;i<TRACK_LEN;i++) pool.push(nci[Math.floor(Math.random()*nci.length)].id);
     } else {
-      const activeItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
-      activeItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c*2));k++)pool.push(i.id);}});
+      const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
+      const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
+      const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
+      activeItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c));k++)pool.push(i.id);}});
     }
     if(!pool.length)pool.push(win.id);
     const ids=[];
