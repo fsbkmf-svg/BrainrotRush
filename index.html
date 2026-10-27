@@ -166,7 +166,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .roulette-wrap.shake{animation:shake .5s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .roulette-marker{position:absolute;top:0;bottom:0;left:50%;width:4px;background:var(--red);transform:translateX(-50%);z-index:10;box-shadow:0 0 20px var(--red);border-radius:2px}
-.roulette-track{display:flex;flex-direction:row;align-items:center;gap:12px;height:100%;will-change:transform}
+.roulette-track{display:flex;flex-direction:row;align-items:center;gap:12px;height:100%;will-change:transform;transform:translate3d(0,0,0);}
 .roulette-item{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(56,189,248,.05);border:1px solid var(--border);border-radius:16px;flex-shrink:0;transition:border-color .2s,transform .2s}
 .roulette-item.near-marker{transform:scale(1.05)}
 .roulette-item.landed{border-color:var(--gold);box-shadow:0 0 30px rgba(251,191,36,.6);background:rgba(251,191,36,.1)}
@@ -816,10 +816,9 @@ function preserveScroll(renderFn) {
   if (newModal) newModal.scrollTop = modalScroll;
 }
 
-// СИНХРОНИЗАЦИЯ (Защита от Race Condition)
 async function apiSync() {
   if (!state.user) return;
-  if (pendingRequests > 0) return; // Не перезаписываем стейт во время транзакции
+  if (pendingRequests > 0) return; 
   try {
     const res = await secureFetch(`${SERVER_URL}/api/state/${state.user.id}`);
     if (res.ok) {
@@ -833,7 +832,6 @@ async function apiSync() {
   } catch(e) { console.log('Ошибка синхронизации', e); }
 }
 
-// АТОМАРНАЯ ПРОДАЖА
 async function apiSellItems(itemsToSell, onSuccess) {
     if (!state.user) return;
     try {
@@ -1958,7 +1956,7 @@ function openCaseNow(){
 
 function startRoulette(c,results, isAllIn){
   const opens=results.length;
-  const TRACK_LEN=60,WIN_IDX=48;
+  const TRACK_LEN=25,WIN_IDX=20; // УМЕНЬШИЛИ КОЛИЧЕСТВО КАРТОЧЕК ДЛЯ ПРОИЗВОДИТЕЛЬНОСТИ
   
   let html=`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button><div style="display:flex;flex-direction:column;gap:24px;margin-bottom:24px;">`;
   
@@ -1997,7 +1995,8 @@ function startRoulette(c,results, isAllIn){
   });
   
   html+=`</div><div style="text-align:center;color:${isAllIn?'var(--red)':'var(--muted)'};font-size:${isAllIn?'24px':'16px'};font-weight:900;margin-bottom:16px">${state.settings.spinType==='fast'?'':'Крутим...'}</div><div style="text-align:center"><button class="btn btn-ghost" onclick="skipCaseAnim()">⏩ Пропустить</button></div>`;
-  state.openingView=html;render(false);
+  state.openingView=html;
+  render(false);
   
   const isSpecialSpin = Math.random() < 0.3; 
   let animTime = state.settings.spinType==='fast' ? 300 : (isAllIn ? 5000 : (isSpecialSpin ? 5500 : 3500));
@@ -2014,18 +2013,32 @@ function startRoulette(c,results, isAllIn){
         if(!winEl)return;
         const wc=winEl.offsetLeft+winEl.offsetWidth/2;
         const wrapW=wrap.offsetWidth;
-        const itemW=winEl.offsetWidth;
         const offset=wrapW/2-wc;
         void track.offsetWidth;
+        
+        track.style.willChange = 'transform';
         track.style.transition=`transform ${animTime}ms ${easing}`;
-        track.style.transform=`translateX(${offset}px)`;
-        const winItem = itemById(win.id);
-        startSpinTracking(track, wrap, winEl, winItem, animTime);
+        track.style.transform=`translate3d(${offset}px, 0, 0)`;
+        
+        setTimeout(() => {
+            if(winEl && document.contains(winEl)){
+                winEl.classList.add('landed');
+                triggerLandingEffects(wrap, itemById(win.id));
+            }
+        }, animTime);
       });
     }, 50);
   });
 
-  if(state.settings.spinType==='normal'&&!isMuted){let t=0;__caseTickInt=setInterval(()=>{sndTick();t++;if(t>=25)clearInterval(__caseTickInt);},150);}
+  if(state.settings.spinType==='normal'&&!isMuted){
+    let t=0;
+    if(__caseTickInt) clearInterval(__caseTickInt);
+    __caseTickInt=setInterval(()=>{
+        sndTick();t++;
+        if(t>=Math.min(25, animTime/150)) clearInterval(__caseTickInt);
+    },150);
+  }
+  
   let done=false;
   const finish=async()=>{ 
     if(done)return;done=true;
@@ -2054,48 +2067,6 @@ function startRoulette(c,results, isAllIn){
   };
   __caseFinish=finish;
   __caseTimers.push(setTimeout(finish,animTime+500));
-}
-
-function startSpinTracking(track, wrap, winEl, winItem, animTime){
-  const start = performance.now();
-  let lastIdx = -1;
-  let lastNearEl = null;
-  let done = false;
-  function loop(now){
-    if(done) return;
-    if(!document.contains(wrap)){ done = true; return; }
-    const elapsed = now - start;
-    const t = Math.min(1, elapsed / animTime);
-    const wrapRect = wrap.getBoundingClientRect();
-    if(wrapRect.width === 0){ done = true; return; }
-    const centerX = wrapRect.left + wrapRect.width / 2;
-    const items = track.querySelectorAll('.roulette-item');
-    let closest = null, closestDist = Infinity, closestIdx = -1;
-    items.forEach((item, i) => {
-      const r = item.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const d = Math.abs(cx - centerX);
-      if(d < closestDist){ closestDist = d; closest = item; closestIdx = i; }
-    });
-    if(closestIdx !== lastIdx && closestDist < 100){
-      if(lastNearEl) lastNearEl.classList.remove('near-marker');
-      if(closest) closest.classList.add('near-marker');
-      lastNearEl = closest;
-      lastIdx = closestIdx;
-      if(!isMuted) sndTick();
-    }
-    if(t < 1){
-      requestAnimationFrame(loop);
-    } else {
-      done = true;
-      if(lastNearEl) lastNearEl.classList.remove('near-marker');
-      if(winEl && document.contains(winEl)){
-        winEl.classList.add('landed');
-        triggerLandingEffects(wrap, winItem);
-      }
-    }
-  }
-  requestAnimationFrame(loop);
 }
 
 function triggerLandingEffects(wrap, item){
@@ -3314,6 +3285,19 @@ async function withdrawItem(uid) {
 document.addEventListener('DOMContentLoaded', () => {
   initTelegramLogin();
 });
+
+// Предзагрузка картинок, чтобы не было лагов при крутке рулетки
+(function preloadImages() {
+    const imagesToPreload = [
+        'brainrots/Guest666.png', 'brainrots/Grabatron.png', 'brainrots/Los_Sekolahs.png',
+        'brainrots/Rubrikiko.png', 'brainrots/Ketupat_Bros.png', 'brainrots/Bunny_and_Eggy.png',
+        'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png'
+    ];
+    imagesToPreload.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+})();
 </script>
 </body>
 </html>
