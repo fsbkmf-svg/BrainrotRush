@@ -517,6 +517,25 @@ const SERVER_URL = 'https://brainrot-server.bonto.run';
 const BOT_ROBLOX_NAME = 'daveminioniscool';
 const MAX_UPG = 6; 
 
+// Глобальные переменные для безопасности
+let sessionToken = null;
+let pendingRequests = 0;
+
+// Безопасный fetch с токеном и счетчиком активных запросов
+async function secureFetch(url, options = {}) {
+    pendingRequests++;
+    if (sessionToken) {
+        if (!options.headers) options.headers = {};
+        options.headers['Authorization'] = sessionToken;
+    }
+    try {
+        const res = await fetch(url, options);
+        return res;
+    } finally {
+        pendingRequests--;
+    }
+}
+
 (function(){
   const c=document.getElementById('snowContainer');if(!c)return;
   for(let i=0;i<40;i++){
@@ -787,38 +806,24 @@ const state={
   globalDrops: []
 };
 
-// Вспомогательная функция для сохранения скролла
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
   const modalScroll = modal ? modal.scrollTop : 0;
-  const depGrid = document.querySelector('.dep-grid');
-  const depScroll = depGrid ? depGrid.scrollTop : 0;
-  const upgLeft = document.querySelector('.upg-left-body');
-  const upgLeftScroll = upgLeft ? upgLeft.scrollTop : 0;
-  const upgGrids = Array.from(document.querySelectorAll('.upg-inv-grid')).map(g => g.scrollTop);
-
   renderFn();
-
   window.scrollTo(0, scrollY);
   const newModal = document.querySelector('.modal');
   if (newModal) newModal.scrollTop = modalScroll;
-  const newDepGrid = document.querySelector('.dep-grid');
-  if (newDepGrid) newDepGrid.scrollTop = depScroll;
-  const newUpgLeft = document.querySelector('.upg-left-body');
-  if (newUpgLeft) newUpgLeft.scrollTop = upgLeftScroll;
-  const newUpgGrids = document.querySelectorAll('.upg-inv-grid');
-  newUpgGrids.forEach((g, idx) => { if(upgGrids[idx] !== undefined) g.scrollTop = upgGrids[idx]; });
 }
 
-// ФИКС: Теперь сервер - единственный источник правды. Клиент слепо доверяет серверу.
+// СИНХРОНИЗАЦИЯ (Защита от Race Condition)
 async function apiSync() {
   if (!state.user) return;
+  if (pendingRequests > 0) return; // Не перезаписываем стейт во время транзакции
   try {
-    const res = await fetch(`${SERVER_URL}/api/state/${state.user.id}`);
+    const res = await secureFetch(`${SERVER_URL}/api/state/${state.user.id}`);
     if (res.ok) {
       const data = await res.json();
-      // Сервер перезаписывает локальный стейт
       state.balance = data.balance || 0;
       state.inventory = data.inventory || [];
       saveLocalState();
@@ -828,14 +833,37 @@ async function apiSync() {
   } catch(e) { console.log('Ошибка синхронизации', e); }
 }
 
+// АТОМАРНАЯ ПРОДАЖА
+async function apiSellItems(itemsToSell, onSuccess) {
+    if (!state.user) return;
+    try {
+        const res = await secureFetch(`${SERVER_URL}/api/sell`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ items: itemsToSell })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            state.balance = data.balance;
+            state.inventory = data.inventory;
+            updateBalance(state.balance);
+            renderHeader();
+            saveLocalState();
+            if (onSuccess) onSuccess(data);
+        } else {
+            toast('Ошибка при продаже', 'err');
+        }
+    } catch(e) { toast('Ошибка сети', 'err'); }
+}
+
 async function pushBalance(delta) {
   if (!state.user) return;
   saveLocalState();
   try {
-    await fetch(`${SERVER_URL}/api/balance`, {
+    await secureFetch(`${SERVER_URL}/api/balance`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ tgId: state.user.id, delta }),
+      body: JSON.stringify({ delta }),
       keepalive: true
     });
   } catch(e) {}
@@ -845,10 +873,10 @@ async function pushInventoryAdd(itemId, uid, date) {
   if (!state.user) return null;
   saveLocalState();
   try {
-    const res = await fetch(`${SERVER_URL}/api/inventory/add`, {
+    const res = await secureFetch(`${SERVER_URL}/api/inventory/add`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ tgId: state.user.id, itemId, uid, date }),
+      body: JSON.stringify({ itemId, uid, date }),
       keepalive: true
     });
     if (res.ok) {
@@ -863,10 +891,10 @@ async function pushInventoryRemove(uids) {
   if (!state.user || !uids || !uids.length) return;
   saveLocalState();
   try {
-    await fetch(`${SERVER_URL}/api/inventory/remove`, {
+    await secureFetch(`${SERVER_URL}/api/inventory/remove`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ tgId: state.user.id, uids }),
+      body: JSON.stringify({ uids }),
       keepalive: true
     });
   } catch(e) {}
@@ -1044,7 +1072,7 @@ async function settlePendingCase(){
     await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
     
     try {
-      await fetch(`${SERVER_URL}/api/drops`, {
+      await secureFetch(`${SERVER_URL}/api/drops`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -1224,6 +1252,7 @@ async function initTelegramLogin(){
         const data = await response.json();
         
         if (data.success && data.user) {
+          sessionToken = data.token; // СОХРАНЯЕМ ТОКЕН
           onTelegramAuth({
             id: data.user.id,
             first_name: data.user.first_name || '',
@@ -1236,11 +1265,9 @@ async function initTelegramLogin(){
         }
       } catch (error) {
         console.error(error);
-        // ФИКС: УДАЛЕН FALLBACK initDataUnsafe. Теперь без валидной подписи зайти нельзя.
         showLoginError('Ошибка авторизации. Сервер отклонил запрос или недоступен.');
       }
     } 
-    // ФИКС: УДАЛЕН ВТОРОЙ FALLBACK initDataUnsafe
     
     if (attempts >= maxAttempts) {
       clearInterval(checkInterval);
@@ -1267,7 +1294,7 @@ async function onTelegramAuth(user){
   state.user=userData;
   
   loadSavedState();
-  await apiSync(); // Сразу подтягиваем актуальные данные с сервера
+  await apiSync(); 
   await fetchGlobalDrops(); 
 
   const nameEl=document.getElementById('profileName');
@@ -1287,14 +1314,12 @@ async function onTelegramAuth(user){
   saveLocalState();renderNav();render(true);
   haptic('success');
 
-  // Обновление лайв-дропов
   setInterval(() => {
     if (state.tab === 'cases') {
       updateLiveDrops();
     }
   }, 3000);
 
-  // ФИКС: Автосинхронизация каждые 15 секунд, чтобы локальный взломанный стейт откатывался
   setInterval(() => {
     apiSync();
   }, 15000);
@@ -1302,7 +1327,7 @@ async function onTelegramAuth(user){
 
 async function updateLiveDrops() {
   try {
-    const res = await fetch(`${SERVER_URL}/api/drops`);
+    const res = await secureFetch(`${SERVER_URL}/api/drops`);
     if (!res.ok) return;
     const newDrops = await res.json();
     
@@ -1338,14 +1363,14 @@ function adminGiveCoins(){
   const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
   if(!a||a<=0){toast('Введите сумму','err');return;}
   state.balance+=a;saveLocalState();renderHeader();toast(`Выдано ${fmt(a)} монет`,'ok');
-  pushBalance(a); // ФИКС: Отправляем на сервер
+  pushBalance(a); 
   inp.value='';render(false);
 }
 function adminTakeCoins(){
   const inp=document.getElementById('adminCoinsInput');const a=Number(inp.value);
   if(!a||a<=0){toast('Введите сумму','err');return;}
   state.balance=Math.max(0,state.balance-a);saveLocalState();renderHeader();toast(`Списано ${fmt(a)} монет`,'ok');
-  pushBalance(-a); // ФИКС: Отправляем на сервер
+  pushBalance(-a); 
   inp.value='';render(false);
 }
 function adminGiveItem(){
@@ -1354,14 +1379,14 @@ function adminGiveItem(){
   const uid = uuid();
   const now = Date.now();
   state.inventory.push({uid,itemId:id,date:now});
-  pushInventoryAdd(id, uid, now); // ФИКС: Отправляем на сервер
+  pushInventoryAdd(id, uid, now); 
   saveLocalState();toast(`Выдан: ${itemById(id).name}`,'ok');render(false);
 }
 function adminClearInventory(){
   showConfirm('Очистить весь инвентарь?', () => {
     const uids = state.inventory.map(i=>i.uid);
     state.inventory=[];saveLocalState();toast('Инвентарь очищен','ok');render(false);
-    pushInventoryRemove(uids); // ФИКС: Отправляем на сервер
+    pushInventoryRemove(uids); 
   });
 }
 function adminApproveWithdrawal(id){
@@ -1699,7 +1724,7 @@ function render(fresh){
 /* CASES */
 async function fetchGlobalDrops() {
   try {
-    const res = await fetch(`${SERVER_URL}/api/drops`);
+    const res = await secureFetch(`${SERVER_URL}/api/drops`);
     if (res.ok) {
       state.globalDrops = await res.json();
     }
@@ -2002,11 +2027,11 @@ function startRoulette(c,results, isAllIn){
 
   if(state.settings.spinType==='normal'&&!isMuted){let t=0;__caseTickInt=setInterval(()=>{sndTick();t++;if(t>=25)clearInterval(__caseTickInt);},150);}
   let done=false;
-  const finish=async()=>{ // <--- ASYNC
+  const finish=async()=>{ 
     if(done)return;done=true;
     if(__caseTickInt)clearInterval(__caseTickInt);
     __caseTimers.forEach(t=>clearTimeout(t));__caseTimers=[];__caseFinish=null;
-    const addedItems = await settlePendingCase(); // <--- AWAIT
+    const addedItems = await settlePendingCase(); 
     const itemsWon=addedItems.map(invItem=>itemById(invItem.itemId)).filter(Boolean);
     const totalVal=itemsWon.reduce((s,i)=>s+i.price,0);
     const bestItem = itemsWon.length ? itemsWon.reduce((a,b)=>a.price>b.price?a:b) : null;
@@ -2099,29 +2124,36 @@ function triggerLandingEffects(wrap, item){
 }
 
 function goBackToCases(){cancelAnimations();state.currentCase=null;state.openingView=null;render(true);window.scrollTo({top:0,behavior:'smooth'});}
+
 function sellResult(uid,caseId){
   const inv=state.inventory.find(i=>i.uid===uid);if(!inv)return;
   const it=itemById(inv.itemId);if(!it)return;
-  state.balance+=it.price;state.inventory=state.inventory.filter(i=>i.uid!==uid);
-  pushBalance(it.price);
-  pushInventoryRemove([uid]);
-  state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
-  sndCash();toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`,'ok');
-  haptic('success');
-  if(caseId==='all_in')goBackToCases();else goBackToCase(caseId);
+  
+  apiSellItems([{ uid: uid, price: it.price }], () => {
+      state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
+      sndCash();toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`,'ok');
+      haptic('success');
+      if(caseId==='all_in')goBackToCases();else goBackToCase(caseId);
+  });
 }
+
 function sellMultiResult(uidsStr,caseId){
-  const uids=uidsStr.split(',');let total=0;
-  const toSell=state.inventory.filter(i=>uids.includes(i.uid));
-  toSell.forEach(inv=>{const it=itemById(inv.itemId);if(it){total+=it.price;state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});}});
-  state.inventory=state.inventory.filter(i=>!uids.includes(i.uid));
-  state.balance+=total;
-  pushBalance(total);
-  pushInventoryRemove(uids);
-  sndCash();toast(`Продано за ${coin(16)} ${fmt(total)}`,'ok');
-  haptic('success');
-  goBackToCase(caseId);
+  const uids=uidsStr.split(',');
+  const toSell=state.inventory.filter(i=>uids.includes(i.uid)).map(inv => {
+      const it = itemById(inv.itemId);
+      return it ? { uid: inv.uid, price: it.price, itemId: it.id } : null;
+  }).filter(Boolean);
+
+  if (toSell.length === 0) return;
+
+  apiSellItems(toSell, (data) => {
+      toSell.forEach(item => state.history.push({type:'sell',itemId:item.itemId,price:item.price,date:Date.now()}));
+      sndCash();toast(`Продано за ${coin(16)} ${fmt(data.added)}`,'ok');
+      haptic('success');
+      goBackToCase(caseId);
+  });
 }
+
 function renderHeader(){updateBalance(state.balance);}
 
 /* MINES */
@@ -2828,29 +2860,30 @@ function sellOne(uid){
   const it = itemById(inv.itemId);
   if(!it) return;
   showConfirm(`Продать «${it.name}» за ${fmt(it.price)}?`, () => {
-    state.balance += it.price;
-    state.inventory = state.inventory.filter(i=>i.uid!==uid);
-    pushBalance(it.price);
-    pushInventoryRemove([uid]);
-    state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
-    sndCash(); haptic('success');
-    toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
-    saveLocalState(); renderHeader(); preserveScroll(() => render(false));
+    apiSellItems([{ uid: uid, price: it.price }], () => {
+        state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});
+        sndCash(); haptic('success');
+        toast(`Продан ${esc(it.name)} за ${coin(16)} ${fmt(it.price)}`, 'ok');
+        preserveScroll(() => render(false));
+    });
   });
 }
 function sellAll(){
-  const total = state.inventory.reduce((s,i)=>{const it=itemById(i.itemId);return s+(it?it.price:0);},0);
+  const itemsToSell = state.inventory.map(i => {
+      const it = itemById(i.itemId);
+      return it ? { uid: i.uid, price: it.price, itemId: it.id } : null;
+  }).filter(Boolean);
+
+  const total = itemsToSell.reduce((s, i) => s + i.price, 0);
   if(total<=0) return;
+
   showConfirm(`Продать все предметы за ${fmt(total)} монет?`, () => {
-    const uids = state.inventory.map(i=>i.uid);
-    state.inventory.forEach(inv=>{const it=itemById(inv.itemId);if(it)state.history.push({type:'sell',itemId:it.id,price:it.price,date:Date.now()});});
-    state.inventory = [];
-    state.balance += total;
-    pushBalance(total);
-    pushInventoryRemove(uids);
-    sndCash(); haptic('success');
-    toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
-    saveLocalState(); renderHeader(); preserveScroll(() => render(false));
+    apiSellItems(itemsToSell, (data) => {
+        itemsToSell.forEach(item => state.history.push({type:'sell',itemId:item.itemId,price:item.price,date:Date.now()}));
+        sndCash(); haptic('success');
+        toast(`Продано всё за ${coin(16)} ${fmt(total)}`, 'ok');
+        preserveScroll(() => render(false));
+    });
   });
 }
 function quickUpg(uid){
@@ -3120,7 +3153,7 @@ async function submitDeposit() {
   });
 
   try {
-    const response = await fetch(`${SERVER_URL}/api/deposit`, {
+    const response = await secureFetch(`${SERVER_URL}/api/deposit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -3161,7 +3194,7 @@ function startStatusPolling(requestId, finalAmount) {
   
   __depositPollingInterval = setInterval(async () => {
     try {
-      const res = await fetch(`${SERVER_URL}/api/deposit-status/${requestId}`);
+      const res = await secureFetch(`${SERVER_URL}/api/deposit-status/${requestId}`);
       const data = await res.json();
 
       if (data.status === 'approved') {
@@ -3248,7 +3281,7 @@ async function withdrawItem(uid) {
     showPrompt('Введите ваш ник в Roblox для вывода:', state.user?.robloxName || '', async (robloxName) => {
         showConfirm(`Вывести «${item.name}» в игру Roblox?\nУчтите, что вывод происходит вручную по расписанию.`, async () => {
             try {
-                const response = await fetch(`${SERVER_URL}/api/withdraw`, {
+                const response = await secureFetch(`${SERVER_URL}/api/withdraw`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -3262,9 +3295,7 @@ async function withdrawItem(uid) {
 
                 if (!response.ok) throw new Error('Ошибка сервера');
 
-                // Сервер уже удалил предмет из БД
                 state.inventory = state.inventory.filter(i => i.uid !== uid);
-                // ФИКС: Синхронизируемся, чтобы удалить предмет из локального стейта
                 await apiSync();
                 saveLocalState();
                 preserveScroll(() => render(false));
