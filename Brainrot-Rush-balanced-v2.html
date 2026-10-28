@@ -171,6 +171,16 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .roulette-item{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(56,189,248,.05);border:1px solid var(--border);border-radius:16px;flex-shrink:0;transition:border-color .2s,transform .2s}
 .roulette-item.near-marker{transform:scale(1.05)}
 .roulette-item.landed{border-color:var(--gold);box-shadow:0 0 30px rgba(251,191,36,.6);background:rgba(251,191,36,.1)}
+.roulette-item.rarity-common{border-color:rgba(148,163,184,.35)}
+.roulette-item.rarity-rare{border-color:rgba(56,189,248,.55);box-shadow:inset 0 0 12px rgba(56,189,248,.06)}
+.roulette-item.rarity-epic{border-color:rgba(167,139,250,.62);box-shadow:inset 0 0 14px rgba(167,139,250,.08)}
+.roulette-item.rarity-legendary{border-color:rgba(251,191,36,.7);box-shadow:inset 0 0 16px rgba(251,191,36,.09)}
+.roulette-item.rarity-mythic{border-color:rgba(244,63,94,.72);box-shadow:inset 0 0 18px rgba(244,63,94,.1)}
+.roulette-item.rarity-god{border-color:rgba(45,212,191,.82);box-shadow:inset 0 0 20px rgba(45,212,191,.12);animation:godPulse 1.8s ease-in-out infinite}
+@keyframes godPulse{0%,100%{box-shadow:inset 0 0 12px rgba(45,212,191,.08),0 0 0 rgba(45,212,191,0)}50%{box-shadow:inset 0 0 24px rgba(45,212,191,.18),0 0 16px rgba(45,212,191,.12)}}
+.case-drop-card{animation:dropCardIn .32s ease both}
+@keyframes dropCardIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
 .roulette-item-name{font-size:13px;font-weight:700;text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
 .roulette-particles{position:absolute;inset:0;pointer-events:none;z-index:20;overflow:visible}
 .particle{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0}
@@ -740,7 +750,7 @@ const ITEMS = [
 ];
 
 const CASES=[
-  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков',price:99,category:'standard',
+  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков · доступный вход',price:79,category:'standard',
     items:[
       {id:'cashcard',c:180},{id:'garama',c:180},{id:'la_secret',c:150},{id:'pizza_ranch',c:140},
       {id:'la_food',c:130},{id:'fragola',c:120},{id:'popcuru',c:110},{id:'jolly',c:100},
@@ -748,7 +758,7 @@ const CASES=[
       {id:'cooki_milki',c:40},{id:'sammyni_fat',c:30},{id:'globa',c:25},{id:'spooky',c:20},
       {id:'cerberus',c:15},{id:'celestial',c:12},{id:'reinito',c:8},{id:'los_admins',c:5}
     ]},
-  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:299,category:'standard',
+  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Сбалансированный дроп с редкими призами',price:249,category:'standard',
     items:[
       {id:'la_secret',c:100},{id:'pizza_ranch',c:100},{id:'la_food',c:100},{id:'fragola',c:95},{id:'popcuru',c:90},{id:'jolly',c:85},
       {id:'burguro',c:80},{id:'la_fuse',c:75},{id:'fragrama',c:70},{id:'capitano_moby',c:65},{id:'cooki_milki',c:60},
@@ -757,7 +767,7 @@ const CASES=[
       {id:'fortunu',c:18},{id:'rubrikiko',c:16},{id:'los_sekolahs',c:14},{id:'rico',c:10},{id:'la_breakfast',c:8},
       {id:'examen',c:7},{id:'foxini',c:6},{id:'los_hackers',c:5},{id:'rosy',c:3}
     ]},
-  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:1799,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
+  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические призы с редким топ-дропом',price:1499,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
     items:[
       {id:'bumbatron',c:100},{id:'los_secret',c:90},{id:'bunny_eggy',c:85},{id:'grabatron',c:80},{id:'sammyni_cak',c:75},
       {id:'dragonc',c:70},{id:'tirilikalika',c:65},{id:'jelly_moby',c:55},{id:'pancake',c:50},{id:'ginger',c:45},
@@ -765,13 +775,13 @@ const CASES=[
       {id:'lasupreme',c:18},{id:'fishino',c:16},{id:'kraken',c:14},{id:'dragon_aquanini',c:10},{id:'griffin',c:7},
       {id:'los_dragons',c:5},{id:'antonio',c:4},{id:'lovebear',c:3},{id:'arcadragon',c:2},{id:'elefanto',c:1.5},{id:'skibidi',c:0.5}
     ]},
-  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:6999,category:'standard',
+  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Дорогие призы и очень редкие топы',price:5999,category:'standard',
     items:[
       {id:'dragon_aquanini',c:100},{id:'griffin',c:85},{id:'los_dragons',c:75},{id:'antonio',c:65},{id:'lovebear',c:50},
       {id:'arcadragon',c:40},{id:'elefanto',c:35},{id:'skibidi',c:25},{id:'johnpork',c:18},{id:'meowl',c:12},
       {id:'signore',c:7},{id:'strawb',c:3},{id:'headless',c:0.5}
     ]},
-  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:249,vipPrice:2799,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
+  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим: редкие топовые призы',price:199,vipPrice:2799,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
     normalItems:[
       {id:'fragola',c:100},{id:'globa',c:95},{id:'spooky',c:90},{id:'cerberus',c:85},{id:'celestial',c:80},{id:'reinito',c:75},{id:'los_admins',c:70},
       {id:'guest666',c:65},{id:'los_amigos',c:60},{id:'los_chillis',c:55},{id:'fortunu',c:50},{id:'rubrikiko',c:45},{id:'los_sekolahs',c:40},
@@ -785,7 +795,7 @@ const CASES=[
       {id:'elefanto',c:20},{id:'skibidi',c:15},{id:'johnpork',c:10},{id:'meowl',c:7},{id:'signore',c:4},{id:'strawb',c:1},{id:'headless',c:0.2}
     ]},
   {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
-  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:499,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
+  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Мутации Guest 666 · кристалл выпадает крайне редко',price:449,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
     items:[
       {id:'coin_100',c:100},{id:'guest666',c:90},{id:'guest666_gold',c:85},{id:'guest666_diamond',c:80},{id:'guest666_candy',c:75},
       {id:'guest666_lava',c:65},{id:'guest666_divine',c:55},{id:'guest666_galaxy',c:50},{id:'guest666_cursed',c:40},
@@ -820,60 +830,35 @@ const state={
 // c — исходный вес предмета; итоговые веса нормализуются до 1000.
 function getBalancedItems(activeItems, activePrice, rtp = 0.68) {
     if (!Array.isArray(activeItems) || activeItems.length === 0) return [];
-
     const validItems = activeItems.filter(item => {
         const price = Number(itemById(item.id)?.price);
         return Number.isFinite(price) && price >= 0 && Number(item.c) > 0;
     });
     if (!validItems.length || !(Number(activePrice) > 0)) return [];
 
-    const prices = validItems.map(item => Number(itemById(item.id).price));
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
-    const targetEV = Math.min(maxPrice, Math.max(minPrice, Number(activePrice) * rtp));
-    const priceRange = maxPrice - minPrice;
-
-    // Если все предметы имеют одинаковую стоимость, любой дроп даёт одну EV.
-    if (priceRange <= 0) {
-        const total = validItems.reduce((sum, item) => sum + Number(item.c), 0);
-        return validItems.map(item => ({ ...item, c: Number(item.c) / total * 1000 }));
-    }
-
-    // Экспоненциальное взвешивание сохраняет исходные предпочтения c,
-    // но сдвигает вероятности так, чтобы математическое ожидание совпало с RTP.
-    const normalizedPrices = prices.map(price => (price - minPrice) / priceRange);
-    const baseWeights = validItems.map(item => Number(item.c));
-    const expectedValue = beta => {
-        let weightSum = 0;
-        let valueSum = 0;
-        for (let i = 0; i < validItems.length; i++) {
-            const weight = baseWeights[i] * Math.exp(-beta * normalizedPrices[i]);
-            weightSum += weight;
-            valueSum += weight * prices[i];
-        }
-        return valueSum / weightSum;
-    };
-
-    let low = -60;
-    let high = 60;
-    for (let i = 0; i < 100; i++) {
-        const mid = (low + high) / 2;
-        // Чем больше beta, тем выше доля дешёвых предметов и ниже EV.
-        if (expectedValue(mid) > targetEV) low = mid;
-        else high = mid;
-    }
-
-    const beta = (low + high) / 2;
-    const finalWeights = validItems.map((item, i) =>
-        baseWeights[i] * Math.exp(-beta * normalizedPrices[i])
-    );
-    const totalWeight = finalWeights.reduce((sum, weight) => sum + weight, 0);
-
-    return validItems.map((item, i) => ({
-        ...item,
-        c: finalWeights[i] / totalWeight * 1000
-    }));
+    // Tier multipliers: cheap items are common, expensive items are intentionally rare.
+    // rtp remains an adjustable tuning parameter; it mildly shifts the tier weights.
+    const target = Number(activePrice) * Math.max(0.45, Math.min(0.82, Number(rtp) || 0.68));
+    const weighted = validItems.map(item => {
+        const price = Number(itemById(item.id).price);
+        const ratio = price / Number(activePrice);
+        let tier = ratio <= 0.25 ? 4.2
+          : ratio <= 0.50 ? 2.7
+          : ratio <= 0.80 ? 1.55
+          : ratio <= 1.15 ? 0.78
+          : ratio <= 2.00 ? 0.24
+          : ratio <= 5.00 ? 0.055
+          : 0.012;
+        // Keep each case's authored item weights relevant, but stop high-value items
+        // with large base weights from dominating the roll.
+        const priceTilt = Math.max(0.72, Math.min(1.22, target / Math.max(price, 1)));
+        return { ...item, c: Number(item.c) * tier * Math.sqrt(priceTilt) };
+    });
+    const total = weighted.reduce((sum, item) => sum + item.c, 0);
+    if (!(total > 0)) return [];
+    return weighted.map(item => ({ ...item, c: item.c / total * 1000 }));
 }
+
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -1132,7 +1117,7 @@ async function settlePendingCase(){
     const invItem={uid:uuid(),itemId:it.id,date:now};
     
     state.inventory.push(invItem);
-    state.history.push({type:'case',caseId:pending.case.id,itemId:it.id,date:now});
+    state.history.push({type:'case',caseId:pending.case.id,caseName:pending.case.name,itemId:it.id,date:now,paid:Number(pending.unitPrice ?? (pending.total / Math.max(1,pending.opens))),itemPrice:it.price,rarity:it.rarity});
     added.push(invItem);
     
     await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
@@ -1766,7 +1751,7 @@ function renderHistory() {
     
     if (h.type === 'case') {
       const it = itemById(h.itemId);
-      if (it) grouped[d].profit -= it.price;
+      if (it) { const c = CASES.find(x => x.id === h.caseId); const paid = Number.isFinite(Number(h.paid)) ? Number(h.paid) : (c ? c.price : 0); grouped[d].profit += it.price - paid; }
     } else if (h.type === 'sell') {
       grouped[d].profit += (h.price || 0);
     } else if (h.type === 'deposit') {
@@ -1818,10 +1803,12 @@ function renderHistory() {
           const it = itemById(h.itemId);
           const c = CASES.find(x => x.id === h.caseId);
           icon = '📦';
-          title = `Открытие кейса «${c ? c.name : 'Неизвестно'}»`;
-          sub = it ? it.name : '';
-          amountStr = it ? `-${fmt(it.price)}` : '';
-          amtClass = 'neg';
+          title = `Открытие кейса «${h.caseName || (c ? c.name : 'Неизвестно')}»`;
+          const paid = Number.isFinite(Number(h.paid)) ? Number(h.paid) : (c ? c.price : 0);
+          sub = it ? `${it.name} · выплата ${fmt(it.price)} · цена кейса ${fmt(paid)} 🪙 · ${(RARITY[it.rarity]||RARITY.common).label}` : '';
+          const net = it ? it.price - paid : 0;
+          amountStr = it ? `${net>0?'+':''}${fmt(net)}` : '';
+          amtClass = net >= 0 ? 'pos' : 'neg';
         } else if (h.type === 'sell') {
           const it = itemById(h.itemId);
           icon = '💰';
@@ -2045,12 +2032,13 @@ function renderCaseDetail(id){
   itemsPreview = sortedItems.map(ci => {
     const it = itemById(ci.id); if(!it) return '';
     const pct = (ci.c/totalW*100).toFixed(2);
-    const isRare = it.price > activePrice * 5;
-    const borderStyle = isRare ? 'border: 1px solid rgba(244,63,94,.5); box-shadow: inset 0 0 10px rgba(244,63,94,.2);' : 'border: 1px solid rgba(255,255,255,.05);';
-    return `<div style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:16px;padding:16px 10px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
+    const rarity = RARITY[it.rarity] || RARITY.common;
+    const borderStyle = `border:1px solid ${rarity.color}66;box-shadow:inset 0 0 12px ${rarity.color}12;`;
+    return `<div class="case-drop-card rarity-${esc(it.rarity||'common')}" style="position:relative;background:rgba(255,255,255,.02);${borderStyle}border-radius:16px;padding:16px 10px;text-align:center;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,.05)'" onmouseout="this.style.background='rgba(255,255,255,.02)'">
       <div class="drop-chance-badge" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:900;color:var(--accent);">${pct}%</div>
       <div style="height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">${itemIcon(it,60)}</div>
       <div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(it.name)}</div>
+      <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:${rarity.color};margin-bottom:5px;">${esc(rarity.label)}</div>
       <div style="font-size:13px;color:var(--gold);font-weight:900;">${fmt(it.price)}</div>
     </div>`;
   }).join('');
@@ -2071,14 +2059,15 @@ function renderCaseDetail(id){
       <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:16px;padding:16px;margin-bottom:24px;text-align:center;">
           <div style="font-size:14px;color:var(--muted);margin-bottom:16px;">Выберите пул дропа для открытия.</div>
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-              <button class="btn ${!state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=false;render(false);" style="flex:1;">Обычный (199)</button>
-              <button class="btn ${state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=true;render(false);" style="flex:1;">VIP (3000)</button>
+              <button class="btn ${!state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=false;render(false);" style="flex:1;">Обычный (${fmt(c.price)})</button>
+              <button class="btn ${state.vipMode?'btn-accent':'btn-ghost'}" onclick="state.vipMode=true;render(false);" style="flex:1;">VIP (${fmt(c.vipPrice)})</button>
           </div>
       </div>
       ` : ''}
       
       <div style="margin-bottom:24px;">
-        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:12px;letter-spacing:.05em;">Возможные призы (шанс дропа)</div>
+        <div style="font-size:13px;color:var(--muted);text-transform:uppercase;font-weight:800;margin-bottom:6px;letter-spacing:.05em;">Возможные призы (шанс дропа)</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Обычные предметы выпадают чаще; легендарные и выше — значительно реже. Шансы показаны для выбранного режима.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;max-height:380px;overflow-y:auto;padding-right:8px;">
           ${itemsPreview}
         </div>
@@ -2109,11 +2098,12 @@ function rollAllInCase(balance){
   if(balance<10)return ITEMS[0];
   const roll=Math.random();
   let mult=0;
-  if(roll<0.55)mult=0.1+Math.random()*0.46;
-  else if(roll<0.85)mult=0.66+Math.random()*0.34;
-  else if(roll<0.95)mult=1.1+Math.random()*0.9;
-  else if(roll<0.99)mult=2.0+Math.random()*3.0;
-  else mult=5.0+Math.random()*11.0;
+  // ALL IN: most results return less than the stake; big wins are possible but rare.
+  if(roll<0.50)mult=0.12+Math.random()*0.43;
+  else if(roll<0.82)mult=0.55+Math.random()*0.40;
+  else if(roll<0.94)mult=0.95+Math.random()*0.35;
+  else if(roll<0.99)mult=1.30+Math.random()*1.20;
+  else mult=2.50+Math.random()*5.50;
   const targetPrice=balance*mult;
   const nonCoinItems=ITEMS.filter(i=>!i.id.startsWith('coin_'));
   let closest=nonCoinItems[0],minDiff=Infinity;
@@ -2132,7 +2122,7 @@ function openCaseNow(){
       pushBalance(-cost);
       
       const result=rollAllInCase(cost);
-      __pendingCase={case:c,opens:1,results:[result],total:cost,settled:false};
+      __pendingCase={case:c,opens:1,results:[result],total:cost,unitPrice:cost,settled:false};
       startRoulette(c, [result], true); 
       render(false);
     });
@@ -2155,7 +2145,7 @@ function openCaseNow(){
   if(!results.length){toast('Кейс пуст','err');return;}
   state.balance-=total;
   pushBalance(-total); 
-  __pendingCase={case:c,opens:state.caseOpens,results,total,settled:false};
+  __pendingCase={case:c,opens:state.caseOpens,results,total,unitPrice:activePrice,settled:false};
   startRoulette(c,results, false);
   render(false);
 }
@@ -2193,7 +2183,9 @@ function startRoulette(c,results, isAllIn){
         ? 'font-size:14px;white-space:normal;line-height:1.2;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;font-weight:900;' 
         : (opens>1?'font-size:14px;white-space:normal;line-height:1.2;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;':'font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;');
         
-      return `<div class="roulette-item" style="${itemStyle}"><div style="display:flex;align-items:center;justify-content:center;flex:1;width:100%;overflow:hidden;">${itemIcon(it,iconSize)}</div><div class="roulette-item-name" style="${nameStyle}">${esc(it.name)}</div></div>`;
+      const rarityClass = `rarity-${it?.rarity || 'common'}`;
+      const rarityColor = (RARITY[it?.rarity] || RARITY.common).color;
+      return `<div class="roulette-item ${rarityClass}" style="${itemStyle}border-color:${rarityColor}66;"><div style="display:flex;align-items:center;justify-content:center;flex:1;width:100%;overflow:hidden;">${itemIcon(it,iconSize)}</div><div class="roulette-item-name" style="${nameStyle}">${esc(it.name)}</div></div>`;
     }).join('');
     
     const wrapHeight = isAllIn ? '250px' : (opens>1?'170px':'250px');
@@ -2265,10 +2257,11 @@ function startRoulette(c,results, isAllIn){
       if(!invItem){state.openingView=null;render(true);return;}
       const it=itemById(invItem.itemId);
       if(!it){state.openingView=null;render(true);return;}
-      state.openingView=`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button><div style="max-width:600px;margin:0 auto;background:rgba(15,23,42,.8);border:1px solid var(--border-strong);border-radius:24px;padding:40px;text-align:center;"><div style="margin-bottom:20px;">${itemIcon(it,120)}</div><div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:12px;">${esc(it.name)}</div><div style="font-size:22px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;">${coin(24)} ${fmt(it.price)}</div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-danger" onclick="sellResult('${invItem.uid}','${c.id}')">Продать всё</button><button class="btn btn-accent" onclick="goBackToCase('${c.id}')">Ещё раз</button><button class="btn btn-ghost" onclick="goBackInventory()">В инвентарь</button></div></div>`;
+      const rarity = RARITY[it.rarity] || RARITY.common;
+      state.openingView=`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button><div class="case-drop-card" style="max-width:600px;margin:0 auto;background:rgba(15,23,42,.8);border:1px solid ${rarity.color}88;box-shadow:0 0 28px ${rarity.color}22,inset 0 0 30px ${rarity.color}0c;border-radius:24px;padding:40px;text-align:center;"><div style="margin-bottom:20px;">${itemIcon(it,120)}</div><div style="font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;">${esc(it.name)}</div><div style="font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:${rarity.color};margin-bottom:12px;">${esc(rarity.label)}</div><div style="font-size:22px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;">${coin(24)} ${fmt(it.price)}</div><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"><button class="btn btn-danger" onclick="sellResult('${invItem.uid}','${c.id}')">Продать всё</button><button class="btn btn-accent" onclick="goBackToCase('${c.id}')">Ещё раз</button><button class="btn btn-ghost" onclick="goBackInventory()">В инвентарь</button></div></div>`;
     }else{
       const uidsStr=addedItems.map(i=>i.uid).join(',');
-      const cardsHtml=addedItems.map(invItem=>{const it=itemById(invItem.itemId);return it?`<div class="multi-result-item"><div class="strip" style="background:#0ea5e9"></div>${itemIcon(it,80)}<div class="nm">${esc(it.name)}</div><div class="pr">${coin(14)} ${fmt(it.price)}</div></div>`:'';}).join('');
+      const cardsHtml=addedItems.map(invItem=>{const it=itemById(invItem.itemId);const rarity=it?(RARITY[it.rarity]||RARITY.common):RARITY.common;return it?`<div class="multi-result-item" style="border:1px solid ${rarity.color}66;box-shadow:inset 0 0 14px ${rarity.color}12;"><div class="strip" style="background:${rarity.color}"></div>${itemIcon(it,80)}<div class="nm">${esc(it.name)}</div><div style="font-size:10px;color:${rarity.color};font-weight:900;text-transform:uppercase;margin:4px 0;">${esc(rarity.label)}</div><div class="pr">${coin(14)} ${fmt(it.price)}</div></div>`:'';}).join('');
       state.openingView=`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button><div class="multi-opening-stage"><div class="multi-result-title">Результаты</div><div class="multi-result-total"><div class="lbl">Итого</div><div class="val">${coin(24)} ${fmt(totalVal)}</div></div><div class="multi-result-grid">${cardsHtml}</div><div class="multi-result-actions"><button class="btn btn-danger" onclick="sellMultiResult('${uidsStr}','${c.id}')">Продать всё</button><button class="btn btn-accent" onclick="goBackToCase('${c.id}')">Ещё раз</button><button class="btn btn-ghost" onclick="goBackInventory()">В инвентарь</button></div></div>`;
     }
     render(false);renderHeader();
