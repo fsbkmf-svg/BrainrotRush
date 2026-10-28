@@ -878,6 +878,16 @@ async function apiSync() {
       const data = await res.json();
       state.balance = data.balance || 0;
       state.inventory = data.inventory || [];
+      // Keep case/deposit/withdraw history backed by the server; retain local history for game modes
+      // that have not yet been migrated to server-side settlement.
+      try {
+        const hres = await secureFetch(`${SERVER_URL}/api/history`);
+        if (hres.ok) {
+          const serverHistory = await hres.json();
+          const localOnly = (state.history || []).filter(h => !['case','deposit','withdraw'].includes(h.type));
+          state.history = [...localOnly, ...(Array.isArray(serverHistory) ? serverHistory.slice().reverse() : [])].slice(-500);
+        }
+      } catch (_) {}
       saveLocalState();
       updateBalance(state.balance);
       renderHeader();
@@ -1116,14 +1126,15 @@ async function settlePendingCase(){
     const now=Date.now();
     const invItem={uid:uuid(),itemId:it.id,date:now};
     
-    state.inventory.push(invItem);
+    const serverEntry = pending.serverSettled ? (r.uid ? {uid:r.uid,itemId:it.id,date:r.date||now} : null) : null;
+    if (!pending.serverSettled) state.inventory.push(invItem);
     state.history.push({type:'case',caseId:pending.case.id,caseName:pending.case.name,itemId:it.id,date:now,paid:Number(pending.unitPrice ?? (pending.total / Math.max(1,pending.opens))),itemPrice:it.price,rarity:it.rarity});
-    added.push(invItem);
+    added.push(serverEntry || invItem);
     
-    await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
+    if (!pending.serverSettled) await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
     
     try {
-      await secureFetch(`${SERVER_URL}/api/drops`, {
+      if (pending.serverSettled) { /* server already recorded this drop atomically */ } else await secureFetch(`${SERVER_URL}/api/drops`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -1836,6 +1847,11 @@ function renderHistory() {
           title = `Фьюз предметов`;
           sub = `Получен: ${it ? it.name : '?'}`;
           amountStr = '';
+        } else if (h.type === 'withdraw') {
+          icon = '📤';
+          title = 'Заявка на вывод';
+          sub = Array.isArray(h.items) ? h.items.join(', ') : 'Предметы переданы в обработку';
+          amountStr = '';
         } else if (h.type === 'deposit') {
           icon = '📥';
           title = `Пополнение баланса`;
@@ -2111,43 +2127,29 @@ function rollAllInCase(balance){
   return {id:closest.id,c:100};
 }
 
-function openCaseNow(){
+async function openCaseNow(){
   if(__pendingCase)return;
   const c=CASES.find(x=>x.id===state.currentCase);if(!c)return;
-  if(c.isAllIn){
-    if(state.balance<=0){toast('У вас нет монет для ALL IN!','err');haptic('error');return;}
-    const cost=state.balance;
-    showConfirm(`Вы уверены?\nСтавка: ${fmt(cost)} монет.\nВ случае неудачи потеряете всё.`, () => {
-      state.balance=0;renderHeader();
-      pushBalance(-cost);
-      
-      const result=rollAllInCase(cost);
-      __pendingCase={case:c,opens:1,results:[result],total:cost,unitPrice:cost,settled:false};
-      startRoulette(c, [result], true); 
-      render(false);
-    });
-    return;
-  }
-  const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
-  if(!activeItems||activeItems.length===0){toast('Кейс пуст','err');return;}
-  const total=activePrice*state.caseOpens;
-  if(state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
-  const results=[];
-  for(let i=0;i<state.caseOpens;i++){
-    const t=activeItems.reduce((s,i)=>s+i.c,0);
-    let r=Math.random()*t;
-    let res=activeItems[activeItems.length-1];
-    for(const it of activeItems){r-=it.c;if(r<=0){res=it;break;}}
-    if(res) results.push(res);
-  }
-  if(!results.length){toast('Кейс пуст','err');return;}
-  state.balance-=total;
-  pushBalance(-total); 
-  __pendingCase={case:c,opens:state.caseOpens,results,total,unitPrice:activePrice,settled:false};
-  startRoulette(c,results, false);
-  render(false);
+  const count=c.isAllIn?1:state.caseOpens;
+  const unitPrice=c.isVip&&state.vipMode?c.vipPrice:c.price;
+  const total=c.isAllIn?state.balance:unitPrice*count;
+  if(!(total>0)){toast('У вас нет монет для открытия','err');haptic('error');return;}
+  if(!c.isAllIn&&state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
+  const executeServerOpen=async()=>{
+    try {
+      const response=await secureFetch(`${SERVER_URL}/api/case/open`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({caseId:c.id,count,vipMode:!!state.vipMode})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.success)throw new Error(data.error||'Сервер отклонил открытие');
+      state.balance=Number(data.balance)||0;state.inventory=Array.isArray(data.inventory)?data.inventory:state.inventory;
+      const results=(data.results||[]).map(r=>({id:r.id,c:100,uid:r.uid,date:r.date,price:r.price,rarity:r.rarity})).filter(r=>itemById(r.id));
+      if(!results.length)throw new Error('Сервер не вернул результат');
+      const paid=Number(data.charged)||total;
+      __pendingCase={case:c,opens:results.length,results,total:paid,unitPrice:paid/results.length,settled:false,serverSettled:true};
+      saveLocalState();renderHeader();startRoulette(c,results,!!data.allIn);render(false);
+    } catch(e) { toast(e.message||'Ошибка открытия кейса','err'); try{await apiSync();}catch(_){} }
+  };
+  if(c.isAllIn){showConfirm(`Вы уверены?\nСтавка: ${fmt(total)} монет.\nВ случае неудачи потеряете всё.`,executeServerOpen);return;}
+  await executeServerOpen();
 }
 
 function startRoulette(c,results, isAllIn){
@@ -3390,9 +3392,10 @@ function startStatusPolling(requestId, finalAmount) {
         clearInterval(__depositPollingInterval);
         if (__depositTimerInt) clearInterval(__depositTimerInt);
         
-        state.balance += finalAmount;
-        state.history.push({ type: 'deposit', amount: finalAmount, date: Date.now() });
-        
+        // Server has already credited the balance; never add the deposit a second time in the browser.
+        if (Number.isFinite(Number(data.balance))) state.balance = Number(data.balance);
+        else await apiSync();
+        await apiSync();
         saveLocalState(); renderHeader();
         
         sndCash(); haptic('success');
