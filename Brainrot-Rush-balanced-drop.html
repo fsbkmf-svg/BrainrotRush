@@ -815,9 +815,10 @@ const state={
   adminSearchUser: null
 };
 
-// Балансировка вероятностей дропа под целевой RTP.
+// Балансировка дропа: дешёвые предметы встречаются чаще, дорогие — реже.
+// Целевой RTP 68%: кейс обычно не окупается полностью, но дорогие дропы остаются возможны.
 // c — исходный вес предмета; итоговые веса нормализуются до 1000.
-function getBalancedItems(activeItems, activePrice, rtp = 0.80) {
+function getBalancedItems(activeItems, activePrice, rtp = 0.68) {
     if (!Array.isArray(activeItems) || activeItems.length === 0) return [];
 
     const validItems = activeItems.filter(item => {
@@ -1415,7 +1416,7 @@ async function updateLiveDrops() {
           ${itemIcon(it,40)}
           <div>
             <div class="li-name">${esc(it.name)}</div>
-            <div class="li-user">${esc(d.username)} <span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></div>
+            <div class="li-user">${esc(d.username)} <span class="li-case-badge" style="${d.type==='upgrade' ? 'background:rgba(251,191,36,.15);color:var(--gold);' : ''}">${d.type === 'upgrade' ? '⚡ Апгрейд' : esc(d.caseName || 'Кейс')}</span></div>
           </div>
         </div>`;
       }).join('') || '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
@@ -1616,7 +1617,7 @@ function renderAdmin(){
                         return `<tr>
                             <td style="color:var(--muted);font-size:12px;">${date}</td>
                             <td><b>${esc(d.username)}</b></td>
-                            <td><span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></td>
+                            <td><span class="li-case-badge" style="${d.type==='upgrade' ? 'background:rgba(251,191,36,.15);color:var(--gold);' : ''}">${d.type === 'upgrade' ? '⚡ Апгрейд' : esc(d.caseName || 'Кейс')}</span></td>
                             <td>${itemIcon(it, 20)} <span style="vertical-align:middle;margin-left:8px;">${esc(it.name)}</span></td>
                             <td style="color:var(--gold);font-weight:900;">${fmt(d.price)}</td>
                         </tr>`;
@@ -1964,7 +1965,7 @@ function renderLiveDrops() {
       ${itemIcon(it,40)}
       <div>
         <div class="li-name">${esc(it.name)}</div>
-        <div class="li-user">${esc(d.username)} <span class="li-case-badge">${esc(d.caseName || 'Кейс')}</span></div>
+        <div class="li-user">${esc(d.username)} <span class="li-case-badge" style="${d.type==='upgrade' ? 'background:rgba(251,191,36,.15);color:var(--gold);' : ''}">${d.type === 'upgrade' ? '⚡ Апгрейд' : esc(d.caseName || 'Кейс')}</span></div>
       </div>
     </div>`;
   }).join('') : '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
@@ -2028,7 +2029,7 @@ function renderCaseDetail(id){
   
   const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
   
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
@@ -2139,7 +2140,7 @@ function openCaseNow(){
   }
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
   const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
   if(!activeItems||activeItems.length===0){toast('Кейс пуст','err');return;}
   const total=activePrice*state.caseOpens;
   if(state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
@@ -2173,7 +2174,7 @@ function startRoulette(c,results, isAllIn){
     } else {
       const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
       const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-      const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
+      const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
       activeItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c));k++)pool.push(i.id);}});
     }
     if(!pool.length)pool.push(win.id);
@@ -2844,6 +2845,23 @@ function finishUpgradeSpin(payload){
     state.history.push(historyEntry);
     if(state.settings.upgradeSound) sndWinRarity(toItem.rarity);
     haptic('success');
+
+    // Отправка апгрейда в лайв-дропы
+    secureFetch(`${SERVER_URL}/api/drops`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            username: state.user ? state.user.username : 'guest',
+            itemName: toItem.name,
+            price: toItem.price,
+            rarity: toItem.rarity,
+            itemId: toItem.id,
+            caseName: 'Апгрейд',
+            type: 'upgrade'
+        }),
+        keepalive: true
+    }).catch(e => console.error('Ошибка отправки апгрейда', e));
+
   } else {
     state.history.push(historyEntry);
     if(state.settings.upgradeSound) sndLose();
