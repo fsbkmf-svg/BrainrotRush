@@ -819,39 +819,64 @@ const state={
   adminSearchUser: null
 };
 
-// НОВАЯ ФУНКЦИЯ ДЛЯ БАЛАНСИРОВКИ RTP (83%)
-function getBalancedItems(activeItems, activePrice, rtp = 0.83) {
-    if (!activeItems || activeItems.length === 0) return [];
-    const targetEV = activePrice * rtp;
-    let lowK = 0.01;
-    let highK = 10.0;
-    
-    for (let i = 0; i < 30; i++) {
-        let k = (lowK + highK) / 2;
-        let tempWeights = activeItems.map(item => Math.pow(item.c, k));
-        let totalW = tempWeights.reduce((s, w) => s + w, 0);
-        let currentEV = activeItems.reduce((s, item, idx) => {
-            const price = itemById(item.id)?.price || 0;
-            return s + (tempWeights[idx] / totalW) * price;
-        }, 0);
-        
-        if (currentEV > targetEV) {
-            lowK = k;
-        } else {
-            highK = k;
-        }
+// Балансировка вероятностей дропа под целевой RTP.
+// c — исходный вес предмета; итоговые веса нормализуются до 1000.
+function getBalancedItems(activeItems, activePrice, rtp = 0.80) {
+    if (!Array.isArray(activeItems) || activeItems.length === 0) return [];
+
+    const validItems = activeItems.filter(item => {
+        const price = Number(itemById(item.id)?.price);
+        return Number.isFinite(price) && price >= 0 && Number(item.c) > 0;
+    });
+    if (!validItems.length || !(Number(activePrice) > 0)) return [];
+
+    const prices = validItems.map(item => Number(itemById(item.id).price));
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const targetEV = Math.min(maxPrice, Math.max(minPrice, Number(activePrice) * rtp));
+    const priceRange = maxPrice - minPrice;
+
+    // Если все предметы имеют одинаковую стоимость, любой дроп даёт одну EV.
+    if (priceRange <= 0) {
+        const total = validItems.reduce((sum, item) => sum + Number(item.c), 0);
+        return validItems.map(item => ({ ...item, c: Number(item.c) / total * 1000 }));
     }
-    
-    let finalK = (lowK + highK) / 2;
-    let finalWeights = activeItems.map(item => Math.pow(item.c, finalK));
-    let totalFinalW = finalWeights.reduce((s, w) => s + w, 0);
-    
-    return activeItems.map((item, idx) => ({
+
+    // Экспоненциальное взвешивание сохраняет исходные предпочтения c,
+    // но сдвигает вероятности так, чтобы математическое ожидание совпало с RTP.
+    const normalizedPrices = prices.map(price => (price - minPrice) / priceRange);
+    const baseWeights = validItems.map(item => Number(item.c));
+    const expectedValue = beta => {
+        let weightSum = 0;
+        let valueSum = 0;
+        for (let i = 0; i < validItems.length; i++) {
+            const weight = baseWeights[i] * Math.exp(-beta * normalizedPrices[i]);
+            weightSum += weight;
+            valueSum += weight * prices[i];
+        }
+        return valueSum / weightSum;
+    };
+
+    let low = -60;
+    let high = 60;
+    for (let i = 0; i < 100; i++) {
+        const mid = (low + high) / 2;
+        // Чем больше beta, тем выше доля дешёвых предметов и ниже EV.
+        if (expectedValue(mid) > targetEV) low = mid;
+        else high = mid;
+    }
+
+    const beta = (low + high) / 2;
+    const finalWeights = validItems.map((item, i) =>
+        baseWeights[i] * Math.exp(-beta * normalizedPrices[i])
+    );
+    const totalWeight = finalWeights.reduce((sum, weight) => sum + weight, 0);
+
+    return validItems.map((item, i) => ({
         ...item,
-        c: (finalWeights[idx] / totalFinalW) * 1000
+        c: finalWeights[i] / totalWeight * 1000
     }));
 }
-
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -2007,7 +2032,7 @@ function renderCaseDetail(id){
   
   const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
   
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
@@ -2118,7 +2143,7 @@ function openCaseNow(){
   }
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
   const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
+  const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
   if(!activeItems||activeItems.length===0){toast('Кейс пуст','err');return;}
   const total=activePrice*state.caseOpens;
   if(state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
@@ -2152,7 +2177,7 @@ function startRoulette(c,results, isAllIn){
     } else {
       const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
       const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-      const activeItems = getBalancedItems(rawItems, activePrice, 0.83);
+      const activeItems = getBalancedItems(rawItems, activePrice, 0.80);
       activeItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c));k++)pool.push(i.id);}});
     }
     if(!pool.length)pool.push(win.id);
