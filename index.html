@@ -299,7 +299,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* ДЕПОЗИТ (Фиолетовая тема) */
+/* ДЕПОЗИТ */
 .dep-header{text-align:left; margin-bottom:20px;}
 .dep-title{font-size:24px; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-0.02em;}
 .dep-subtitle{font-size:13px; color:#94a3b8; line-height:1.5; background:rgba(124,58,237,0.1); padding:16px; border-radius:12px; border:1px solid rgba(124,58,237,0.2); margin-bottom:20px;}
@@ -340,7 +340,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .dep-copy-btn:hover { background:#6d28d9;}
 .dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top:20px;}
 
-/* Список выбранных предметов */
 .dep-sum-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
 .dep-sum-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 .dep-sum-remove { background: rgba(244,63,94,0.15); color: #f43f5e; border: none; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
@@ -396,14 +395,12 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .history-tab { padding: 10px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: var(--muted); font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
 .history-tab:hover { background: rgba(255,255,255,0.08); color: #fff; }
 .history-tab.active { background: #1e293b; color: #fff; border-color: #334155; }
-
 .history-day-group { margin-bottom: 32px; }
 .history-day-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 16px; }
 .history-day-title { font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 .history-day-profit { font-size: 14px; font-weight: 800; }
 .history-day-profit.pos { color: var(--green); }
 .history-day-profit.neg { color: var(--red); }
-
 .history-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 16px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
 .history-item:hover { background: rgba(255,255,255,0.05); }
 .history-item-left { display: flex; align-items: center; gap: 16px; }
@@ -428,8 +425,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .bet-input{width:100%;padding:14px 18px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:#fff;font-size:16px;outline:none;transition:border-color .2s}
 .bet-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
 .bet-input::placeholder{color:var(--muted)}
-
-/* ADMIN TABLE */
 .admin-table{width:100%;border-collapse:collapse;margin-top:16px;text-align:left;}
 .admin-table th{padding:12px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:0.05em;border-bottom:1px solid rgba(255,255,255,0.1);}
 .admin-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:14px;color:#fff;}
@@ -437,7 +432,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .status-badge{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase;}
 .status-badge.banned{background:rgba(244,63,94,0.2);color:var(--red);border:1px solid rgba(244,63,94,0.3);}
 .status-badge.active{background:rgba(52,211,153,0.2);color:var(--green);border:1px solid rgba(52,211,153,0.3);}
-
 .empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
 .es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
@@ -485,7 +479,7 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="snow" id="snowContainer"></div>
 
-<div id="loginScreen">
+<div id="loginScreen" class="show">
   <div class="login-card">
     <div class="login-logo"><img src="logo-badge.png" alt="BR" onerror="this.parentElement.textContent='🧠'"></div>
     <div class="login-title">Brainrot Rush</div>
@@ -825,40 +819,6 @@ const state={
   adminSearchUser: null
 };
 
-// Балансировка дропа: дешёвые предметы встречаются чаще, дорогие — реже.
-// Целевой RTP 68%: кейс обычно не окупается полностью, но дорогие дропы остаются возможны.
-// c — исходный вес предмета; итоговые веса нормализуются до 1000.
-function getBalancedItems(activeItems, activePrice, rtp = 0.68) {
-    if (!Array.isArray(activeItems) || activeItems.length === 0) return [];
-    const validItems = activeItems.filter(item => {
-        const price = Number(itemById(item.id)?.price);
-        return Number.isFinite(price) && price >= 0 && Number(item.c) > 0;
-    });
-    if (!validItems.length || !(Number(activePrice) > 0)) return [];
-
-    // Tier multipliers: cheap items are common, expensive items are intentionally rare.
-    // rtp remains an adjustable tuning parameter; it mildly shifts the tier weights.
-    const target = Number(activePrice) * Math.max(0.45, Math.min(0.82, Number(rtp) || 0.68));
-    const weighted = validItems.map(item => {
-        const price = Number(itemById(item.id).price);
-        const ratio = price / Number(activePrice);
-        let tier = ratio <= 0.25 ? 4.2
-          : ratio <= 0.50 ? 2.7
-          : ratio <= 0.80 ? 1.55
-          : ratio <= 1.15 ? 0.78
-          : ratio <= 2.00 ? 0.24
-          : ratio <= 5.00 ? 0.055
-          : 0.012;
-        // Keep each case's authored item weights relevant, but stop high-value items
-        // with large base weights from dominating the roll.
-        const priceTilt = Math.max(0.72, Math.min(1.22, target / Math.max(price, 1)));
-        return { ...item, c: Number(item.c) * tier * Math.sqrt(priceTilt) };
-    });
-    const total = weighted.reduce((sum, item) => sum + item.c, 0);
-    if (!(total > 0)) return [];
-    return weighted.map(item => ({ ...item, c: item.c / total * 1000 }));
-}
-
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -878,8 +838,6 @@ async function apiSync() {
       const data = await res.json();
       state.balance = data.balance || 0;
       state.inventory = data.inventory || [];
-      // Keep case/deposit/withdraw history backed by the server; retain local history for game modes
-      // that have not yet been migrated to server-side settlement.
       try {
         const hres = await secureFetch(`${SERVER_URL}/api/history`);
         if (hres.ok) {
@@ -1134,7 +1092,7 @@ async function settlePendingCase(){
     if (!pending.serverSettled) await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
     
     try {
-      if (pending.serverSettled) { /* server already recorded this drop atomically */ } else await secureFetch(`${SERVER_URL}/api/drops`, {
+      if (pending.serverSettled) { } else await secureFetch(`${SERVER_URL}/api/drops`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -2032,14 +1990,13 @@ function renderCaseDetail(id){
   
   const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
   const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-  const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
   
   const total=activePrice*state.caseOpens;
   const canAfford=state.balance>=total;
   
   let itemsPreview = '';
-  const totalW = activeItems.reduce((s,i)=>s+i.c,0);
-  const sortedItems = [...activeItems].sort((a, b) => {
+  const totalW = rawItems.reduce((s,i)=>s+i.c,0);
+  const sortedItems = [...rawItems].sort((a, b) => {
     const priceA = itemById(a.id)?.price || 0;
     const priceB = itemById(b.id)?.price || 0;
     return priceB - priceA;
@@ -2065,7 +2022,7 @@ function renderCaseDetail(id){
       <div class="case-detail-img">${imgHtml}</div>
       <div class="case-stat-grid">
         <div class="case-stat"><div class="lbl">Цена</div><div class="val">${coin(18)} ${fmt(activePrice)}</div></div>
-        <div class="case-stat"><div class="lbl">Дропов</div><div class="val">${activeItems.length}</div></div>
+        <div class="case-stat"><div class="lbl">Дропов</div><div class="val">${rawItems.length}</div></div>
       </div>
     </div>
     <div>
@@ -2114,7 +2071,6 @@ function rollAllInCase(balance){
   if(balance<10)return ITEMS[0];
   const roll=Math.random();
   let mult=0;
-  // ALL IN: most results return less than the stake; big wins are possible but rare.
   if(roll<0.50)mult=0.12+Math.random()*0.43;
   else if(roll<0.82)mult=0.55+Math.random()*0.40;
   else if(roll<0.94)mult=0.95+Math.random()*0.35;
@@ -2165,9 +2121,7 @@ function startRoulette(c,results, isAllIn){
       for(let i=0;i<TRACK_LEN;i++) pool.push(nci[Math.floor(Math.random()*nci.length)].id);
     } else {
       const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
-      const activePrice = c.isVip && state.vipMode ? c.vipPrice : c.price;
-      const activeItems = getBalancedItems(rawItems, activePrice, 0.68);
-      activeItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c));k++)pool.push(i.id);}});
+      rawItems.forEach(i=>{if(itemById(i.id)){for(let k=0;k<Math.max(2,Math.round(i.c));k++)pool.push(i.id);}});
     }
     if(!pool.length)pool.push(win.id);
     const ids=[];
@@ -3392,7 +3346,6 @@ function startStatusPolling(requestId, finalAmount) {
         clearInterval(__depositPollingInterval);
         if (__depositTimerInt) clearInterval(__depositTimerInt);
         
-        // Server has already credited the balance; never add the deposit a second time in the browser.
         if (Number.isFinite(Number(data.balance))) state.balance = Number(data.balance);
         else await apiSync();
         await apiSync();
@@ -3511,7 +3464,7 @@ document.addEventListener('DOMContentLoaded', () => {
 (function preloadImages() {
     const imagesToPreload = [
         'brainrots/Guest666.png', 'brainrots/Grabatron.png', 'brainrots/Los_Sekolahs.png',
-        'brainrots/Rubrikiko.png', 'brainrots/Ketupat_Bros.png', 'brainrots/Bunny_and_Eggy.png',
+        'brainrots/Rubrikiko.png', 'brainrots/Kitchen_Bros.png', 'brainrots/Bunny_and_Eggy.png',
         'brainrots/Rico_Dinero.png', 'brainrots/JollyJollySahur.png', 'brainrots/Los_Hackers.png'
     ];
     imagesToPreload.forEach(src => {
