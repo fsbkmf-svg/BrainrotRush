@@ -740,61 +740,57 @@ const ITEMS = [
 ];
 
 const CASES=[
-  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков',price:100,category:'standard',
+  {id:'bronze',name:'Бронзовый кейс',icon:'📦',img:'cases/bronze.png',desc:'Стартовый кейс для новичков',price:99,category:'standard',
     items:[
-      {id:'cashcard',c:100},{id:'garama',c:100},{id:'la_secret',c:100},{id:'pizza_ranch',c:100},
-      {id:'la_food',c:100},{id:'fragola',c:100},{id:'popcuru',c:100},{id:'jolly',c:100},
-      {id:'burguro',c:25},{id:'la_fuse',c:25},{id:'fragrama',c:25},{id:'capitano_moby',c:25},
-      {id:'cooki_milki',c:25},{id:'sammyni_fat',c:25},{id:'globa',c:25},{id:'spooky',c:25},
-      {id:'cerberus',c:25},{id:'celestial',c:25},{id:'reinito',c:25},{id:'los_admins',c:25},
-      {id:'guest666',c:15},{id:'los_amigos',c:15},{id:'los_chillis',c:15},
-      {id:'fortunu',c:10},{id:'rubrikiko',c:10},{id:'los_sekolahs',c:10},
-      {id:'rico',c:20},{id:'bumbatron',c:10}
+      {id:'cashcard',c:180},{id:'garama',c:180},{id:'la_secret',c:150},{id:'pizza_ranch',c:140},
+      {id:'la_food',c:130},{id:'fragola',c:120},{id:'popcuru',c:110},{id:'jolly',c:100},
+      {id:'burguro',c:70},{id:'la_fuse',c:60},{id:'fragrama',c:55},{id:'capitano_moby',c:45},
+      {id:'cooki_milki',c:40},{id:'sammyni_fat',c:30},{id:'globa',c:25},{id:'spooky',c:20},
+      {id:'cerberus',c:15},{id:'celestial',c:12},{id:'reinito',c:8},{id:'los_admins',c:5}
     ]},
-  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:250,category:'standard',
+  {id:'silver',name:'Серебряный кейс',icon:'🎁',img:'cases/silver.png',desc:'Больше шансов на редкое',price:299,category:'standard',
     items:[
-      {id:'garama',c:50},{id:'jolly',c:50},{id:'cerberus',c:50},{id:'celestial',c:50},{id:'reinito',c:50},{id:'los_admins',c:50},
-      {id:'guest666',c:50},{id:'los_amigos',c:50},{id:'los_chillis',c:50},{id:'fortunu',c:50},{id:'rubrikiko',c:50},{id:'los_sekolahs',c:50},{id:'rico',c:50},
-      {id:'la_breakfast',c:50},{id:'examen',c:50},{id:'foxini',c:50},{id:'los_hackers',c:50},{id:'rosy',c:50},{id:'dugdug',c:20},{id:'venuspino',c:20},{id:'duggy',c:20},
-      {id:'lacasaboo',c:20},{id:'ketupat',c:20},{id:'bumbatron',c:20},{id:'los_secret',c:20},{id:'bunny_eggy',c:15},{id:'grabatron',c:20},
-      {id:'sammyni_cak',c:20},{id:'dragonc',c:20},{id:'tirilikalika',c:20},{id:'jelly_moby',c:15}
+      {id:'la_secret',c:100},{id:'pizza_ranch',c:100},{id:'la_food',c:100},{id:'fragola',c:95},{id:'popcuru',c:90},{id:'jolly',c:85},
+      {id:'burguro',c:80},{id:'la_fuse',c:75},{id:'fragrama',c:70},{id:'capitano_moby',c:65},{id:'cooki_milki',c:60},
+      {id:'sammyni_fat',c:55},{id:'globa',c:50},{id:'spooky',c:45},{id:'cerberus',c:40},{id:'celestial',c:35},
+      {id:'reinito',c:30},{id:'los_admins',c:28},{id:'guest666',c:24},{id:'los_amigos',c:22},{id:'los_chillis',c:20},
+      {id:'fortunu',c:18},{id:'rubrikiko',c:16},{id:'los_sekolahs',c:14},{id:'rico',c:10},{id:'la_breakfast',c:8},
+      {id:'examen',c:7},{id:'foxini',c:6},{id:'los_hackers',c:5},{id:'rosy',c:3}
     ]},
-  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:2000,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
+  {id:'gold',name:'Золотой кейс',icon:'👑',img:'cases/gold.png',desc:'Эпические дропы',price:1799,category:'standard',badge:{text:'HOT',cls:'badge-hot'},
     items:[
-      {id:'bumbatron',c:1000},{id:'los_secret',c:1000},{id:'bunny_eggy',c:1000},
-      {id:'grabatron',c:1000},{id:'sammyni_cak',c:1000},{id:'dragonc',c:1000},
-      {id:'tirilikalika',c:1000},{id:'jelly_moby',c:400},{id:'pancake',c:400},
-      {id:'ginger',c:400},{id:'hydra',c:400},{id:'hydra_bunny',c:400},
-      {id:'moby_bros',c:400},{id:'kalika',c:400},{id:'digi_narwhal',c:100},
-      {id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},
-      {id:'dragon_aquanini',c:100},{id:'griffin',c:20},{id:'los_dragons',c:20},
-      {id:'antonio',c:20},{id:'lovebear',c:20},{id:'arcadragon',c:20},
-      {id:'elefanto',c:20},{id:'skibidi',c:2}
+      {id:'bumbatron',c:100},{id:'los_secret',c:90},{id:'bunny_eggy',c:85},{id:'grabatron',c:80},{id:'sammyni_cak',c:75},
+      {id:'dragonc',c:70},{id:'tirilikalika',c:65},{id:'jelly_moby',c:55},{id:'pancake',c:50},{id:'ginger',c:45},
+      {id:'hydra',c:40},{id:'hydra_bunny',c:35},{id:'moby_bros',c:30},{id:'kalika',c:25},{id:'digi_narwhal',c:20},
+      {id:'lasupreme',c:18},{id:'fishino',c:16},{id:'kraken',c:14},{id:'dragon_aquanini',c:10},{id:'griffin',c:7},
+      {id:'los_dragons',c:5},{id:'antonio',c:4},{id:'lovebear',c:3},{id:'arcadragon',c:2},{id:'elefanto',c:1.5},{id:'skibidi',c:0.5}
     ]},
-  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:8000,category:'standard',
+  {id:'diamond',name:'Алмазный кейс',icon:'💎',img:'cases/diamond.png',desc:'Только лучшие дропы',price:6999,category:'standard',
     items:[
-      {id:'dragon_aquanini',c:50},{id:'antonio',c:50},{id:'lovebear',c:100},{id:'arcadragon',c:100},{id:'elefanto',c:100},
-      {id:'skibidi',c:20},{id:'johnpork',c:10},{id:'meowl',c:10},{id:'signore',c:5},{id:'strawb',c:2},{id:'headless',c:0.5}
+      {id:'dragon_aquanini',c:100},{id:'griffin',c:85},{id:'los_dragons',c:75},{id:'antonio',c:65},{id:'lovebear',c:50},
+      {id:'arcadragon',c:40},{id:'elefanto',c:35},{id:'skibidi',c:25},{id:'johnpork',c:18},{id:'meowl',c:12},
+      {id:'signore',c:7},{id:'strawb',c:3},{id:'headless',c:0.5}
     ]},
-  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:199,vipPrice:3000,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
+  {id:'vip',name:'V.I.P',icon:'👑',img:'cases/VIP.png',desc:'Особый режим с шансом на топовый дроп',price:249,vipPrice:2799,category:'special',badge:{text:'VIP',cls:'badge-hot'},isVip:true,
     normalItems:[
-      {id:'fragola',c:200},{id:'globa',c:150},{id:'spooky',c:150},{id:'cerberus',c:150},{id:'celestial',c:150},{id:'reinito',c:150},{id:'los_admins',c:150},
-      {id:'guest666',c:120},{id:'los_amigos',c:120},{id:'los_chillis',c:80},{id:'fortunu',c:80},{id:'rubrikiko',c:80},{id:'los_sekolahs',c:80},
-      {id:'rico',c:50},{id:'la_breakfast',c:50},{id:'examen',c:50},{id:'foxini',c:50},{id:'los_hackers',c:50},{id:'rosy',c:50},{id:'dugdug',c:40},
-      {id:'venuspino',c:40},{id:'duggy',c:40},{id:'lacasaboo',c:40},{id:'ketupat',c:40},{id:'bumbatron',c:20},{id:'los_secret',c:20},
-      {id:'bunny_eggy',c:20},{id:'grabatron',c:20},{id:'sammyni_cak',c:20},{id:'dragonc',c:20},{id:'tirilikalika',c:10}
+      {id:'fragola',c:100},{id:'globa',c:95},{id:'spooky',c:90},{id:'cerberus',c:85},{id:'celestial',c:80},{id:'reinito',c:75},{id:'los_admins',c:70},
+      {id:'guest666',c:65},{id:'los_amigos',c:60},{id:'los_chillis',c:55},{id:'fortunu',c:50},{id:'rubrikiko',c:45},{id:'los_sekolahs',c:40},
+      {id:'rico',c:35},{id:'la_breakfast',c:30},{id:'examen',c:25},{id:'foxini',c:22},{id:'los_hackers',c:18},{id:'rosy',c:15},
+      {id:'dugdug',c:12},{id:'venuspino',c:10},{id:'duggy',c:8},{id:'lacasaboo',c:6},{id:'ketupat',c:4},{id:'bumbatron',c:3},
+      {id:'los_secret',c:2},{id:'bunny_eggy',c:1.5},{id:'grabatron',c:1},{id:'sammyni_cak',c:0.8},{id:'dragonc',c:0.5},{id:'tirilikalika',c:0.3}
     ],
     vipItems:[
-      {id:'digi_narwhal',c:100},{id:'lasupreme',c:100},{id:'fishino',c:100},{id:'kraken',c:100},{id:'dragon_aquanini',c:285},{id:'griffin',c:50},
-      {id:'los_dragons',c:50},{id:'antonio',c:50},{id:'lovebear',c:30},{id:'arcadragon',c:30},{id:'elefanto',c:30},{id:'skibidi',c:15},
-      {id:'johnpork',c:5},{id:'meowl',c:5},{id:'signore',c:1},{id:'strawb',c:0.2},{id:'headless',c:0.05}
+      {id:'digi_narwhal',c:100},{id:'lasupreme',c:90},{id:'fishino',c:85},{id:'kraken',c:80},{id:'dragon_aquanini',c:70},
+      {id:'griffin',c:60},{id:'los_dragons',c:50},{id:'antonio',c:40},{id:'lovebear',c:30},{id:'arcadragon',c:25},
+      {id:'elefanto',c:20},{id:'skibidi',c:15},{id:'johnpork',c:10},{id:'meowl',c:7},{id:'signore',c:4},{id:'strawb',c:1},{id:'headless',c:0.2}
     ]},
   {id:'all_in',name:'ВСЁ ИЛИ НИЧЕГО (ALL IN)',icon:'🎰',img:'cases/allin.png',desc:'Ставка всем балансом',price:0,category:'special',badge:{text:'ALL IN',cls:'badge-hot'},description:'Система забирает ВЕСЬ ваш текущий баланс.',isAllIn:true},
-  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:349,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
+  {id:'secret_guest_666',name:'Secret Guest 666',icon:'🧬',img:'cases/secret_guest_666.png',desc:'Все мутации Guest 666 в одном кейсе',price:499,category:'mutagen',badge:{text:'SECRET',cls:'badge-hot'},
     items:[
-      {id:'coin_100',c:386.66},{id:'guest666',c:150},{id:'guest666_gold',c:150},{id:'guest666_diamond',c:150},{id:'guest666_candy',c:100},{id:'guest666_lava',c:100},
-      {id:'guest666_divine',c:100},{id:'guest666_galaxy',c:100},{id:'guest666_cursed',c:60},{id:'guest666_radioactive',c:60},{id:'guest666_yinyang',c:60},
-      {id:'guest666_bloodrot',c:30},{id:'guest666_cyber',c:30},{id:'guest666_eclipse',c:20},{id:'guest666_rainbow',c:20},{id:'guest666_phantom',c:20},{id:'guest666_crystal',c:10}
+      {id:'coin_100',c:100},{id:'guest666',c:90},{id:'guest666_gold',c:85},{id:'guest666_diamond',c:80},{id:'guest666_candy',c:75},
+      {id:'guest666_lava',c:65},{id:'guest666_divine',c:55},{id:'guest666_galaxy',c:50},{id:'guest666_cursed',c:40},
+      {id:'guest666_radioactive',c:35},{id:'guest666_yinyang',c:30},{id:'guest666_bloodrot',c:25},{id:'guest666_cyber',c:20},
+      {id:'guest666_eclipse',c:15},{id:'guest666_rainbow',c:12},{id:'guest666_phantom',c:8},{id:'guest666_crystal',c:5}
     ]}
 ];
 
