@@ -35,7 +35,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .snowflake{position:absolute;color:#fff;font-size:1em;opacity:.6;animation:fall linear infinite;text-shadow:0 0 8px rgba(255,255,255,.8)}
 @keyframes fall{to{transform:translateY(105vh)}}
 
-/* === АНИМАЦИЯ НОВОГО ДРОПА === */
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(-20px) scale(0.9); }
   to { opacity: 1; transform: translateX(0) scale(1); }
@@ -46,7 +45,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
   background: rgba(56, 189, 248, 0.1) !important;
 }
 
-/* === ЛОГИН === */
 #loginScreen{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;background:var(--bg)}
 #loginScreen.show{display:flex}
 #loginScreen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(56,189,248,.2),transparent 60%);pointer-events:none}
@@ -59,7 +57,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .spinner{width:30px;height:30px;border:3px solid rgba(56,189,248,0.3);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto 0;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* === КАРКАС === */
 .app{display:none;min-height:100vh;position:relative;z-index:2}
 .app.logged-in{display:flex}
 .mobile-nav{display:none}
@@ -162,7 +159,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .case-desc-long{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.15);border-left:4px solid var(--accent);border-radius:16px;padding:24px;font-size:16px;color:#cbd5e1;line-height:1.6;margin-bottom:32px}
 .case-open-panel{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:36px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 
-/* === РУЛЕТКА === */
 .roulette-wrap{position:relative;overflow:hidden;background:#0a0e17;border:3px solid var(--border-strong);border-radius:20px;box-shadow:inset 0 0 50px rgba(0,0,0,.8);width:100%;box-sizing:border-box}
 .roulette-wrap.shake{animation:shake .5s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -186,7 +182,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .particle{position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);opacity:0}
 @keyframes particleFly{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--px)),calc(-50% + var(--py))) rotate(var(--pr)) scale(0.3)}}
 
-/* ALL IN NEW */
 .all-in-stage-new{position:relative;width:100%;min-height:80vh;background:radial-gradient(circle at center,rgba(244,63,94,.15) 0%,#000 80%);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(244,63,94,.4);box-shadow:inset 0 0 100px rgba(244,63,94,.2);padding:20px;box-sizing:border-box}
 .all-in-multiplier{font-size:120px;font-weight:900;color:#fff;text-shadow:0 0 50px rgba(244,63,94,0.8), 0 0 100px rgba(244,63,94,0.4);transition:all 0.1s linear;position:relative;z-index:5;font-variant-numeric:tabular-nums; line-height:1;}
 .all-in-multiplier.losing{color:#f43f5e;text-shadow:0 0 50px rgba(244,63,94,0.8);}
@@ -207,7 +202,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .multi-result-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .multi-result-actions .btn{font-size:16px;padding:14px 32px;border-radius:14px}
 
-/* UPGRADE */
 .upg-layout{display:flex;flex-direction:column;gap:20px}
 .upg-top-row{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:20px;align-items:stretch}
 @media(max-width:1100px){.upg-top-row{grid-template-columns:1fr}}
@@ -253,7 +247,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .upg-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer}
 .upg-slider:disabled{opacity:.5;cursor:not-allowed}
 
-/* SETTINGS MODAL */
 .settings-modal-content{background:var(--surface-solid);color:#fff;padding:32px;border-radius:28px;max-width:600px;width:100%;border:1px solid var(--border-strong);box-shadow:var(--shadow-lg),var(--glow-blue);overflow-x:hidden}
 .settings-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;font-size:24px;font-weight:900}
 .settings-close{cursor:pointer;color:var(--muted);font-size:28px;transition:color 0.2s;line-height:1}
@@ -281,7 +274,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .btn-save-settings{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;border-radius:14px;padding:18px;font-size:17px;font-weight:900;width:100%;cursor:pointer;margin-top:16px;transition:all .2s;box-shadow:0 4px 22px rgba(14,165,233,.4)}
 .btn-save-settings:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(14,165,233,.55)}
 
-/* OVERLAY / MODAL */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(5,6,12,.85);display:none;align-items:center;justify-content:center;padding:20px;animation:overlayIn .2s ease}
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 .overlay.open{display:flex}
@@ -292,14 +284,13 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .modal-close{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted);width:36px;height:36px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:all .2s;position:absolute;right:0;top:0;font-size:18px}
 .modal-close:hover{background:rgba(255,255,255,.1);color:#fff;transform:scale(1.05)}
 
-/* TOAST */
 .toast{ display: none; position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0; background:rgba(15,23,42,.95); border:1px solid rgba(255,255,255,.1); color:#fff; padding:16px 28px; border-radius:16px; font-size:15px; font-weight:700; z-index:99999; box-shadow:0 20px 40px rgba(0,0,0,.6); transition:all .3s ease; max-width:90vw; text-align:center; }
 .toast.show{ display: block; transform:translateX(-50%) translateY(0); opacity:1; }
 .toast.ok{border-color:rgba(52,211,153,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(52,211,153,.2)}
 .toast.err{border-color:rgba(248,113,113,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(248,113,113,.2)}
+.toast.warning{border-color:rgba(245,158,11,.4);box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(245,158,11,.2)}
 @media(max-width:1024px){.toast{bottom:130px}}
 
-/* ДЕПОЗИТ */
 .dep-header{text-align:left; margin-bottom:20px;}
 .dep-title{font-size:24px; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-0.02em;}
 .dep-subtitle{font-size:13px; color:#94a3b8; line-height:1.5; background:rgba(124,58,237,0.1); padding:16px; border-radius:12px; border:1px solid rgba(124,58,237,0.2); margin-bottom:20px;}
@@ -339,13 +330,11 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .dep-copy-btn { width: 100%; padding: 14px; background: #7c3aed; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition:all 0.2s;}
 .dep-copy-btn:hover { background:#6d28d9;}
 .dep-cancel-btn { width: 100%; padding: 16px; background: rgba(244,63,94,0.1); color: #f43f5e; border: 1px solid rgba(244,63,94,0.3); border-radius: 16px; font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top:20px;}
-
 .dep-sum-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
 .dep-sum-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 .dep-sum-remove { background: rgba(244,63,94,0.15); color: #f43f5e; border: none; width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
 .dep-sum-remove:hover { background: rgba(244,63,94,0.25); transform: scale(1.05); }
 
-/* INVENTORY & PROFILE */
 .inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
 .item-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:16px;text-align:center;position:relative;transition:all .2s}
 .item-card:hover{border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.03);transform:translateY(-4px);box-shadow:0 10px 20px rgba(0,0,0,.2)}
@@ -359,7 +348,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .inv-sort-btn.active{background:rgba(56,189,248,.15);border-color:var(--accent);color:#fff;box-shadow:0 0 15px rgba(56,189,248,.15)}
 .inv-label{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800;margin-right:4px;padding:8px 0}
 
-/* MINES */
 .game-layout{display:flex;gap:32px;flex-wrap:wrap}
 .game-stage{flex:2 1 400px;background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.05);border-radius:28px;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .side-panel{flex:1 1 320px;background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.05);border-radius:28px;padding:32px}
@@ -369,7 +357,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .mine-cell.revealed{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3);cursor:default;box-shadow:none}
 .mine-cell.mine{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.4);cursor:default;box-shadow:0 0 20px rgba(244,63,94,.3)}
 
-/* PROFILE */
 .profile-header{display:flex;align-items:center;gap:24px;margin-bottom:32px;background:linear-gradient(135deg,rgba(56,189,248,.1),rgba(15,23,42,.8));border:1px solid rgba(56,189,248,.2);border-radius:28px;padding:32px;flex-wrap:wrap}
 .profile-avatar-large{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#22d3ee);display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 0 30px rgba(14,165,233,.4);color:#fff;overflow:hidden;position:relative;}
 .profile-avatar-large img{width:100%;height:100%;object-fit:cover;}
@@ -389,7 +376,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .best-drop-item .name{font-size:20px;font-weight:900;color:#fff;margin-bottom:8px}
 .best-drop-item .price{font-size:26px;font-weight:900;color:var(--gold);display:flex;justify-content:center;align-items:center;gap:10px}
 
-/* HISTORY */
 .history-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; scrollbar-width: none; padding-bottom: 8px; }
 .history-tabs::-webkit-scrollbar { display: none; }
 .history-tab { padding: 10px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; color: var(--muted); font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
@@ -412,7 +398,6 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .history-item-amount.pos { color: var(--green); }
 .history-item-amount.neg { color: var(--red); }
 
-/* ADMIN */
 .admin-tabs{display:flex;gap:12px;margin-bottom:32px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:16px;flex-wrap:wrap}
 .admin-tab{padding:12px 24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:14px;cursor:pointer;font-weight:700;color:var(--muted);transition:all .2s}
 .admin-tab.active{background:rgba(56,189,248,.1);border-color:var(--accent);color:#fff;box-shadow:0 0 20px rgba(56,189,248,.15)}
@@ -435,7 +420,27 @@ body{background:transparent;color:var(--text);min-height:100vh;-webkit-font-smoo
 .empty-state{padding:40px;text-align:center;color:var(--muted);font-weight:600}
 .es-ico{font-size:48px;margin-bottom:16px;opacity:.6}
 
-/* АДАПТИВНОСТЬ */
+/* === FAIR MODAL === */
+.fair-modal{padding:24px;background:var(--surface-solid);border-radius:24px;color:#fff;}
+.fair-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.fair-title{font-size:20px;font-weight:900;color:#fff;}
+.fair-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.fair-input{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;font-family:monospace;font-size:12px;color:#fff;word-break:break-all;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.fair-input-hash{font-family:monospace;font-size:11px;}
+.fair-copy-btn{background:transparent;border:none;color:var(--accent);cursor:pointer;font-size:16px;padding:4px;flex-shrink:0;}
+.fair-result-box{background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.15);border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;}
+.fair-res-val{font-size:36px;font-weight:900;color:var(--accent);font-family:monospace;margin-bottom:8px;}
+.fair-res-status{font-size:13px;font-weight:700;margin-top:6px;}
+.fair-table{background:rgba(0,0,0,0.3);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.fair-row{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);}
+.fair-row:last-child{border-bottom:none;}
+.fair-row.win{background:rgba(16,185,129,0.06);}
+.fair-row.lose{background:rgba(244,63,94,0.06);}
+.fair-row-name{font-weight:800;font-size:13px;color:#fff;}
+.fair-row-range{font-family:monospace;font-size:12px;color:var(--muted);}
+.fair-formula{font-size:12px;color:var(--muted);line-height:1.5;padding:12px 16px;background:rgba(0,0,0,0.3);border-radius:12px;}
+.fair-formula b{color:var(--accent);}
+
 @media(max-width:1024px){
   .sidebar{display:none}
   .cursor-glow{display:none}
@@ -532,11 +537,9 @@ const SERVER_URL = 'https://brainrot-server.bonto.run';
 const BOT_ROBLOX_NAME = 'daveminioniscool';
 const MAX_UPG = 6; 
 
-// Глобальные переменные для безопасности
 let sessionToken = null;
 let pendingRequests = 0;
 
-// Безопасный fetch с токеном и счетчиком активных запросов
 async function secureFetch(url, options = {}) {
     pendingRequests++;
     if (sessionToken) {
@@ -799,6 +802,7 @@ const CASES=[
 ];
 
 const state={
+  isDemo: false,
   balance:0,tab:'cases',inventory:[],history:[],currentCase:null,caseOpens:1,historyFilter:'all',
   upgrade:{froms:[],target:null,balanceAmount:0,animating:false,lastResult:null,lastAngle:0,lastChance:0,lastRoll:0},
   fuseSelected:new Set(),
@@ -819,6 +823,10 @@ const state={
   adminSearchUser: null
 };
 
+function getSaveKey() {
+  return state.isDemo ? 'brainrot-demo-state-v1' : 'brainrot-steal-state-v8';
+}
+
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -831,6 +839,7 @@ function preserveScroll(renderFn) {
 
 async function apiSync() {
   if (!state.user) return;
+  if (state.isDemo) return;
   if (pendingRequests > 0) return; 
   try {
     const res = await secureFetch(`${SERVER_URL}/api/state/${state.user.id}`);
@@ -855,6 +864,18 @@ async function apiSync() {
 
 async function apiSellItems(itemsToSell, onSuccess) {
     if (!state.user) return;
+    if (state.isDemo) {
+        let added = 0;
+        const uidsToRemove = itemsToSell.map(x => x.uid);
+        state.inventory = state.inventory.filter(i => !uidsToRemove.includes(i.uid));
+        itemsToSell.forEach(x => added += x.price);
+        state.balance += added;
+        updateBalance(state.balance);
+        renderHeader();
+        saveLocalState();
+        if (onSuccess) onSuccess({ balance: state.balance, added, inventory: state.inventory });
+        return;
+    }
     try {
         const res = await secureFetch(`${SERVER_URL}/api/sell`, {
             method: 'POST',
@@ -878,6 +899,7 @@ async function apiSellItems(itemsToSell, onSuccess) {
 async function pushBalance(delta) {
   if (!state.user) return;
   saveLocalState();
+  if (state.isDemo) return;
   try {
     await secureFetch(`${SERVER_URL}/api/balance`, {
       method: 'POST',
@@ -891,6 +913,7 @@ async function pushBalance(delta) {
 async function pushInventoryAdd(itemId, uid, date) {
   if (!state.user) return null;
   saveLocalState();
+  if (state.isDemo) return { uid, itemId, date: date || Date.now() };
   try {
     const res = await secureFetch(`${SERVER_URL}/api/inventory/add`, {
       method: 'POST',
@@ -909,6 +932,7 @@ async function pushInventoryAdd(itemId, uid, date) {
 async function pushInventoryRemove(uids) {
   if (!state.user || !uids || !uids.length) return;
   saveLocalState();
+  if (state.isDemo) return;
   try {
     await secureFetch(`${SERVER_URL}/api/inventory/remove`, {
       method: 'POST',
@@ -928,7 +952,7 @@ function generateNewServerSeed(){if(state.fairness.serverSeed&&state.fairness.se
 
 function loadSavedState(){
   try{
-    const raw=localStorage.getItem('brainrot-steal-state-v8');if(!raw)return false;
+    const raw=localStorage.getItem(getSaveKey());if(!raw)return false;
     const s=JSON.parse(raw);if(!s)return false;
     if(!s.user||typeof s.user!=='object')return false;
     state.balance=Number(s.balance)||0;
@@ -951,7 +975,7 @@ function loadSavedState(){
 }
 function saveLocalState(){
   try{
-    localStorage.setItem('brainrot-steal-state-v8',JSON.stringify({
+    localStorage.setItem(getSaveKey(),JSON.stringify({
       balance:state.balance,inventory:state.inventory,history:state.history.slice(-500),
       refCode:state.refCode,user:state.user,settings:state.settings,
       pendingWithdrawals:state.pendingWithdrawals,topDropDayCache:state.topDropDayCache,
@@ -1070,6 +1094,7 @@ function itemIcon(it,size=48){
 let __caseTimers=[],__caseFinish=null,__upgTimers=[],__upgFinish=null,__pendingCase=null,__upgTimer=null,__upgTargetRot=0;
 let __allInTimerInt,__allInSoundInt,__caseTickInt,__upgTickTimer=null,__upgSkipTimeout=null;
 let __depositTimerInt = null;
+let __depositPollingInterval = null;
 
 async function settlePendingCase(){
   const pending=__pendingCase;
@@ -1091,23 +1116,25 @@ async function settlePendingCase(){
     
     if (!pending.serverSettled) await pushInventoryAdd(it.id, invItem.uid, invItem.date); 
     
-    try {
-      if (pending.serverSettled) { } else await secureFetch(`${SERVER_URL}/api/drops`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: state.user ? state.user.username : 'guest',
-          itemName: it.name,
-          price: it.price,
-          rarity: it.rarity,
-          itemId: it.id,
-          caseId: pending.case.id,
-          caseName: pending.case.name
-        }),
-        keepalive: true
-      });
-    } catch (e) {
-      console.error('Ошибка отправки дропа', e);
+    if (!pending.serverSettled && !state.isDemo) {
+      try {
+        await secureFetch(`${SERVER_URL}/api/drops`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            username: state.user ? state.user.username : 'guest',
+            itemName: it.name,
+            price: it.price,
+            rarity: it.rarity,
+            itemId: it.id,
+            caseId: pending.case.id,
+            caseName: pending.case.name
+          }),
+          keepalive: true
+        });
+      } catch (e) {
+        console.error('Ошибка отправки дропа', e);
+      }
     }
 
     if(it.price>(state.topDropDayCache.price||0)){
@@ -1239,13 +1266,13 @@ function updateSettingPercentage(i,v){let n=parseFloat(v);if(isNaN(n)||n<1)n=1;i
 function resetSettingsArray(k){if(k==='multipliers')state.settings.multipliers=[2,5,10];if(k==='percentages')state.settings.percentages=[5,33,75];openSettingsModal();}
 function resetUpgradeSettings(){state.settings.multipliers=[2,5,10];state.settings.percentages=[5,33,75];openSettingsModal();}
 function saveSettingsAndClose(){saveLocalState();closeModal();if(state.tab==='upgrade')render(false);toast('Настройки сохранены','ok');}
-function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); __depositTimerInt=null;} if(typeof __depositPollingInterval!=='undefined' && __depositPollingInterval){clearInterval(__depositPollingInterval); __depositPollingInterval=null;} $('#overlay').classList.remove('open'); }
+function closeModal(){ if(__depositTimerInt){clearInterval(__depositTimerInt); __depositTimerInt=null;} if(__depositPollingInterval){clearInterval(__depositPollingInterval); __depositPollingInterval=null;} $('#overlay').classList.remove('open'); }
 
 async function initTelegramLogin(){
   const tg = window.Telegram?.WebApp;
   
-  if (!tg) {
-    showLoginError('Вы открыли игру в обычном браузере. Откройте её через Telegram-бота.');
+  if (!tg || !tg.initData) {
+    enterDemoMode();
     return;
   }
   
@@ -1303,6 +1330,115 @@ function showLoginError(msg) {
    const errorBox = document.getElementById('tgErrorBox');
    errorBox.style.display = 'block';
    document.getElementById('tgErrorMessage').innerHTML = msg;
+   
+   if (!document.getElementById('demoFallbackBtn')) {
+     const demoBtn = document.createElement('button');
+     demoBtn.id = 'demoFallbackBtn';
+     demoBtn.className = 'btn btn-ghost';
+     demoBtn.style.cssText = 'margin-top:10px;width:100%;';
+     demoBtn.textContent = '🎮 Попробовать демо-режим';
+     demoBtn.onclick = enterDemoMode;
+     errorBox.appendChild(demoBtn);
+   }
+}
+
+function enterDemoMode() {
+  state.isDemo = true;
+  const loaded = loadSavedState();
+  
+  if (!loaded || !state.user) {
+    state.user = {
+      id: 'demo_' + Math.random().toString(36).slice(2, 10),
+      name: 'Demo Player',
+      username: 'demo_player',
+      avatar: null,
+      joined: new Date().toLocaleDateString('ru-RU')
+    };
+    state.balance = 10000;
+    state.inventory = [
+      {uid: uuid(), itemId: 'garama', date: Date.now()},
+      {uid: uuid(), itemId: 'pizza_ranch', date: Date.now()},
+      {uid: uuid(), itemId: 'la_food', date: Date.now()},
+      {uid: uuid(), itemId: 'cerberus', date: Date.now()},
+      {uid: uuid(), itemId: 'los_amigos', date: Date.now()}
+    ];
+    state.history = [];
+  }
+  
+  initFairness();
+  
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('app').classList.add('logged-in');
+  
+  const nameEl = document.getElementById('profileName');
+  const avatarEl = document.getElementById('profileAvatar');
+  if (nameEl) nameEl.textContent = state.user.name;
+  if (avatarEl) avatarEl.textContent = (state.user.name || '?')[0].toUpperCase();
+  
+  addDemoBadge();
+  
+  saveLocalState();
+  renderNav();
+  render(true);
+  haptic('success');
+  
+  setTimeout(() => toast('🎮 Демо-режим: 10,000 монет и 5 стартовых предметов', 'ok'), 500);
+  
+  setInterval(() => {
+    if (state.tab === 'cases') updateLiveDrops();
+  }, 3000);
+}
+
+function addDemoBadge() {
+  const header = document.querySelector('.header');
+  if (!header || document.getElementById('demoBadge')) return;
+  const badge = document.createElement('div');
+  badge.id = 'demoBadge';
+  badge.style.cssText = 'background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-weight:900;font-size:10px;padding:5px 10px;border-radius:6px;letter-spacing:0.08em;box-shadow:0 2px 10px rgba(245,158,11,0.4);flex-shrink:0;';
+  badge.textContent = 'DEMO';
+  header.insertBefore(badge, header.firstChild);
+}
+
+function getDemoDrops() {
+  const drops = [];
+  state.history.forEach(h => {
+    if (h.type === 'case') {
+      const it = itemById(h.itemId);
+      if (it) drops.push({
+        username: state.user?.username || 'demo',
+        itemId: it.id, itemName: it.name, price: it.price,
+        caseName: h.caseName, date: h.date
+      });
+    } else if (h.type === 'upgrade_win') {
+      const it = itemById(h.toId);
+      if (it) drops.push({
+        username: state.user?.username || 'demo',
+        itemId: it.id, itemName: it.name, price: it.price,
+        caseName: 'Апгрейд', type: 'upgrade', date: h.date
+      });
+    }
+  });
+  return drops.slice(-30).reverse();
+}
+
+function demoOpenCase(c, count) {
+  const results = [];
+  if (c.isAllIn) {
+    const r = rollAllInCase(state.balance);
+    const it = itemById(r.id);
+    results.push({id: r.id, c: 100, uid: uuid(), date: Date.now(), price: it.price, rarity: it.rarity});
+  } else {
+    const rawItems = c.isVip ? (state.vipMode ? c.vipItems : c.normalItems) : c.items;
+    const totalW = rawItems.reduce((s, i) => s + i.c, 0);
+    for (let n = 0; n < count; n++) {
+      let roll = Math.random() * totalW;
+      let picked = rawItems[rawItems.length - 1];
+      for (const ri of rawItems) { roll -= ri.c; if (roll <= 0) { picked = ri; break; } }
+      const it = itemById(picked.id);
+      results.push({id: picked.id, c: 100, uid: uuid(), date: Date.now(), price: it.price, rarity: it.rarity});
+    }
+  }
+  return results;
 }
 
 async function onTelegramAuth(user){
@@ -1348,6 +1484,26 @@ async function onTelegramAuth(user){
 }
 
 async function updateLiveDrops() {
+  if (state.isDemo) {
+    state.globalDrops = getDemoDrops();
+    const el = document.getElementById('live-drops-list');
+    if (el) {
+      el.innerHTML = state.globalDrops.map((d, i) => {
+        const it = itemById(d.itemId) || {name: d.itemName, icon:'🎁', price:d.price};
+        const isNew = i === 0 ? 'new-drop' : '';
+        return `<div class="live-item ${isNew}" onclick="showProfile('${esc(d.username)}','${d.itemId}')">
+          ${itemIcon(it,40)}
+          <div>
+            <div class="li-name">${esc(it.name)}</div>
+            <div class="li-user">${esc(d.username)} <span class="li-case-badge" style="${d.type==='upgrade' ? 'background:rgba(251,191,36,.15);color:var(--gold);' : ''}">${d.type === 'upgrade' ? '⚡ Апгрейд' : esc(d.caseName || 'Кейс')}</span></div>
+          </div>
+        </div>`;
+      }).join('') || '<div style="color:var(--muted);font-size:14px;padding:10px 16px">Пока нет дропов сегодня</div>';
+    }
+    const topDropContainer = document.getElementById('top-drop-container');
+    if (topDropContainer) topDropContainer.innerHTML = getTopDropHtml();
+    return;
+  }
   try {
     const res = await secureFetch(`${SERVER_URL}/api/drops`);
     if (!res.ok) return;
@@ -1385,7 +1541,6 @@ async function updateLiveDrops() {
 
 document.addEventListener('DOMContentLoaded',initTelegramLogin);
 
-/* ADMIN */
 function setAdminTab(t){state.adminTab=t;render(false);}
 
 function adminSearch() {
@@ -1597,7 +1752,6 @@ function renderAdmin(){
   return `<div class="page-title">🛠️ Админ-панель</div><div class="page-sub">Управление проектом</div>${tabs}<div class="admin-panel">${c}</div>`;
 }
 
-/* PROFILE */
 function renderProfile(){
   if(!state.user)return '<div class="empty-state">Сначала войдите</div>';
   const casesOpened=state.history.filter(h=>h.type==='case').length;
@@ -1691,7 +1845,6 @@ function renderProfile(){
   </div>`;
 }
 
-/* HISTORY */
 function setHistoryFilter(f) {
   state.historyFilter = f;
   preserveScroll(() => render(false));
@@ -1877,8 +2030,11 @@ function render(fresh){
   }
 }
 
-/* CASES */
 async function fetchGlobalDrops() {
+  if (state.isDemo) {
+    state.globalDrops = getDemoDrops();
+    return;
+  }
   try {
     const res = await secureFetch(`${SERVER_URL}/api/drops`);
     if (res.ok) {
@@ -1935,6 +2091,7 @@ function renderLiveDrops() {
 }
 
 function renderCases(){
+  if (state.isDemo) state.globalDrops = getDemoDrops();
   const categories={standard:'📦 Премиум кейсы',special:'🔥 Особые',mutagen:'🧬 Мутагенные кейсы'};
   const grouped=CASES.reduce((acc,c)=>{(acc[c.category]=acc[c.category]||[]).push(c);return acc;},{});
   const cards=Object.entries(grouped).map(([cat,catCases])=>{
@@ -2091,7 +2248,17 @@ async function openCaseNow(){
   const total=c.isAllIn?state.balance:unitPrice*count;
   if(!(total>0)){toast('У вас нет монет для открытия','err');haptic('error');return;}
   if(!c.isAllIn&&state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
-  const executeServerOpen=async()=>{
+  
+  const executeOpen=async()=>{
+    if (state.isDemo) {
+      const results = demoOpenCase(c, count);
+      state.balance -= total;
+      __pendingCase={case:c,opens:results.length,results,total,unitPrice:total/results.length,settled:false,serverSettled:false};
+      saveLocalState();renderHeader();
+      startRoulette(c,results,!!c.isAllIn);
+      render(false);
+      return;
+    }
     try {
       const response=await secureFetch(`${SERVER_URL}/api/case/open`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({caseId:c.id,count,vipMode:!!state.vipMode})});
       const data=await response.json().catch(()=>({}));
@@ -2104,8 +2271,8 @@ async function openCaseNow(){
       saveLocalState();renderHeader();startRoulette(c,results,!!data.allIn);render(false);
     } catch(e) { toast(e.message||'Ошибка открытия кейса','err'); try{await apiSync();}catch(_){} }
   };
-  if(c.isAllIn){showConfirm(`Вы уверены?\nСтавка: ${fmt(total)} монет.\nВ случае неудачи потеряете всё.`,executeServerOpen);return;}
-  await executeServerOpen();
+  if(c.isAllIn){showConfirm(`Вы уверены?\nСтавка: ${fmt(total)} монет.\nВ случае неудачи потеряете всё.`,executeOpen);return;}
+  await executeOpen();
 }
 
 function startRoulette(c,results, isAllIn){
@@ -2284,7 +2451,6 @@ function sellMultiResult(uidsStr,caseId){
 
 function renderHeader(){updateBalance(state.balance);}
 
-/* MINES */
 function renderMines(){
   const m=state.mines;const cells=[];
   for(let i=0;i<25;i++){
@@ -2356,7 +2522,6 @@ function minesCashout(){
 }
 function setBet(id,v){const e=document.getElementById(id);if(e)e.value=v;}
 
-/* FUSE */
 function renderFuse(){
   const inv=state.inventory.map(i=>({...i,item:itemById(i.itemId)})).filter(x=>x.item).sort((a,b)=>a.item.price-b.item.price);
   const sel=[...state.fuseSelected];
@@ -2400,8 +2565,6 @@ function fuseDo(){
     </div>`;
   $('#overlay').classList.add('open');render(false);sndWinRarity(res.rarity);haptic('success');saveLocalState();
 }
-
-/* UPGRADE */
 
 function cleanUpgradeSelection() {
   state.upgrade.froms = state.upgrade.froms.filter(uid => state.inventory.some(inv => inv.uid === uid));
@@ -2649,7 +2812,6 @@ function upgMultPct(pct){
   state.upgrade.target=sorted[0].id;preserveScroll(() => render(false));
 }
 
-/* === FAIRNESS MODAL === */
 function openFairnessModal(){
   $('#modal').innerHTML = `
   <div class="fair-modal">
@@ -2758,7 +2920,6 @@ function copyFairText(txt){
   navigator.clipboard.writeText(txt).then(()=>toast('Скопировано','ok')).catch(()=>toast('Не удалось скопировать','err'));
 }
 
-/* === UPGRADE SPIN === */
 function finishUpgradeSpin(payload){
   if(!state.upgrade.animating) return;
   state.upgrade.animating = false;
@@ -2795,21 +2956,22 @@ function finishUpgradeSpin(payload){
     if(state.settings.upgradeSound) sndWinRarity(toItem.rarity);
     haptic('success');
 
-    // Отправка апгрейда в лайв-дропы
-    secureFetch(`${SERVER_URL}/api/drops`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            username: state.user ? state.user.username : 'guest',
-            itemName: toItem.name,
-            price: toItem.price,
-            rarity: toItem.rarity,
-            itemId: toItem.id,
-            caseName: 'Апгрейд',
-            type: 'upgrade'
-        }),
-        keepalive: true
-    }).catch(e => console.error('Ошибка отправки апгрейда', e));
+    if (!state.isDemo) {
+      secureFetch(`${SERVER_URL}/api/drops`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              username: state.user ? state.user.username : 'guest',
+              itemName: toItem.name,
+              price: toItem.price,
+              rarity: toItem.rarity,
+              itemId: toItem.id,
+              caseName: 'Апгрейд',
+              type: 'upgrade'
+          }),
+          keepalive: true
+      }).catch(e => console.error('Ошибка отправки апгрейда', e));
+    }
 
   } else {
     state.history.push(historyEntry);
@@ -2955,7 +3117,6 @@ function upgDo(){
   __upgFinish = () => finishUpgradeSpin({win, cp, roll, totalRotation, fromItems, toItem, froms, nonce, serverSeed, clientSeed});
 }
 
-/* === INVENTORY === */
 function setInventorySort(s){ state.inventorySort = s; saveLocalState(); preserveScroll(() => render(false)); }
 function setInventoryFilter(f){ state.inventoryFilter = f; saveLocalState(); preserveScroll(() => render(false)); }
 function renderInventory(){
@@ -3039,13 +3200,8 @@ function quickUpg(uid){
   setTab('upgrade');
 }
 
-/* ============================================= */
-/* === НОВЫЙ ДЕПОЗИТ (Как на скриншоте) === */
-/* ============================================= */
-
-let __depositPollingInterval = null;
-
 function openDepositModal(preselectId) {
+  if (state.isDemo) { toast('💡 Депозит доступен только через Telegram-бота', 'warning'); return; }
   state.deposit.step = 1;
   state.deposit.selected = new Map();
   state.deposit.searchQuery = '';
@@ -3416,8 +3572,8 @@ function cancelDeposit() {
   closeModal();
 }
 
-/* === WITHDRAW === */
 async function withdrawItem(uid) {
+    if (state.isDemo) { toast('💡 Вывод доступен только через Telegram-бота', 'warning'); return; }
     const invItem = state.inventory.find(i => i.uid === uid);
     if (!invItem) return;
     const item = itemById(invItem.itemId);
@@ -3455,12 +3611,6 @@ async function withdrawItem(uid) {
     });
 }
 
-/* === INITIALIZATION === */
-document.addEventListener('DOMContentLoaded', () => {
-  initTelegramLogin();
-});
-
-// Предзагрузка картинок, чтобы не было лагов при крутке рулетки
 (function preloadImages() {
     const imagesToPreload = [
         'brainrots/Guest666.png', 'brainrots/Grabatron.png', 'brainrots/Los_Sekolahs.png',
