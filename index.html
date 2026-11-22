@@ -799,6 +799,24 @@ body.jp-shake{animation:jpShake .9s}
 .dh-list{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;padding-right:4px}
 .dh-row{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:14px;border:1px solid color-mix(in srgb,var(--rc) 35%,transparent);background:linear-gradient(90deg,color-mix(in srgb,var(--rc) 16%,transparent),rgba(10,16,30,.7) 60%)}
 .dh-ico{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0}.dh-info{flex:1;min-width:0}.dh-name{font-weight:800;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dh-sub{font-size:12px;color:var(--muted)}.dh-price{font-weight:900;color:var(--gold);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.upg-left-body{flex:none!important;height:236px;min-height:0!important;display:grid!important;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));grid-auto-rows:122px;gap:10px;align-content:start;overflow-y:auto}
+.upg-left-body .upg-item-card{width:auto!important;height:122px;padding:8px 6px;transform:none!important;min-width:0}
+.upg-left-body .upg-item-name{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.upg-left-body>div:not(.upg-item-card){grid-column:1/-1}
+.upg-left-body{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))!important;grid-auto-rows:108px!important;gap:8px!important;padding:12px!important}
+.upg-left-body .upg-item-card{height:108px!important;padding:6px 4px!important;justify-content:flex-start}
+.upg-left-body .upg-item-img{height:48px!important;margin-bottom:4px!important;font-size:34px}
+.upg-left-body .upg-item-img img{max-height:48px}
+.upg-left-body .upg-item-name{width:100%;text-align:center;display:block!important}
+.top-row{display:flex;gap:14px;align-items:stretch;margin:0 0 14px}
+.top-row .pbn-wrap{flex:0 0 min(430px,42%);width:auto;margin:0;padding:0;background:none;border:0;border-radius:14px;overflow:visible}
+.top-row .pbn-wrap::before,.top-row .pbn-wrap::after{display:none}
+.top-row .pbn-wrap .pbn{max-width:none;width:100%;margin:0}
+.top-row #top-drop-container{flex:1;min-width:0;display:flex}
+.top-row #top-drop-container:empty{display:none}
+.top-row .top-drop-banner{flex:1;margin:0!important;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.top-row .top-drop-banner>div:first-child{min-width:0}
+@media(max-width:900px){.top-row{flex-direction:column}.top-row .pbn-wrap{flex:none;width:100%}.top-row .top-drop-banner{flex-direction:row;text-align:left;gap:10px;padding:12px 14px}.top-row .top-drop-content{flex-direction:row;gap:12px}.top-row .top-drop-price{font-size:18px}}
 </style>
 </head>
 <body>
@@ -1109,7 +1127,7 @@ function getSaveKey() {
   return state.isDemo ? 'brainrot-demo-state-v2' : 'brainrot-prefs-v2-' + (state.user ? state.user.id : 'anon');
 }
 
-const SCROLL_SEL = '.upg-inv-grid,.upg-left-body,.multi-result-grid,.cd-grid,.hist-list,[data-keepscroll]';
+const SCROLL_SEL = '.dep-grid,.dh-list,.upg-inv-grid,.upg-left-body,.multi-result-grid,.cd-grid,.hist-list,[data-keepscroll]';
 function preserveScroll(renderFn) {
   const scrollY = window.scrollY;
   const modal = document.querySelector('.modal');
@@ -1117,10 +1135,12 @@ function preserveScroll(renderFn) {
   const inner = [...document.querySelectorAll(SCROLL_SEL)].map(e => e.scrollTop);
   const root = document.scrollingElement || document.documentElement;
   const prevMin = root.style.minHeight; root.style.minHeight = (document.documentElement.scrollHeight) + 'px'; // страница не схлопывается на время перерисовки
+  const html = document.documentElement; html.style.scrollBehavior = 'auto'; // у html стоит smooth — из-за него возврат позиции «ехал» с самого верха
   renderFn();
   [...document.querySelectorAll(SCROLL_SEL)].forEach((e, i) => { if (inner[i] != null) e.scrollTop = inner[i]; });
-  window.scrollTo(0, scrollY);
+  window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
   root.style.minHeight = prevMin;
+  requestAnimationFrame(() => { html.style.scrollBehavior = ''; });
   const newModal = document.querySelector('.modal');
   if (newModal) newModal.scrollTop = modalScroll;
 }
@@ -2797,14 +2817,14 @@ function renderCases(){
     }).join('');
     return `<div class="case-category cat-${cat}" style="--ccr:${catRgb[cat]||'88,166,255'}"><div class="sec-title">${categories[cat]||'Другие'}</div><div class="cases-grid">${caseCards}</div></div>`;
   }).join('');
-  return `<div class="pbn-wrap"><div class="pbn" id="promoBanner">
+  return `<div class="top-row"><div class="pbn-wrap"><div class="pbn" id="promoBanner">
     <div class="pbn-timer" id="pbnTimer">--:--</div>
     <div class="pbn-code"><span id="pbnCode">······</span><b id="pbnPct"></b></div>
     <button class="pbn-copy" onclick="promoCopy()" aria-label="Скопировать код"></button>
     <button class="pbn-apply" onclick="promoApply()" aria-label="Применить"></button>
     <div class="pbn-note" id="pbnNote"></div>
   </div></div>
-  <div id="top-drop-container">${getTopDropHtml()}</div>
+  <div id="top-drop-container">${getTopDropHtml()}</div></div>
   <label class="searchbar"><span>🔍</span><input id="caseSearch" placeholder="Кейс или брейнрот" oninput="filterCases(this.value)" autocomplete="off"></label>
   ${cards}
   <div class="fair-note">Честная игра · RTP ${RTP_PCT}% · результат считает сервер, каждый бросок можно проверить в окне Fair</div>`;
@@ -3296,6 +3316,10 @@ function kzResultHtml(){
   const win=u.lastResult==='win';
   return '<div class="kz-res'+(win?'':' lose')+'"><div class="kz-price">'+coin(18)+' '+fmt(it.price)+'</div><div class="kz-item">'+itemIcon(it,190)+'</div><div class="kz-name"><b>'+esc(it.name)+'</b><span>'+(win?'Предмет добавлен в инвентарь':'Предмет не выпал')+'</span></div></div>';
 }
+// медленная: плавно разгоняется, потом долго тормозит; быстрая: короткий рывок сразу на скорости
+const upgFast=()=>state.settings.upgSpin==='fast';
+const upgDuration=()=>upgFast()?1300+Math.random()*500:5200+Math.random()*1600;
+const upgEasing=()=>upgFast()?'cubic-bezier(0.05, 0.7, 0.15, 1)':'cubic-bezier(0.5, 0, 0.08, 1)';
 function toggleUpgSpin(){if(state.upgrade.animating)return;state.settings.upgSpin=state.settings.upgSpin==='fast'?'normal':'fast';saveLocalState();render(false);}
 function toggleMystery(){
   if(state.upgrade.animating||state.upgrade.busy)return;
@@ -3337,7 +3361,7 @@ async function mysteryDo(){
   let delta=finalDeg-(currentAngle%360);if(delta<0)delta+=360;
   const spins=5+Math.floor(Math.random()*8);
   const totalRotation=currentAngle+spins*360+delta;
-  const duration=(state.settings.upgSpin==='fast'?2000:4000)+Math.random()*1500;
+  const duration=upgDuration();
   state.upgrade.animating=true;state.upgrade.lastResult=null;state.upgrade.lastAngle=totalRotation;
   state.balance-=bal;__upgTargetRot=totalRotation;renderHeader();
   const payload={mystery:true,totalRotation,data:d};
@@ -3354,7 +3378,7 @@ async function mysteryDo(){
       __upgTickTimer=setTimeout(tick,35+Math.pow(Math.min(1,el/duration),2)*950);};
     tick();
   }
-  requestAnimationFrame(()=>{void needleEl.offsetWidth;needleEl.style.transition='transform '+duration+'ms cubic-bezier(0.15, 0.9, 0.1, 1)';needleEl.style.transform='rotate('+totalRotation+'deg)';});
+  requestAnimationFrame(()=>{void needleEl.offsetWidth;needleEl.style.transition='transform '+duration+'ms '+upgEasing();needleEl.style.transform='rotate('+totalRotation+'deg)';});
   // живое табло: зона под маркером меняется во время вращения
   (function liveZone(){
     const pe=document.getElementById('upgPctBig'),le=document.getElementById('upgChanceLabel');
@@ -3760,7 +3784,6 @@ function finishUpgradeSpin(payload){
   if(win){ if(state.settings.upgradeSound) sndWinRarity(toItem.rarity); haptic('success'); }
   else { if(state.settings.upgradeSound) sndLose(); haptic('error'); }
   state.upgrade.lastResult = win ? 'win' : 'lose';
-  try{toast((win?'✅ Зашло! ':'❌ Не зашло. ')+'Шанс был '+(cp<1?cp.toFixed(2):cp.toFixed(1))+'% · выпало '+(roll*100).toFixed(2)+'%',win?'ok':'err');}catch(e){}
   state.upgrade.lastAngle = totalRotation;
   state.upgrade.lastChance = cp;
   state.upgrade.lastRoll = roll;
@@ -3819,8 +3842,8 @@ async function upgDo(){
   let delta = finalDeg - (currentAngle % 360);
   if (delta < 0) delta += 360;
   const totalRotation = currentAngle + spins * 360 + delta;
-  const duration = (state.settings.upgSpin === 'fast' ? 2000 : 4000) + Math.random()*2000;
-  const chosenEasing = 'cubic-bezier(0.15, 0.9, 0.1, 1)';
+  const duration = upgDuration();
+  const chosenEasing = upgEasing();
 
   state.upgrade.animating = true;
   state.upgrade.lastResult = null;
