@@ -598,6 +598,10 @@ body::after{background-image:radial-gradient(2.6px 2.6px at 40px 60px,rgba(255,2
 .cc-imgs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.cc-img{flex:0 0 64px;height:64px;border:2px solid rgba(255,255,255,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px}.cc-img img{max-width:100%;max-height:100%}.cc-img.on{border-color:#58a6ff}
 .cc-list{max-height:260px;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}.cc-it{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.04);font-size:12px;cursor:pointer}.cc-it.on{background:rgba(88,166,255,.2)}.cc-it span{flex:1}
 .cc-sel{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:auto}.cc-row{display:flex;gap:8px;align-items:center}.cc-row span{flex:1}.cc-row input{width:90px}
+.cc-two{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:800px){.cc-two{grid-template-columns:1fr}}
+.cc-meter{height:8px;border-radius:6px;background:rgba(255,255,255,.08);margin-top:6px;overflow:hidden}.cc-meter i{display:block;height:100%;transition:width .2s}.cc-meter i.ok{background:#4ade80}.cc-meter i.bad{background:#f59e0b}
+.cc-cost{margin-top:14px;font-size:15px}.cc-cost b{font-size:24px;color:var(--gold);margin:0 6px}.cc-cost small{color:var(--muted)}
+.cc-row{border-left:3px solid var(--rc);padding-left:8px}.cc-row input{width:92px;text-align:right}.cc-nm{font-size:13px}
 .cc-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}.cc-card{display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04)}.cc-card.off{opacity:.55}
 .wk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
 .wk-tier{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;background:rgba(10,16,30,.8);text-align:center;transition:transform .2s}
@@ -842,6 +846,41 @@ body.jp-shake{animation:jpShake .9s}
 @keyframes lsGh{0%,100%{opacity:.35}50%{opacity:.8}}
 .top-row .pbn-wrap{flex:0 0 min(600px,54%)!important}
 @media(max-width:900px){.top-row .pbn-wrap{flex:none!important}}
+
+/* ===== v11: минимализм, плавность, большое колесо ===== */
+.upg-dial-wrapper{width:min(100%,400px)!important;height:auto!important;aspect-ratio:1/1;margin-bottom:24px!important}
+.upg-pct-text{font-size:clamp(40px,5vw,58px)!important;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.upg-status-text{font-size:15px!important;letter-spacing:2px;opacity:.9}
+.upg-dial-bg{stroke:#131c30!important}
+.upg-dial-progress{stroke-linecap:round!important}
+.upg-dial-wrapper::before{content:"";position:absolute;inset:-6%;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .6s ease}
+.upg-dial-wrapper.lose::before{background:radial-gradient(circle,transparent 52%,rgba(239,68,68,.15) 66%,transparent 76%);animation:softRed 2.8s ease-in-out infinite;opacity:1}
+.upg-dial-wrapper.won::before{background:radial-gradient(circle,transparent 52%,rgba(74,222,128,.2) 66%,transparent 76%);animation:softRed 2.8s ease-in-out infinite;opacity:1}
+@keyframes softRed{0%,100%{transform:scale(.97);opacity:.55}50%{transform:scale(1.03);opacity:1}}
+.upg-center-panel:has(.upg-dial-wrapper.lose){filter:drop-shadow(0 0 28px rgba(239,68,68,.12))}
+.upg-panel,.upg-ctrl-row{border-radius:20px!important;background:linear-gradient(180deg,rgba(18,26,44,.82),rgba(10,15,28,.9))!important;border:1px solid rgba(255,255,255,.06)!important;box-shadow:0 10px 40px rgba(0,0,0,.28)!important;backdrop-filter:blur(6px)}
+.upg-panel-header{background:transparent!important;border-bottom:1px solid rgba(255,255,255,.05)!important;font-weight:600!important;letter-spacing:.3px}
+.upg-item-card{border-radius:14px!important;transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s,border-color .25s,background .25s!important}
+.btn-ctrl{border-radius:999px!important;padding:8px 16px!important;transition:all .25s cubic-bezier(.22,1,.36,1)!important}
+.btn-ctrl:active{transform:scale(.95)}
+.btn-ctrl.xon{background:rgba(88,166,255,.2)!important;border-color:#58a6ff!important;color:#fff!important;box-shadow:0 0 14px rgba(88,166,255,.35)}
+.btn-upg-main{border-radius:999px!important;transition:transform .2s,box-shadow .3s,filter .3s!important}
+.btn-upg-main:not(:disabled):hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn,.btn-accent,.btn-ghost,.nav-item,.case-card,.bc-card,.tb-icon{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .3s,background .3s,border-color .3s,opacity .3s!important}
+.toast{border-radius:16px!important}
+/* лайв-дроп всегда на экране: на телефоне — компактная горизонтальная лента сверху */
+@media(max-width:1024px){
+  .app{flex-direction:column!important}
+  .app{padding-top:84px}
+  .live-strip{display:flex!important;flex-direction:row!important;position:fixed!important;left:0;right:0;top:0;z-index:60;width:100%!important;height:84px!important;padding:6px 8px!important;gap:6px!important;overflow:hidden!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(7,12,24,.96);backdrop-filter:blur(8px);align-self:stretch!important}
+  .live-strip>.ls-item{flex:0 0 72px!important;width:72px;padding:4px 2px!important;border-radius:10px!important}
+  .live-strip .ls-ico{height:38px!important}.live-strip .ls-ico img,.live-strip .ls-ico>*{max-height:38px}
+  .live-strip .ls-name{font-size:9px!important;margin-top:2px!important}
+  .live-strip .ls-top{font-size:7px;top:2px;right:2px;padding:1px 3px}
+  .live-strip .ls-chance{font-size:8px}
+  .live-strip:empty{display:none!important}
+  body:has(.live-strip:empty) .app{padding-top:0}
+}
 </style>
 </head>
 <body>
@@ -890,7 +929,7 @@ const ADMIN_TG_ID = '8921286864';
 // ВСТАВЬ СЮДА адрес сервера CodeSandbox (порт 8080), например https://abc123-8080.csb.app — без слэша на конце
 const SERVER_URL = 'https://brainrot-rush-production.up.railway.app'; 
 const BOT_ROBLOX_NAME = 'daveminioniscool';
-const MAX_UPG = 6; 
+const MAX_UPG = 8; 
 
 let sessionToken = null;
 let pendingRequests = 0;
@@ -1697,6 +1736,9 @@ function processToastQueue(){
   }, 2500);
 }
 function toast(m,t=''){
+  const te=document.getElementById('toast');
+  if(__toastQueue.some(x=>x.m===m)||(__toastRunning&&te&&te.innerHTML===m))return;
+  if(__toastQueue.length>=3)__toastQueue.shift();
   __toastQueue.push({m,t});
   processToastQueue();
 }
@@ -2289,39 +2331,51 @@ async function adminLoadCases(){
   try{const d=await api('/api/admin/cases');state.admin.cc=d.cases||[];state.admin.ccItems=d.items||[];if(state.tab==='admin'&&state.adminTab==='cases')renderCcPane();}catch(e){toast(esc(e.message),'err');}
 }
 function ccImgChoices(){const set=new Set();CASES.forEach(c=>{if(c.img)set.add(c.img);});return [...set];}
-function ccNew(){state.admin.ccEdit={id:'',name:'',price:100,desc:'',icon:'🎁',img:'',category:'standard',badge:'',rtp:'',enabled:true,items:[]};renderCcPane();}
-function ccEdit(id){const c=(state.admin.cc||[]).find(x=>x.id===id);if(!c)return;state.admin.ccEdit={...c,rtp:c.rtp?Math.round(c.rtp*100):'',items:c.items.map(x=>({id:x.id,w:x.w}))};renderCcPane();}
+function ccNew(){state.admin.ccEdit={id:'',name:'',desc:'',icon:'🎁',img:'',category:'standard',badge:'',rtp:'',enabled:true,items:[]};renderCcPane();}
+function ccEdit(id){const c=(state.admin.cc||[]).find(x=>x.id===id);if(!c)return;const t=c.items.reduce((a,x)=>a+x.w,0)||1;state.admin.ccEdit={...c,rtp:c.rtp?Math.round(c.rtp*100):'',items:c.items.map(x=>({id:x.id,w:+(x.w/t*100).toFixed(4)}))};renderCcPane();}
 function ccCancel(){state.admin.ccEdit=null;renderCcPane();}
 function ccField(k,v){if(state.admin.ccEdit)state.admin.ccEdit[k]=v;}
-function ccToggleItem(id){const e=state.admin.ccEdit;if(!e)return;const i=e.items.findIndex(x=>x.id===id);if(i>=0)e.items.splice(i,1);else e.items.push({id,w:1});renderCcPane(true);}
-function ccWeight(id,v){const e=state.admin.ccEdit;if(!e)return;const x=e.items.find(y=>y.id===id);if(x)x.w=Math.max(0.0001,Number(v)||1);}
+function ccEqual(items){const n=items.length;items.forEach((x,i)=>{x.w=+(100/n).toFixed(4);});if(n){const rest=100-items.slice(0,-1).reduce((a,x)=>a+x.w,0);items[n-1].w=+rest.toFixed(4);}}
+function ccIsEqual(items){return !items.length||items.every(x=>Math.abs(x.w-items[0].w)<0.001)||items.every(x=>!x.w);}
+function ccToggleItem(id){const e=state.admin.ccEdit;if(!e)return;const eq=ccIsEqual(e.items),i=e.items.findIndex(x=>x.id===id);if(i>=0)e.items.splice(i,1);else{if(e.items.length>=50)return toast('Максимум 50 предметов','err');e.items.push({id,w:0});}if(eq)ccEqual(e.items);renderCcPane(true);}
+function ccDistribute(){const e=state.admin.ccEdit;if(!e)return;ccEqual(e.items);renderCcPane(true);}
+function ccClearPct(){const e=state.admin.ccEdit;if(!e)return;e.items.forEach(x=>x.w=0);renderCcPane(true);}
+function ccClearItems(){const e=state.admin.ccEdit;if(!e)return;e.items=[];renderCcPane(true);}
+function ccCalc(e){const byId=Object.fromEntries(state.admin.ccItems.map(i=>[i.id,i])),sum=e.items.reduce((a,x)=>a+(Number(x.w)||0),0),ev=e.items.reduce((a,x)=>a+(Number(x.w)||0)/100*((byId[x.id]||{}).price||0),0),r=(Number(e.rtp)||RTP_PCT)/100;return {byId,sum,ev,price:Math.max(1,Math.ceil(ev/r)),r};}
+function ccLive(){const e=state.admin.ccEdit;if(!e)return;const c=ccCalc(e),a=document.getElementById('ccSum'),b=document.getElementById('ccPrice'),f=document.getElementById('ccBar');if(a)a.textContent=c.sum.toFixed(4)+'%';if(b)b.textContent=fmt(c.price);if(f){f.style.width=Math.min(100,c.sum)+'%';f.className=Math.abs(c.sum-100)<0.5?'ok':'bad';}}
+function ccWeight(id,v){const e=state.admin.ccEdit;if(!e)return;const x=e.items.find(y=>y.id===id);if(x)x.w=Math.max(0,Math.min(100,Number(String(v).replace(',','.'))||0));ccLive();}
 function ccSearch(v){state.admin.ccQ=v;const el=document.getElementById('ccList');if(el)el.innerHTML=ccPickerHtml();}
 function ccPickerHtml(){
   const e=state.admin.ccEdit,q=(state.admin.ccQ||'').toLowerCase(),sel=new Set(e.items.map(x=>x.id));
   return state.admin.ccItems.filter(i=>!q||i.name.toLowerCase().includes(q)).sort((a,b)=>a.price-b.price).slice(0,120).map(i=>`<label class="cc-it${sel.has(i.id)?' on':''}"><input type="checkbox" ${sel.has(i.id)?'checked':''} onchange="ccToggleItem('${esc(i.id)}')"><span>${esc(i.name)}</span><b>${fmt(i.price)}</b></label>`).join('')||'<div style="color:var(--muted)">Ничего не найдено</div>';
 }
 function ccFormHtml(){
-  const e=state.admin.ccEdit,byId=Object.fromEntries(state.admin.ccItems.map(i=>[i.id,i]));
-  const avg=(()=>{const t=e.items.reduce((s,x)=>s+x.w,0);return t?e.items.reduce((s,x)=>s+x.w*((byId[x.id]||{}).price||0),0)/t:0;})();
+  const e=state.admin.ccEdit,c=ccCalc(e),byId=c.byId;
   return `<div class="admin-card"><h4>${e.id?'Редактирование кейса':'Новый кейс'}</h4>
   <div class="cc-grid">
     <label>Название<input class="inp" maxlength="40" value="${esc(e.name)}" oninput="ccField('name',this.value)"></label>
-    <label>Цена<input class="inp" type="number" min="1" value="${e.price}" oninput="ccField('price',this.value)"></label>
     <label>Иконка (эмодзи)<input class="inp" maxlength="4" value="${esc(e.icon)}" oninput="ccField('icon',this.value)"></label>
     <label>Метка (например NEW)<input class="inp" maxlength="10" value="${esc(e.badge)}" oninput="ccField('badge',this.value)"></label>
     <label>Раздел<select class="inp" onchange="ccField('category',this.value)">${[['standard','Кейсы'],['special','Особые'],['newyear','Серийные'],['mutagen','Мутагенные']].map(o=>`<option value="${o[0]}" ${e.category===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></label>
-    <label>RTP, % (пусто = по умолчанию)<input class="inp" type="number" min="50" max="99" value="${e.rtp}" oninput="ccField('rtp',this.value)"></label>
+    <label>Возврат (RTP), % — от него зависит цена<input class="inp" type="number" min="50" max="99" placeholder="${RTP_PCT}" value="${e.rtp}" oninput="ccField('rtp',this.value);ccLive()"></label>
     <label style="grid-column:1/-1">Описание<input class="inp" maxlength="120" value="${esc(e.desc)}" oninput="ccField('desc',this.value)"></label>
   </div>
-  <div style="margin:14px 0 6px;font-weight:700">Картинка кейса <small style="color:var(--muted)">(пусто = картинка самого дорогого предмета)</small></div>
+  <div style="margin:14px 0 6px;font-weight:700">Картинка кейса <small style="color:var(--muted)">(авто = картинка самого дорогого предмета)</small></div>
   <div class="cc-imgs"><div class="cc-img${!e.img?' on':''}" onclick="ccField('img','');renderCcPane(true)">авто</div>${ccImgChoices().map(i=>`<div class="cc-img${e.img===i?' on':''}" onclick="ccField('img','${esc(i)}');renderCcPane(true)"><img src="${esc(i)}" loading="lazy"></div>`).join('')}</div>
-  <div style="margin:16px 0 6px;font-weight:700">Предметы в кейсе: ${e.items.length} <small style="color:var(--muted)">· средняя цена приза при равных весах ≈ ${fmt(avg)} (для RTP она должна быть около цены кейса × RTP или между мин. и макс.)</small></div>
-  ${e.items.length?`<div class="cc-sel">${e.items.map(x=>`<div class="cc-row"><span>${esc((byId[x.id]||{}).name||x.id)}</span><small>${fmt((byId[x.id]||{}).price||0)}</small><input class="inp" type="number" min="0.0001" step="any" value="${x.w}" title="Вес (относительная частота)" onchange="ccWeight('${esc(x.id)}',this.value)"><button class="btn btn-ghost" onclick="ccToggleItem('${esc(x.id)}')">✕</button></div>`).join('')}</div>`:''}
-  <input class="inp" placeholder="Поиск предмета…" value="${esc(state.admin.ccQ)}" oninput="ccSearch(this.value)" style="margin:10px 0">
-  <div id="ccList" class="cc-list">${ccPickerHtml()}</div>
+  <div class="cc-two">
+   <div><div style="margin:16px 0 6px;font-weight:700">Каталог предметов</div>
+    <input class="inp" placeholder="Поиск предмета…" value="${esc(state.admin.ccQ)}" oninput="ccSearch(this.value)" style="margin-bottom:10px">
+    <div id="ccList" class="cc-list">${ccPickerHtml()}</div></div>
+   <div><div style="margin:16px 0 6px;font-weight:700;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px"><span>Настройка процентов</span><span style="color:var(--muted)">${e.items.length} / 50</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="btn btn-ghost" onclick="ccDistribute()">⚖️ Распределить проценты</button><button class="btn btn-ghost" onclick="ccClearPct()">🧽 Очистить проценты</button><button class="btn btn-ghost" onclick="ccClearItems()">Удалить предметы</button></div>
+    <div class="cc-sel">${e.items.length?e.items.map(x=>{const it=byId[x.id]||{},full=itemById(x.id);return `<div class="cc-row" style="--rc:${full?rc(full):'#94a3b8'}"><span class="cc-nm">${esc(it.name||x.id)}</span><small>${fmt(it.price||0)}</small><input class="inp" type="text" inputmode="decimal" value="${x.w}" onchange="ccWeight('${esc(x.id)}',this.value)" oninput="ccWeight('${esc(x.id)}',this.value)"><b>%</b><button class="btn btn-ghost" onclick="ccToggleItem('${esc(x.id)}')">✕</button></div>`;}).join(''):'<div style="color:var(--muted);padding:20px 0">Отметьте предметы в каталоге слева</div>'}</div>
+    <div style="margin-top:12px;display:flex;justify-content:space-between"><span style="color:var(--muted)">Используйте все 100 процентов</span><span>Использовано: <b id="ccSum">${c.sum.toFixed(4)}%</b></span></div>
+    <div class="cc-meter"><i id="ccBar" class="${Math.abs(c.sum-100)<0.5?'ok':'bad'}" style="width:${Math.min(100,c.sum)}%"></i></div>
+    <div class="cc-cost">Стоимость кейса <b id="ccPrice">${fmt(c.price)}</b> <small>= средний выигрыш ÷ RTP · считается автоматически</small></div>
+   </div>
+  </div>
   <label style="display:flex;gap:8px;align-items:center;margin:14px 0"><input type="checkbox" ${e.enabled?'checked':''} onchange="ccField('enabled',this.checked)"> Кейс включён (виден игрокам)</label>
-  <div style="display:flex;gap:10px"><button class="btn btn-accent" onclick="ccSave()">💾 Сохранить</button><button class="btn btn-ghost" onclick="ccCancel()">Отмена</button></div>
-  <div style="color:var(--muted);font-size:12px;margin-top:10px">Вес — относительная частота: шансы пересчитываются сервером так, чтобы RTP кейса попал в цель. Если цель недостижима, сервер подскажет, что поправить.</div></div>`;
+  <div style="display:flex;gap:10px"><button class="btn btn-accent" onclick="ccSave()">💾 Сохранить</button><button class="btn btn-ghost" onclick="ccCancel()">Отмена</button></div></div>`;
 }
 function adminCasesHtml(){
   if(state.admin.ccEdit)return ccFormHtml();
@@ -2337,8 +2391,8 @@ function renderCcPane(keepScroll){
 }
 async function ccSave(){
   const e=state.admin.ccEdit;if(!e)return;
-  const body={id:e.id||undefined,name:e.name,price:Number(e.price),desc:e.desc,icon:e.icon,img:e.img,category:e.category,badge:e.badge,rtp:e.rtp?Number(e.rtp)/100:0,enabled:e.enabled,items:e.items};
-  try{await api('/api/admin/case',body);toast('Кейс сохранён','ok');state.admin.ccEdit=null;await adminLoadCases();loadOdds();}catch(er){toast(esc(er.message),'err');}
+  const body={id:e.id||undefined,exact:true,name:e.name,desc:e.desc,icon:e.icon,img:e.img,category:e.category,badge:e.badge,rtp:e.rtp?Number(e.rtp)/100:0,enabled:e.enabled,items:e.items};
+  try{const d=await api('/api/admin/case',body);toast('Кейс сохранён · цена '+fmt(d.case.price),'ok');state.admin.ccEdit=null;await adminLoadCases();loadOdds();}catch(er){toast(esc(er.message),'err');}
 }
 function ccDel(id){showConfirm('Удалить кейс?',async()=>{try{await api('/api/admin/case/delete',{id});toast('Удалён','ok');await adminLoadCases();loadOdds();}catch(er){toast(esc(er.message),'err');}});}
 
@@ -2891,7 +2945,7 @@ function render(fresh){
     if(state.tab==='cases')el.innerHTML=renderCases();
     else if(state.tab==='weekly')el.innerHTML=renderWeekly();
     else if(state.tab==='fuse')el.innerHTML=renderFuse();
-    else if(state.tab==='upgrade')el.innerHTML=renderUpgrade();
+    else if(state.tab==='upgrade'){el.innerHTML=renderUpgrade();upgPostRender();}
     else if(state.tab==='profile')el.innerHTML=renderProfile();
     else if(state.tab==='admin'){el.innerHTML=isAdmin()?renderAdmin():'<div class="empty-state">Доступ только для админов</div>';if(isAdmin()&&!state.admin.stats&&!state.admin.loading){state.admin.loading=true;adminLoadStats().finally(()=>{state.admin.loading=false;});}}
     saveLocalState();
@@ -3397,7 +3451,7 @@ function updateUpgBalance(val){
   state.upgrade.balanceAmount=Number(val);
   const totalVal=upgTV()+state.upgrade.balanceAmount;
   const targetItem=state.upgrade.target?itemById(state.upgrade.target):null;
-  if(targetItem&&targetItem.price<=totalVal){state.upgrade.target=null;preserveScroll(() => render(false));return;}
+  if(targetItem&&targetItem.price<=totalVal){state.upgrade.target=null;upgReapply();preserveScroll(() => render(false));return;}
   const ch=targetItem?calcUC(totalVal,targetItem.price):0;
   const balText=document.getElementById('upgSliderBalanceText');
   if(balText)balText.innerHTML=`${coin(14)} ${fmt(state.upgrade.balanceAmount)}`;
@@ -3646,8 +3700,8 @@ function renderUpgrade(){
   const selLeftHtml=selItems.map(it=>`<div class="upg-item-card" style="cursor:default;--rc:${rc(it.item)}"><div class="upg-item-img">${itemIcon(it.item,70)}</div><div class="upg-item-name">${esc(it.item.name)}</div><div class="upg-item-price">${coin(12)} ${fmt(it.item.price)}</div></div>`).join('');
   const selRightHtml=ti?`<div class="upg-target-glow"></div><div class="upg-item-card" style="cursor:default;background:transparent;border:none;z-index:2;width:100%;"><div class="upg-item-img" style="height:160px;margin-bottom:20px;filter:drop-shadow(0 0 30px rgba(251,191,36,0.3));">${itemIcon(ti,150)}</div><div style="font-size:18px;font-weight:900;color:#fff;text-shadow:0 2px 5px #000;">${esc(ti.name)}</div><div style="font-size:16px;font-weight:900;color:var(--gold);margin-top:8px;display:flex;justify-content:center;align-items:center;gap:6px;">${coin(16)} ${fmt(ti.price)}</div></div>`:'';
   const canM=totalVal>0&&!state.upgrade.animating;
-  const multBtnsHtml=state.settings.multipliers.map(m=>`<button class="btn-ctrl" ${!canM?'disabled':''} onclick="upgMult(${m})">x${m}</button>`).join('');
-  const pctBtnsHtml=state.settings.percentages.map(p=>`<button class="btn-ctrl" ${!canM?'disabled':''} onclick="upgMultPct(${p})">${p}%</button>`).join('');
+  const multBtnsHtml=state.settings.multipliers.map(m=>`<button class="btn-ctrl${(state.upgrade.sel&&state.upgrade.sel.k==='x'&&state.upgrade.sel.v===m)?' xon':''}" ${!canM?'disabled':''} onclick="upgMult(${m})">x${m}</button>`).join('');
+  const pctBtnsHtml=state.settings.percentages.map(p=>`<button class="btn-ctrl${(state.upgrade.sel&&state.upgrade.sel.k==='p'&&state.upgrade.sel.v===p)?' xon':''}" ${!canM?'disabled':''} onclick="upgMultPct(${p})">${p}%</button>`).join('');
   let ticks='';
   for(let i=0;i<72;i++){
     const a=(i/72)*Math.PI*2-Math.PI/2;
@@ -3711,10 +3765,10 @@ function renderUpgrade(){
           </button>
         </div>
         ${my?'':`<div class="upg-jp-legend">${jackpotLegend(jp,!!ti)}</div>`}
-        <div class="upg-dial-wrapper">
+        <div class="upg-dial-wrapper${!state.upgrade.animating&&lrr==='lose'?' lose':!state.upgrade.animating&&lrr==='win'?' won':''}">
           <svg class="upg-dial-svg" viewBox="0 0 320 320">
             <circle cx="160" cy="160" r="${R}" class="upg-dial-bg"/>
-            ${my?zoneArcs:`<circle id="upgDialCircle" cx="160" cy="160" r="${R}" class="upg-dial-progress" stroke-dasharray="${winLen.toFixed(2)} ${C.toFixed(2)}" transform="rotate(-90 160 160)" style="stroke:${statusColor};transition:stroke 0.3s ease"/><circle id="upgJackpotArc" cx="160" cy="160" r="${R}" class="upg-dial-progress upg-jp-arc" stroke-dasharray="${(C*jp).toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-(winLen-C*jp)).toFixed(2)}" transform="rotate(-90 160 160)" style="stroke:#ffc94a;filter:drop-shadow(0 0 6px #ffc94a);${jp>0?'':'display:none'}"/>`}
+            ${my?zoneArcs:`<circle id="upgDialCircle" cx="160" cy="160" r="${R}" class="upg-dial-progress" stroke-dasharray="${(state.upgrade._fromLen!=null&&!state.upgrade.animating?state.upgrade._fromLen:winLen).toFixed(2)} ${C.toFixed(2)}" data-to="${winLen.toFixed(2)}" data-c="${C.toFixed(2)}" transform="rotate(-90 160 160)" style="stroke:${statusColor}"/><circle id="upgJackpotArc" cx="160" cy="160" r="${R}" class="upg-dial-progress upg-jp-arc" stroke-dasharray="${(C*jp).toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-(winLen-C*jp)).toFixed(2)}" transform="rotate(-90 160 160)" style="stroke:#ffc94a;filter:drop-shadow(0 0 6px #ffc94a);${jp>0?'':'display:none'}"/>`}
             ${ticks}
             <circle cx="160" cy="160" r="110" fill="#0a0e17" stroke="#1e293b" stroke-width="1"/>
           </svg>
@@ -3763,7 +3817,7 @@ function upgToggle(u){
     const i=l.indexOf(u);
     if(i>=0)l.splice(i,1);
     else{if(l.length>=MAX_UPG){toast(`Максимум ${MAX_UPG} предметов`,'err');return;}l.push(u);}
-    state.upgrade.target=null;
+    state.upgrade.target=null;upgReapply();
     preserveScroll(() => render(false));
   } catch(e) { console.error('upgToggle error', e); }
 }
@@ -3772,13 +3826,32 @@ function upgPick(id){
     if(state.upgrade.animating)return;
     if(id)state.upgrade.mystery=false;
     state.upgrade.lastResult = null;
+    state.upgrade.sel=null;
     state.upgrade.target=id;
     preserveScroll(() => render(false));
   } catch(e) { console.error('upgPick error', e); }
 }
-function upgReset(){if(state.upgrade.animating)return;state.upgrade.lastResult = null;state.upgrade.froms=[];state.upgrade.target=null;state.upgrade.balanceAmount=0;preserveScroll(() => render(false));}
+function upgReset(){if(state.upgrade.animating)return;state.upgrade.sel=null;state.upgrade.lastResult = null;state.upgrade.froms=[];state.upgrade.target=null;state.upgrade.balanceAmount=0;preserveScroll(() => render(false));}
+function upgPostRender(){
+  const c=document.getElementById('upgDialCircle');if(!c)return;
+  const to=parseFloat(c.getAttribute('data-to')),C=c.getAttribute('data-c'),from=parseFloat(c.getAttribute('stroke-dasharray'));
+  if(Math.abs(to-from)>0.5&&!state.upgrade.animating){requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.transition='stroke-dasharray .7s cubic-bezier(.22,1,.36,1),stroke .4s ease';c.setAttribute('stroke-dasharray',to.toFixed(2)+' '+C);}));}
+  state.upgrade._fromLen=to;
+  const pb=document.getElementById('upgPctBig');
+  if(pb&&/^[\d.]+%$/.test(pb.textContent.trim())){const tv=parseFloat(pb.textContent),fv=state.upgrade._fromPct!=null?state.upgrade._fromPct:tv;
+    if(Math.abs(tv-fv)>0.01){const t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/600),e=1-Math.pow(1-k,3),v=fv+(tv-fv)*e;if(document.getElementById('upgPctBig')===pb){pb.textContent=v.toFixed(2)+'%';if(k<1)requestAnimationFrame(step);}};requestAnimationFrame(step);}
+    state.upgrade._fromPct=tv;}
+}
+function upgReapply(){
+  const sl=state.upgrade.sel;if(!sl)return;
+  const t=upgTV()+(state.upgrade.balanceAmount||0);if(t<=0){state.upgrade.target=null;return;}
+  const el=ITEMS.filter(i=>i.price>t&&!i.id.startsWith('coin_'));if(!el.length){state.upgrade.target=null;return;}
+  const ideal=sl.k==='x'?t*sl.v:t/(sl.v/100);
+  state.upgrade.target=el.sort((a,b)=>Math.abs(a.price-ideal)-Math.abs(b.price-ideal))[0].id;
+}
 function upgMult(m){
   if(state.upgrade.animating)return;
+  state.upgrade.sel={k:'x',v:m};
   state.upgrade.mystery=false;
   state.upgrade.lastResult = null;
   const t=upgTV()+state.upgrade.balanceAmount;if(t<=0)return;
@@ -3790,6 +3863,7 @@ function upgMult(m){
 }
 function upgMultPct(pct){
   if(state.upgrade.animating)return;
+  state.upgrade.sel={k:'p',v:pct};
   state.upgrade.mystery=false;
   state.upgrade.lastResult = null;
   const t=upgTV()+state.upgrade.balanceAmount;if(t<=0)return;
