@@ -881,6 +881,36 @@ body.jp-shake{animation:jpShake .9s}
   .live-strip:empty{display:none!important}
   body:has(.live-strip:empty) .app{padding-top:0}
 }
+
+/* ===== v12 ===== */
+/* максимум 6 кейсов в ряду */
+.cases-grid{grid-template-columns:repeat(auto-fill,minmax(max(150px,calc((100% - 80px)/6)),1fr))!important}
+/* капля-индикатор */
+.drop-blob{position:absolute;left:0;top:0;z-index:0;pointer-events:none;transition:left .55s cubic-bezier(.34,1.45,.5,1),top .4s ease,width .6s cubic-bezier(.34,1.45,.5,1),height .4s ease}
+.drop-blob.blob-nav{background:linear-gradient(180deg,rgba(88,166,255,.26),rgba(88,166,255,.10));border:1px solid rgba(88,166,255,.5);border-radius:14px;box-shadow:0 0 22px rgba(88,166,255,.22)}
+.drop-blob.blob-bar{background:#58a6ff;border-radius:2px;box-shadow:0 0 12px #58a6ff}
+.drop-blob.go{animation:dropGo .55s cubic-bezier(.34,1.45,.5,1)}
+@keyframes dropGo{0%{transform:scale(1,1)}35%{transform:scale(1.07,.82)}70%{transform:scale(.97,1.08)}100%{transform:scale(1,1)}}
+.has-blob .nav-item,.has-blob button{position:relative;z-index:1}
+.topnav.has-blob .nav-item.active,.mobile-nav.has-blob .nav-item.active{background:none!important;border-color:transparent!important;box-shadow:none!important}
+.cd-tabs.has-blob button.on{border-bottom-color:transparent!important}
+/* лайв-дроп: не отдельная панель, а лента поверх страницы */
+@media(min-width:1025px){
+  .app::before{display:none!important}
+  .live-strip{position:fixed!important;left:0;top:0;bottom:0;height:100vh!important;width:210px;background:transparent!important;border:0!important;z-index:5;-webkit-mask-image:linear-gradient(180deg,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 88%,transparent)}
+  .app>.main{margin-left:210px}
+}
+/* профиль */
+.pf-quick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 22px;padding:14px 16px;border-radius:20px;background:linear-gradient(180deg,rgba(18,26,44,.82),rgba(10,15,28,.9));border:1px solid rgba(255,255,255,.06)}
+.pf-bal{display:flex;gap:10px;align-items:center;margin-right:auto}.pf-bal small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}.pf-bal b{font-size:22px;color:var(--gold)}
+@media(max-width:700px){.pf-quick .btn{flex:1 1 45%}.pf-bal{flex:1 1 100%}}
+/* админка: пользователи, категории, загрузка */
+.ul-list{display:flex;flex-direction:column;gap:6px;max-height:520px;overflow:auto}
+.ul-row{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);cursor:pointer;transition:background .2s,transform .2s}.ul-row:hover{background:rgba(88,166,255,.12);transform:translateX(3px)}.ul-row.ban{opacity:.55}
+.ul-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#38bdf8,#6366f1);display:grid;place-items:center;font-weight:900}
+.ul-main{flex:1;min-width:0;display:flex;flex-direction:column}.ul-main small{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-cats{display:flex;gap:8px;flex-wrap:wrap}.cc-chip{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(88,166,255,.14);border:1px solid rgba(88,166,255,.35);font-weight:700}.cc-chip button{background:none;border:0;cursor:pointer;font-size:13px}
+.cc-up{font-size:26px;color:var(--muted);border-style:dashed!important}
 </style>
 </head>
 <body>
@@ -1806,6 +1836,26 @@ function getNavGroups(){
 }
 function normTab(t){return (t==='inventory'||t==='history')?'profile':(t==='mines')?'cases':t;}
 
+const __dp={};
+function dropletFor(c,actSel,key,cls,bar){
+  if(!c)return;const a=c.querySelector(actSel);
+  if(!a||!a.offsetWidth){delete __dp[key];c.classList.remove('has-blob');return;}
+  if(getComputedStyle(c).position==='static')c.style.position='relative';
+  let b=c.querySelector(':scope>.drop-blob');
+  if(!b){b=document.createElement('i');b.className='drop-blob '+cls;c.insertBefore(b,c.firstChild);}
+  c.classList.add('has-blob');
+  const to=bar?{l:a.offsetLeft,t:a.offsetTop+a.offsetHeight-2,w:a.offsetWidth,h:2}:{l:a.offsetLeft,t:a.offsetTop,w:a.offsetWidth,h:a.offsetHeight};
+  const from=__dp[key]||to,set=o=>{b.style.left=o.l+'px';b.style.top=o.t+'px';b.style.width=o.w+'px';b.style.height=o.h+'px';};
+  b.style.transition='none';set(from);void b.offsetWidth;b.style.transition='';set(to);
+  if(from.l!==to.l){b.classList.remove('go');void b.offsetWidth;b.classList.add('go');}
+  __dp[key]=to;
+}
+function dropletInit(){
+  try{dropletFor(document.getElementById('nav'),'.nav-item.active','nav','blob-nav');
+  dropletFor(document.getElementById('mobileNav'),'.nav-item.active','mnav','blob-nav');
+  dropletFor(document.querySelector('.cd-tabs'),'button.on','cdt','blob-bar',true);}catch(_){}
+}
+window.addEventListener('resize',()=>{for(const k in __dp)delete __dp[k];dropletInit();});
 function renderNav(){
   state.tab=normTab(state.tab);
   const groups=getNavGroups();
@@ -2195,6 +2245,7 @@ async function updateLiveDrops() {
 
 /* ===== реальные шансы и RTP берём с сервера: показанное = то, что крутится ===== */
 let RTP_PCT=90, RTP_ALLIN_PCT=90;
+let CUSTOM_CATS=[];
 async function loadOdds(){
   try{
     const r=await fetch(SERVER_URL+'/api/odds'); if(!r.ok) return;
@@ -2204,11 +2255,13 @@ async function loadOdds(){
       if(c.isVip){ if(o.normal) c.normalItems=o.normal; if(o.vip) c.vipItems=o.vip; }
       else if(o.normal) c.items=o.normal;
     }
+    CUSTOM_CATS=(d.categories||[]).slice().sort((a,b)=>a.order-b.order);
     for(let i=CASES.length-1;i>=0;i--) if(CASES[i].custom) CASES.splice(i,1);
     for(const cc of (d.custom||[])){
       const o=d.odds[cc.id]; if(!o||!o.normal) continue;
       const top=o.normal.map(x=>itemById(x.id)).filter(Boolean).sort((a,b)=>b.price-a.price)[0];
-      CASES.push({id:cc.id,name:cc.name,icon:cc.icon||'🎁',img:cc.img||(top&&top.img)||'',desc:cc.desc||'',price:cc.price,category:cc.category||'standard',custom:true,badge:cc.badge?{text:cc.badge,cls:'badge-hot'}:undefined,items:o.normal});
+      const bd=cc.badge?(typeof cc.badge==='object'?cc.badge:{text:String(cc.badge),cls:'badge-hot'}):undefined;
+      CASES.push({id:cc.id,name:cc.name,icon:cc.icon||'🎁',img:cc.img?(cc.img.charAt(0)==='/'?SERVER_URL+cc.img:cc.img):(top&&top.img)||'',desc:cc.desc||'',price:cc.price,category:cc.category||'standard',custom:true,badge:bd,items:o.normal});
     }
     if(d.rtp.games)F.setRtp(d.rtp.games);
     if(d.rtp.upgrade!==undefined)F.setUpgrade(d.rtp.upgrade,d.rtp.jackpot);
@@ -2328,9 +2381,34 @@ function renderWeekly(){
 /* ===== админка: свои кейсы ===== */
 state.admin.cc=null; state.admin.ccItems=[]; state.admin.ccEdit=null; state.admin.ccQ='';
 async function adminLoadCases(){
-  try{const d=await api('/api/admin/cases');state.admin.cc=d.cases||[];state.admin.ccItems=d.items||[];if(state.tab==='admin'&&state.adminTab==='cases')renderCcPane();}catch(e){toast(esc(e.message),'err');}
+  try{const d=await api('/api/admin/cases');state.admin.cc=d.cases||[];state.admin.ccItems=d.items||[];state.admin.cats=d.categories||[];state.admin.ccImgs=d.images||[];if(state.tab==='admin'&&state.adminTab==='cases')renderCcPane();}catch(e){toast(esc(e.message),'err');}
 }
-function ccImgChoices(){const set=new Set();CASES.forEach(c=>{if(c.img)set.add(c.img);});return [...set];}
+state.admin.ccImgs=[];state.admin.cats=[];state.admin.catEdit={id:'',name:'',emoji:'📦'};
+const cImg=v=>/^img:/.test(v||'')?SERVER_URL+'/api/img/'+v.slice(4):(v||'');
+function ccImgChoices(){const set=new Set();(state.admin.ccImgs||[]).forEach(i=>set.add('img:'+i));CASES.forEach(c=>{if(c.img&&!c.custom)set.add(c.img);});return [...set];}
+async function ccUpload(inp){
+  const f=inp.files&&inp.files[0];if(!f)return;
+  try{
+    const url=URL.createObjectURL(f),im=new Image();im.src=url;await im.decode();
+    const k=Math.min(1,512/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(im.width*k));cv.height=Math.max(1,Math.round(im.height*k));
+    cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);
+    let data=cv.toDataURL('image/webp',.85);if(!data.startsWith('data:image/webp'))data=cv.toDataURL('image/png');
+    for(let q=.75;data.length*.75>190*1024&&q>.3&&data.startsWith('data:image/webp');q-=.15)data=cv.toDataURL('image/webp',q);
+    const d=await api('/api/admin/image',{data});
+    state.admin.ccImgs.push(d.id.slice(4));ccField('img',d.id);toast('Картинка загружена','ok');renderCcPane(true);
+  }catch(e){toast(esc(e.message||'Не удалось загрузить'),'err');}
+  inp.value='';
+}
+function catsHtml(){
+  const e=state.admin.catEdit;
+  return `<div class="admin-card" style="margin-bottom:20px"><h4>Категории (линейки кейсов)</h4>
+  <div class="cc-cats">${state.admin.cats.map(c=>`<span class="cc-chip">${esc(c.emoji)} ${esc(c.name)} <button onclick="catEditStart('${c.id}')" title="Изменить">✏️</button><button onclick="catDel('${c.id}')" title="Удалить">🗑</button></span>`).join('')||'<span style="color:var(--muted)">Своих категорий пока нет</span>'}</div>
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><input class="inp" style="width:70px" maxlength="4" value="${esc(e.emoji)}" oninput="state.admin.catEdit.emoji=this.value"><input class="inp" style="flex:1;min-width:160px" maxlength="30" placeholder="Название категории" value="${esc(e.name)}" oninput="state.admin.catEdit.name=this.value"><button class="btn btn-accent" onclick="catSave()">${e.id?'💾 Сохранить':'➕ Добавить'}</button>${e.id?'<button class="btn btn-ghost" onclick="catEditCancel()">Отмена</button>':''}</div></div>`;
+}
+function catEditStart(id){const c=state.admin.cats.find(x=>x.id===id);if(!c)return;state.admin.catEdit={id:c.id,name:c.name,emoji:c.emoji};renderCcPane();}
+function catEditCancel(){state.admin.catEdit={id:'',name:'',emoji:'📦'};renderCcPane();}
+async function catSave(){const e=state.admin.catEdit;try{await api('/api/admin/category',{id:e.id||undefined,name:e.name,emoji:e.emoji});state.admin.catEdit={id:'',name:'',emoji:'📦'};toast('Категория сохранена','ok');await adminLoadCases();loadOdds();}catch(er){toast(esc(er.message),'err');}}
+function catDel(id){showConfirm('Удалить категорию? Её кейсы переедут в «Кейсы».',async()=>{try{await api('/api/admin/category/delete',{id});toast('Удалена','ok');await adminLoadCases();loadOdds();}catch(er){toast(esc(er.message),'err');}});}
 function ccNew(){state.admin.ccEdit={id:'',name:'',desc:'',icon:'🎁',img:'',category:'standard',badge:'',rtp:'',enabled:true,items:[]};renderCcPane();}
 function ccEdit(id){const c=(state.admin.cc||[]).find(x=>x.id===id);if(!c)return;const t=c.items.reduce((a,x)=>a+x.w,0)||1;state.admin.ccEdit={...c,rtp:c.rtp?Math.round(c.rtp*100):'',items:c.items.map(x=>({id:x.id,w:+(x.w/t*100).toFixed(4)}))};renderCcPane();}
 function ccCancel(){state.admin.ccEdit=null;renderCcPane();}
@@ -2356,12 +2434,12 @@ function ccFormHtml(){
     <label>Название<input class="inp" maxlength="40" value="${esc(e.name)}" oninput="ccField('name',this.value)"></label>
     <label>Иконка (эмодзи)<input class="inp" maxlength="4" value="${esc(e.icon)}" oninput="ccField('icon',this.value)"></label>
     <label>Метка (например NEW)<input class="inp" maxlength="10" value="${esc(e.badge)}" oninput="ccField('badge',this.value)"></label>
-    <label>Раздел<select class="inp" onchange="ccField('category',this.value)">${[['standard','Кейсы'],['special','Особые'],['newyear','Серийные'],['mutagen','Мутагенные']].map(o=>`<option value="${o[0]}" ${e.category===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></label>
+    <label>Раздел<select class="inp" onchange="ccField('category',this.value)">${[['standard','Кейсы'],['special','Особые'],['newyear','Серийные'],['mutagen','Мутагенные']].concat((state.admin.cats||[]).map(c=>[c.id,c.emoji+' '+c.name])).map(o=>`<option value="${o[0]}" ${e.category===o[0]?'selected':''}>${o[1]}</option>`).join('')}</select></label>
     <label>Возврат (RTP), % — от него зависит цена<input class="inp" type="number" min="50" max="99" placeholder="${RTP_PCT}" value="${e.rtp}" oninput="ccField('rtp',this.value);ccLive()"></label>
     <label style="grid-column:1/-1">Описание<input class="inp" maxlength="120" value="${esc(e.desc)}" oninput="ccField('desc',this.value)"></label>
   </div>
   <div style="margin:14px 0 6px;font-weight:700">Картинка кейса <small style="color:var(--muted)">(авто = картинка самого дорогого предмета)</small></div>
-  <div class="cc-imgs"><div class="cc-img${!e.img?' on':''}" onclick="ccField('img','');renderCcPane(true)">авто</div>${ccImgChoices().map(i=>`<div class="cc-img${e.img===i?' on':''}" onclick="ccField('img','${esc(i)}');renderCcPane(true)"><img src="${esc(i)}" loading="lazy"></div>`).join('')}</div>
+  <div class="cc-imgs"><div class="cc-img${!e.img?' on':''}" onclick="ccField('img','');renderCcPane(true)">авто</div>${ccImgChoices().map(i=>`<div class="cc-img${e.img===i?' on':''}" onclick="ccField('img','${esc(i)}');renderCcPane(true)"><img src="${esc(cImg(i))}" loading="lazy"></div>`).join('')}<label class="cc-img cc-up" title="Загрузить своё фото">＋<input type="file" accept="image/png,image/jpeg,image/webp" onchange="ccUpload(this)" hidden></label></div>
   <div class="cc-two">
    <div><div style="margin:16px 0 6px;font-weight:700">Каталог предметов</div>
     <input class="inp" placeholder="Поиск предмета…" value="${esc(state.admin.ccQ)}" oninput="ccSearch(this.value)" style="margin-bottom:10px">
@@ -2380,9 +2458,9 @@ function ccFormHtml(){
 function adminCasesHtml(){
   if(state.admin.ccEdit)return ccFormHtml();
   const L=state.admin.cc;
-  return `<div class="admin-card"><h4>Свои кейсы <button class="btn btn-accent" style="float:right" onclick="ccNew()">➕ Создать кейс</button></h4>`+
+  return catsHtml()+`<div class="admin-card"><h4>Свои кейсы <button class="btn btn-accent" style="float:right" onclick="ccNew()">➕ Создать кейс</button></h4>`+
   (L===null?'<div style="color:var(--muted)">Загрузка…</div>':!L.length?'<div style="color:var(--muted)">Пока нет своих кейсов. Нажмите «Создать кейс».</div>':
-  `<div class="cc-cards">${L.map(c=>`<div class="cc-card${c.enabled?'':' off'}"><div style="font-size:30px">${c.img?`<img src="${esc(c.img)}" style="height:48px">`:esc(c.icon)}</div><b>${esc(c.name)}</b><small>${fmt(c.price)} · ${c.items.length} предм. · ${c.enabled?'включён':'выключен'}</small><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-ghost" onclick="ccEdit('${c.id}')">✏️</button><button class="btn btn-ghost" onclick="ccDel('${c.id}')">🗑</button></div></div>`).join('')}</div>`)+`</div>`;
+  `<div class="cc-cards">${L.map(c=>`<div class="cc-card${c.enabled?'':' off'}"><div style="font-size:30px">${c.img?`<img src="${esc(cImg(c.img))}" style="height:48px">`:esc(c.icon)}</div><b>${esc(c.name)}</b><small>${fmt(c.price)} · ${c.items.length} предм. · ${c.enabled?'включён':'выключен'}</small><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-ghost" onclick="ccEdit('${c.id}')">✏️</button><button class="btn btn-ghost" onclick="ccDel('${c.id}')">🗑</button></div></div>`).join('')}</div>`)+`</div>`;
 }
 function renderCcPane(keepScroll){
   if(state.tab!=='admin'||state.adminTab!=='cases')return;
@@ -2427,7 +2505,7 @@ function wdHtml(){
   return '<div class="wd">'+t+'<div class="wd-left">До обновления: <b>'+wdLeft()+'</b></div><div class="wd-grid">'+cards+'</div><div class="wd-foot">'+foot+'</div></div>';
 }
 
-function setAdminTab(t){state.adminTab=t;render(false);if(t==='dashboard'||t==='economy')adminLoadStats();if(t==='audit')adminLoadAudit();if(t==='queue')adminLoadQueue();if(t==='msg')adminBcStatus();if(t==='cases')adminLoadCases();}
+function setAdminTab(t){state.adminTab=t;render(false);if(t==='dashboard'||t==='economy')adminLoadStats();if(t==='audit')adminLoadAudit();if(t==='queue')adminLoadQueue();if(t==='msg')adminBcStatus();if(t==='cases')adminLoadCases();if(t==='users')adminLoadUsers();}
 state.admin.requests=[];state.admin.pending=0;state.admin.reqFilter='pending';state.admin.bc=null;
 async function adminLoadQueue(){
   try{const d=await api('/api/admin/requests?status='+state.admin.reqFilter);state.admin.requests=d.requests||[];state.admin.pending=d.pending||0;if(state.tab==='admin')render(false);}catch(e){toast(esc(e.message),'err');}
@@ -2473,6 +2551,17 @@ async function adminLoadAudit(){
   try{const d=await api('/api/admin/audit');state.admin.audit=d.audit||[];if(state.tab==='admin')render(false);}
   catch(e){toast(esc(e.message),'err');}
 }
+state.admin.ul=null;
+async function adminLoadUsers(){
+  try{const q=(document.getElementById('adminUserSearch')||{}).value||'';const d=await api('/api/admin/userlist?q='+encodeURIComponent(q.trim()));state.admin.ul=d;const el=document.getElementById('adminUl');if(el)el.innerHTML=adminUlInner();else if(state.tab==='admin')render(false);}catch(e){toast(esc(e.message),'err');}
+}
+function adminUlInner(){
+  const d=state.admin.ul;if(!d)return '<div style="color:var(--muted)">Загрузка…</div>';
+  return `<div style="color:var(--muted);font-size:13px;margin-bottom:10px">Всего: <b style="color:#fff">${d.total}</b> · показаны последние ${d.users.length}. 🤖 — запускал бота.</div>`+
+  `<div class="ul-list">${d.users.map(u=>`<div class="ul-row${u.banned?' ban':''}" onclick="adminOpenUser('${esc(u.id)}')"><div class="ul-av">${esc((u.username||u.name||'?').charAt(0).toUpperCase())}</div><div class="ul-main"><b>${u.username?'@'+esc(u.username):'<span style="color:var(--muted)">без юзернейма</span>'}</b><small>${esc(u.name||'—')} · ID ${esc(u.id)}</small></div><div class="ul-r">${u.bot?'🤖 ':''}<b style="color:var(--gold)">${fmt(u.balance)}</b></div></div>`).join('')||'<div style="color:var(--muted)">Никого не найдено</div>'}</div>`;
+}
+function adminUsersListHtml(){return `<div class="admin-card" style="margin-top:24px"><h4>Все пользователи <button class="btn btn-ghost" style="float:right" onclick="adminLoadUsers()">↻ Обновить</button></h4><div id="adminUl">${adminUlInner()}</div></div>`;}
+async function adminOpenUser(id){try{const d=await api('/api/admin/user?q='+encodeURIComponent(id));state.admin.user=d.user;render(false);window.scrollTo({top:0,behavior:'smooth'});}catch(e){toast(esc(e.message),'err');}}
 async function adminSearch(){
   const query=document.getElementById('adminUserSearch').value.trim();
   if(!query)return toast('Введите ID или Username','err');
@@ -2480,6 +2569,7 @@ async function adminSearch(){
     const d=await api('/api/admin/user?q='+encodeURIComponent(query));
     state.admin.user=d.user;render(false);
   }catch(e){state.admin.user=null;toast(esc(e.message),'err');render(false);}
+  adminLoadUsers();
 }
 function adminAfterUser(d){
   state.admin.user=d.user;
@@ -2633,7 +2723,7 @@ function renderAdmin(){
       <div style="display:flex;gap:12px;">
         <input type="text" id="adminUserSearch" class="bet-input" placeholder="TG ID или username" onkeydown="if(event.key==='Enter')adminSearch()">
         <button class="btn btn-primary" onclick="adminSearch()">Найти</button>
-      </div></div>${userCardHtml}`;
+      </div></div>${userCardHtml}${adminUsersListHtml()}`;
   }
 
   else if(state.adminTab==='queue'){
@@ -2726,8 +2816,15 @@ function renderProfile(){
       <div class="profile-name-large">
         ${esc(state.user.name)} 
       </div>
-      <div class="profile-joined">Telegram ID: <b style="color:#fff;">${esc(state.user.id)}</b> · С нами с ${esc(state.user.joined||'—')}</div>
+      <div class="profile-joined">${state.user.username?'@'+esc(state.user.username)+' · ':''}Telegram ID: <b style="color:#fff;">${esc(state.user.id)}</b> · С нами с ${esc(state.user.joined||'—')}</div>
     </div>
+  </div>
+  <div class="pf-quick">
+    <div class="pf-bal">${coin(26)}<div><small>Баланс</small><b>${fmt(state.balance)}</b></div></div>
+    <button class="btn btn-accent" onclick="openDepositModal()">＋ Пополнить</button>
+    <button class="btn btn-ghost" onclick="setTab('upgrade')">📈 Апгрейд</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('pfInventory').scrollIntoView({behavior:'smooth'})">🎒 Инвентарь</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('pfHistory').scrollIntoView({behavior:'smooth'})">🧾 История</button>
   </div>
   <div class="profile-grid">
     <div style="display:flex;flex-direction:column;gap:24px;">
@@ -3010,8 +3107,9 @@ function renderCases(){
   const barCol={newyear:'#f87171',standard:'#58a6ff',special:'#ffc94a',mutagen:'#34d399'};
   const catRgb={newyear:'248,113,113',standard:'88,166,255',special:'255,201,74',mutagen:'52,211,153'};
   const catOrder=['newyear','standard','special','mutagen'];
+  CUSTOM_CATS.forEach(c=>{categories[c.id]=(c.emoji||'📦')+' '+c.name;catOrder.push(c.id);});
   const grouped=CASES.reduce((acc,c)=>{(acc[c.category]=acc[c.category]||[]).push(c);return acc;},{});
-  const cards=Object.entries(grouped).sort((a,b)=>catOrder.indexOf(a[0])-catOrder.indexOf(b[0])).map(([cat,catCases])=>{
+  const cards=Object.entries(grouped).sort((a,b)=>(catOrder.indexOf(a[0])+1||99)-(catOrder.indexOf(b[0])+1||99)).map(([cat,catCases])=>{
     const caseCards=catCases.map(c=>{
       const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
       const mx=c.isAllIn?0:caseMaxDrop(c);
@@ -4657,6 +4755,8 @@ async function withdrawItem(uid) {
         img.src = src;
     });
 })();
+
+(function(){const _r=render,_n=renderNav;render=function(f){const x=_r.apply(this,arguments);dropletInit();return x;};renderNav=function(){const x=_n.apply(this,arguments);dropletInit();return x;};})();
 </script>
 </body>
 </html>
