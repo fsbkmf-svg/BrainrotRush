@@ -911,6 +911,45 @@ body.jp-shake{animation:jpShake .9s}
 .ul-main{flex:1;min-width:0;display:flex;flex-direction:column}.ul-main small{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cc-cats{display:flex;gap:8px;flex-wrap:wrap}.cc-chip{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(88,166,255,.14);border:1px solid rgba(88,166,255,.35);font-weight:700}.cc-chip button{background:none;border:0;cursor:pointer;font-size:13px}
 .cc-up{font-size:26px;color:var(--muted);border-style:dashed!important}
+
+/* ===== v13 ===== */
+body::before,body::after{display:none!important}
+.cat-newyear{background-image:none!important}
+/* апгрейд: пропорции как в референсе */
+.upg-top-row{min-height:340px;gap:24px!important}
+.upg-panel{min-height:340px}
+.upg-dial-wrapper{width:min(100%,340px)!important;margin-bottom:0!important}
+.upg-ctrl-row{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 16px!important}
+.upg-mults{display:flex;gap:8px;position:relative}
+.upg-x{position:relative;z-index:1;min-width:64px;height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#e2e8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:inherit;transition:all .25s cubic-bezier(.22,1,.36,1)}
+.upg-x b{font-size:14px}.upg-x small{font-size:11px;color:#8ea3c4;font-weight:700}
+.upg-x:hover:not(:disabled){background:rgba(255,255,255,.09)}.upg-x:disabled{opacity:.4;cursor:not-allowed}
+.upg-x.on{color:#fff;background:transparent;border-color:transparent}.upg-x.on small{color:#cfe0ff}
+.upg-mults.has-blob .upg-x.on{background:none}
+.drop-blob.blob-chip{background:linear-gradient(180deg,rgba(88,166,255,.3),rgba(88,166,255,.14));border:1px solid rgba(88,166,255,.6);border-radius:14px;box-shadow:0 0 18px rgba(88,166,255,.3)}
+.upg-do .btn-upg-main{max-width:none!important;width:100%;height:52px;padding:0 24px!important}
+.upg-ctrl-right{display:flex;gap:8px;align-items:center}
+@media(max-width:1100px){.upg-ctrl-row{grid-template-columns:1fr!important}.upg-mults{overflow-x:auto}.upg-ctrl-right{justify-content:flex-end}}
+/* профиль */
+.pf-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.pf-stats div{padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);text-align:center}
+.pf-stats b{display:block;font-size:22px}.pf-stats small{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.pf-tabs{display:flex;gap:6px;position:relative;margin-bottom:16px;padding:5px;border-radius:16px;background:rgba(255,255,255,.04);width:fit-content;max-width:100%;overflow-x:auto}
+.pf-tabs button{position:relative;z-index:1;padding:10px 18px;border:0;border-radius:12px;background:none;color:#9db4d6;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;transition:color .25s}
+.pf-tabs button.on{color:#fff}
+@media(max-width:600px){.pf-stats{grid-template-columns:repeat(2,1fr)}}
+/* анимация открытия кейса */
+.ci-ov{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:radial-gradient(circle,rgba(6,10,20,.55),rgba(3,5,12,.88));backdrop-filter:blur(5px);animation:ciIn .25s ease both;transition:opacity .26s}
+.ci-ov.out{opacity:0}
+.ci-box{position:relative;z-index:2;width:min(60vw,260px);height:min(60vw,260px);display:grid;place-items:center;font-size:150px;animation:ciShake 1.3s cubic-bezier(.36,.07,.19,.97) both;filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+.ci-box.fast{animation-duration:.5s}
+.ci-box img{max-width:100%;max-height:100%;object-fit:contain}
+.ci-rays{position:absolute;width:140vmax;height:140vmax;left:50%;top:50%;margin:-70vmax 0 0 -70vmax;background:repeating-conic-gradient(from 0deg,rgba(255,201,74,.0) 0 10deg,rgba(255,201,74,.16) 10deg 20deg);border-radius:50%;opacity:0;animation:ciRays 1.35s ease-in both;-webkit-mask-image:radial-gradient(circle,#000,transparent 55%);mask-image:radial-gradient(circle,#000,transparent 55%)}
+.ci-flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.95),rgba(255,201,74,.5) 30%,transparent 62%);opacity:0;animation:ciFlash 1.35s ease-in both;z-index:3;pointer-events:none}
+@keyframes ciIn{from{opacity:0}to{opacity:1}}
+@keyframes ciShake{0%{transform:scale(.6) rotate(0);opacity:0}15%{transform:scale(1) rotate(0);opacity:1}25%{transform:scale(1) rotate(-6deg)}35%{transform:scale(1.04) rotate(6deg)}45%{transform:scale(1.06) rotate(-8deg)}55%{transform:scale(1.1) rotate(8deg)}68%{transform:scale(1.18) rotate(-4deg)}82%{transform:scale(1.35) rotate(0);opacity:1}100%{transform:scale(1.9);opacity:0}}
+@keyframes ciRays{0%,40%{opacity:0;transform:rotate(0) scale(.5)}80%{opacity:1}100%{opacity:.85;transform:rotate(40deg) scale(1)}}
+@keyframes ciFlash{0%,72%{opacity:0}86%{opacity:1}100%{opacity:.0}}
 </style>
 </head>
 <body>
@@ -1853,6 +1892,8 @@ function dropletFor(c,actSel,key,cls,bar){
 function dropletInit(){
   try{dropletFor(document.getElementById('nav'),'.nav-item.active','nav','blob-nav');
   dropletFor(document.getElementById('mobileNav'),'.nav-item.active','mnav','blob-nav');
+  dropletFor(document.querySelector('.upg-mults'),'.upg-x.on','upx','blob-chip');
+  dropletFor(document.querySelector('.pf-tabs'),'button.on','pft','blob-chip');
   dropletFor(document.querySelector('.cd-tabs'),'button.on','cdt','blob-bar',true);}catch(_){}
 }
 window.addEventListener('resize',()=>{for(const k in __dp)delete __dp[k];dropletInit();});
@@ -2790,6 +2831,7 @@ function renderAdmin(){
   return `<div class="page-title">🛠️ Админ-панель</div><div class="page-sub">Все действия выполняются на сервере и проверяются по вашему Telegram ID</div>${tabs}<div class="admin-panel">${c}</div>`;
 }
 
+function setPfTab(t){state.pfTab=t;preserveScroll(()=>render(false));}
 function renderProfile(){
   if(!state.user)return '<div class="empty-state">Сначала войдите</div>';
   const casesOpened=state.history.filter(h=>h.type==='case').length;
@@ -2823,35 +2865,15 @@ function renderProfile(){
     <div class="pf-bal">${coin(26)}<div><small>Баланс</small><b>${fmt(state.balance)}</b></div></div>
     <button class="btn btn-accent" onclick="openDepositModal()">＋ Пополнить</button>
     <button class="btn btn-ghost" onclick="setTab('upgrade')">📈 Апгрейд</button>
-    <button class="btn btn-ghost" onclick="document.getElementById('pfInventory').scrollIntoView({behavior:'smooth'})">🎒 Инвентарь</button>
-    <button class="btn btn-ghost" onclick="document.getElementById('pfHistory').scrollIntoView({behavior:'smooth'})">🧾 История</button>
   </div>
-  <div class="profile-grid">
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="profile-card"><div class="profile-card-title">⭐ ЛУЧШИЙ ДРОП</div>
-        ${bestDropItem?`<div class="best-drop-item"><div class="result-ico">${itemIcon(bestDropItem,100)}</div><div class="name">${esc(bestDropItem.name)}</div><div class="price">${fmt(bestDropItem.price)} ${coin(28)}</div></div>`:`<div class="empty-state" style="padding:40px 20px">Пока нет дропов</div>`}
-      </div>
-      <div class="profile-card"><div class="profile-card-title">ЛЮБИМЫЙ КЕЙС</div>
-        <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:20px;padding:20px;display:flex;align-items:center;gap:20px;">
-          <div style="font-size:48px;filter:drop-shadow(0 10px 15px rgba(0,0,0,.4));">${favCase.img?`<img src="${favCase.img}" style="width:60px;height:60px;object-fit:contain;" onerror="this.style.display='none'">`:favCase.icon}</div>
-          <div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;letter-spacing:.05em;margin-bottom:4px;">Кейс «${esc(favCase.name)}»</div><div style="font-size:18px;font-weight:900;color:#fff;">Открыт ${maxCount} раз</div></div>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="profile-card"><div class="profile-card-title">📊 СТАТИСТИКА</div>
-        <div class="profile-stats">
-          <div class="stat-box"><div class="stat-icon">📦</div><div><div class="stat-val">${casesOpened}</div><div class="stat-lbl">Кейсы</div></div></div>
-          <div class="stat-box"><div class="stat-icon">📈</div><div><div class="stat-val">${upgradesDone}</div><div class="stat-lbl">Апгрейды</div></div></div>
-          <div class="stat-box"><div class="stat-icon">🎒</div><div><div class="stat-val">${itemsCount}</div><div class="stat-lbl">Предметы</div></div></div>
-          <div class="stat-box" style="grid-column:span 2;"><div class="stat-icon">📤</div><div><div class="stat-val">${fmt(totalWithdrawn)} ${coin(16)}</div><div class="stat-lbl">Выведено на сумму</div></div></div>
-        </div>
-      </div>
-      <div class="profile-card"><div class="profile-card-title">🕘 ИСТОРИЯ ДРОПОВ</div>${dropHistoryHtml(histToDrops(state.history,30))}</div>
-    </div>
+  <div class="pf-stats">
+    <div><b>${casesOpened}</b><small>Кейсов</small></div>
+    <div><b>${upgradesDone}</b><small>Апгрейдов</small></div>
+    <div><b>${itemsCount}</b><small>Предметов</small></div>
+    <div><b>${fmt(totalWithdrawn)}</b><small>Выведено</small></div>
   </div>
-  <div class="pf-section" id="pfInventory">${renderInventory()}</div>
-  <div class="pf-section" id="pfHistory">${renderHistory()}</div>`;
+  <div class="pf-tabs">${[['inv','🎒 Инвентарь'],['drops','🏆 Дропы'],['ops','🧾 Операции']].map(t=>`<button class="${(state.pfTab||'inv')===t[0]?'on':''}" onclick="setPfTab('${t[0]}')">${t[1]}</button>`).join('')}</div>
+  <div class="pf-section">${(state.pfTab||'inv')==='inv'?renderInventory():state.pfTab==='drops'?dropHistoryHtml(histToDrops(state.history,60)):renderHistory()}</div>`;
 }
 
 function setHistoryFilter(f) {
@@ -3211,7 +3233,7 @@ async function openCaseNow(){
       addHist(data.hist);
       const paid=Number(data.charged)||total;
       __pendingCase={case:c,opens:results.length,results,total:paid,unitPrice:paid/results.length,settled:false};
-      saveLocalState();renderHeader();startRoulette(c,results,!!data.allIn);
+      saveLocalState();renderHeader();await caseIntro(c);startRoulette(c,results,!!data.allIn);
     }catch(e){
       toast(esc(e.message||'Ошибка открытия кейса'),'err');haptic('error');
       try{await apiSync();}catch(_){}
@@ -3226,6 +3248,17 @@ function reelFiller(c,isAllIn,bet){
   return F.pickWeighted(raw,Math.random()).id;
 }
 
+function caseIntro(c){
+  return new Promise(res=>{
+    try{
+      const fast=state.settings.spinType==='fast',d=document.createElement('div');d.className='ci-ov';
+      const im=c.img?`<img src="${c.img}" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${c.icon||'🎁'}'}))">`:`<span>${c.icon||'🎁'}</span>`;
+      d.innerHTML=`<div class="ci-rays"></div><div class="ci-box${fast?' fast':''}">${im}</div><div class="ci-flash"></div>`;
+      document.body.appendChild(d);haptic('medium');
+      setTimeout(()=>{d.classList.add('out');setTimeout(()=>{d.remove();res();},260);},fast?520:1350);
+    }catch(e){res();}
+  });
+}
 function startRoulette(c,results, isAllIn){
   const opens=results.length;
   // каждая крутка уникальна: длина ленты, время, манера остановки и точка внутри предмета
@@ -3798,6 +3831,7 @@ function renderUpgrade(){
   const selLeftHtml=selItems.map(it=>`<div class="upg-item-card" style="cursor:default;--rc:${rc(it.item)}"><div class="upg-item-img">${itemIcon(it.item,70)}</div><div class="upg-item-name">${esc(it.item.name)}</div><div class="upg-item-price">${coin(12)} ${fmt(it.item.price)}</div></div>`).join('');
   const selRightHtml=ti?`<div class="upg-target-glow"></div><div class="upg-item-card" style="cursor:default;background:transparent;border:none;z-index:2;width:100%;"><div class="upg-item-img" style="height:160px;margin-bottom:20px;filter:drop-shadow(0 0 30px rgba(251,191,36,0.3));">${itemIcon(ti,150)}</div><div style="font-size:18px;font-weight:900;color:#fff;text-shadow:0 2px 5px #000;">${esc(ti.name)}</div><div style="font-size:16px;font-weight:900;color:var(--gold);margin-top:8px;display:flex;justify-content:center;align-items:center;gap:6px;">${coin(16)} ${fmt(ti.price)}</div></div>`:'';
   const canM=totalVal>0&&!state.upgrade.animating;
+  const multX=[1.25,2,3,5,10].map(m=>`<button class="upg-x${(state.upgrade.sel&&state.upgrade.sel.k==='x'&&state.upgrade.sel.v===m)?' on':''}" ${!canM?'disabled':''} onclick="upgMult(${m})"><b>x${m}</b><small>${Math.round(100/m)}%</small></button>`).join('');
   const multBtnsHtml=state.settings.multipliers.map(m=>`<button class="btn-ctrl${(state.upgrade.sel&&state.upgrade.sel.k==='x'&&state.upgrade.sel.v===m)?' xon':''}" ${!canM?'disabled':''} onclick="upgMult(${m})">x${m}</button>`).join('');
   const pctBtnsHtml=state.settings.percentages.map(p=>`<button class="btn-ctrl${(state.upgrade.sel&&state.upgrade.sel.k==='p'&&state.upgrade.sel.v===p)?' xon':''}" ${!canM?'disabled':''} onclick="upgMultPct(${p})">${p}%</button>`).join('');
   let ticks='';
@@ -3876,7 +3910,6 @@ function renderUpgrade(){
             <div class="upg-status-text" id="upgChanceLabel" style="color:${statusColor}">${statusText}</div>
           </div>
         </div>
-        <button class="btn-upg-main" id="upgDoBtn" style="${my?'background:linear-gradient(135deg,#7c3aed,#a855f7);':''}" ${my?(totalVal<F.MYSTERY_MIN_VALUE||state.upgrade.animating||state.upgrade.busy?'disabled':''):(!totalVal||!ti||state.upgrade.animating?'disabled':'')} onclick="${my?'mysteryDo()':'upgDo()'}">${state.upgrade.animating?'Крутим...':(my?'🎲 MYSTERY UPGRADE':'АПГРЕЙД')}</button>
       </div>
       <div class="upg-panel">
         <div class="upg-panel-header" style="justify-content:space-between;">
@@ -3887,13 +3920,15 @@ function renderUpgrade(){
       </div>
     </div>
     <div class="upg-ctrl-row">
-      <div class="upg-ctrl-left">
-        <button class="btn-ctrl spd${state.settings.upgSpin==='fast'?' on':''}" ${state.upgrade.animating?'disabled':''} onclick="toggleUpgSpin()" title="${state.settings.upgSpin==='fast'?'Быстрая крутка: включена':'Быстрая крутка: выключена'}">⚡</button>
-        <button class="btn-ctrl" style="${my?'background:rgba(168,85,247,.28);border-color:#a855f7;color:#fff;':''}" ${state.upgrade.animating?'disabled':''} onclick="toggleMystery()" title="Режим Mystery Upgrade">🎲 Mystery</button><button class="btn-ctrl" style="padding:0 10px;" onclick="mysteryInfo()" title="Шансы зон">ℹ️</button>
-        <div style="width:1px;height:24px;background:rgba(255,255,255,.1);margin:0 8px;"></div>
-        ${multBtnsHtml}${pctBtnsHtml}
+      <div class="upg-mults">${multX}</div>
+      <div class="upg-do"><button class="btn-upg-main" id="upgDoBtn" style="${my?'background:linear-gradient(135deg,#7c3aed,#a855f7);':''}" ${my?(totalVal<F.MYSTERY_MIN_VALUE||state.upgrade.animating||state.upgrade.busy?'disabled':''):(!totalVal||!ti||state.upgrade.animating?'disabled':'')} onclick="${my?'mysteryDo()':'upgDo()'}">${state.upgrade.animating?'Крутим...':(my?'🎲 MYSTERY UPGRADE':'АПГРЕЙД')}</button></div>
+      <div class="upg-ctrl-right">
+        <button class="btn-ctrl spd${state.settings.upgSpin==='fast'?' on':''}" ${state.upgrade.animating?'disabled':''} onclick="toggleUpgSpin()" title="Быстрая крутка">⚡ Быстро</button>
+        <button class="btn-ctrl" style="${my?'background:rgba(168,85,247,.28);border-color:#a855f7;color:#fff;':''}" ${state.upgrade.animating?'disabled':''} onclick="toggleMystery()" title="Режим Mystery Upgrade">🎲</button>
+        <button class="btn-ctrl" onclick="mysteryInfo()" title="Шансы зон Mystery">ℹ️</button>
+        <button class="btn-ctrl" onclick="toggleSound()" title="Звук">🔊</button>
+        <button class="btn-ctrl" onclick="upgReset()" title="Сбросить">↺</button>
       </div>
-      <div class="upg-ctrl-right"><button class="btn-ctrl" onclick="upgReset()">Сбросить</button></div>
     </div>
     <div class="upg-bot-row">
       <div class="upg-panel">
