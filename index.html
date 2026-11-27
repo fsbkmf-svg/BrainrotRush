@@ -950,6 +950,34 @@ body::before,body::after{display:none!important}
 @keyframes ciShake{0%{transform:scale(.6) rotate(0);opacity:0}15%{transform:scale(1) rotate(0);opacity:1}25%{transform:scale(1) rotate(-6deg)}35%{transform:scale(1.04) rotate(6deg)}45%{transform:scale(1.06) rotate(-8deg)}55%{transform:scale(1.1) rotate(8deg)}68%{transform:scale(1.18) rotate(-4deg)}82%{transform:scale(1.35) rotate(0);opacity:1}100%{transform:scale(1.9);opacity:0}}
 @keyframes ciRays{0%,40%{opacity:0;transform:rotate(0) scale(.5)}80%{opacity:1}100%{opacity:.85;transform:rotate(40deg) scale(1)}}
 @keyframes ciFlash{0%,72%{opacity:0}86%{opacity:1}100%{opacity:.0}}
+
+/* ===== v14 ===== */
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+.cd-hero2{position:relative;min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden;border-radius:24px;margin-bottom:18px;padding-bottom:6px}
+.cd-bgreel{position:absolute;left:0;right:0;top:18px;height:210px;overflow:hidden;opacity:.55;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.cd-bgtrack{display:flex;gap:12px;width:max-content;animation:cdMarq 70s linear infinite}
+.cd-bgcard{flex:0 0 150px;height:190px;border-radius:16px;border:1px solid color-mix(in srgb,var(--rc) 45%,transparent);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--rc) 22%,transparent),rgba(10,14,26,.85) 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.cd-bgcard small{font-size:12px;font-weight:700;color:#cbd5e1;max-width:130px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes cdMarq{to{transform:translateX(-50%)}}
+.cd-front{position:relative;z-index:3;height:220px!important;width:auto!important;filter:drop-shadow(0 18px 30px rgba(0,0,0,.65));animation:cdFloat 4s ease-in-out infinite;background:none!important;border:0!important;box-shadow:none!important}
+.cd-front img{height:100%;width:auto;max-width:320px;object-fit:contain}
+@keyframes cdFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cd-hero2 .cd-title{position:relative;z-index:3;margin-top:8px}.cd-sub2{position:relative;z-index:3;color:var(--muted);font-size:13px;margin-top:2px}
+.stage{position:relative}
+.stage-case{position:absolute;left:50%;top:48%;z-index:30;width:260px;height:230px;margin:-115px 0 0 -130px;display:grid;place-items:center;font-size:130px;pointer-events:none;animation:caseBack 1s .1s cubic-bezier(.45,0,.2,1) forwards;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
+.stage-case img{max-width:100%;max-height:100%;object-fit:contain}
+@keyframes caseBack{0%{transform:scale(1.15);opacity:1;z-index:30}35%{transform:scale(1.2);opacity:1;z-index:30}36%{z-index:0}100%{transform:scale(.5) translateY(-30px);opacity:0;z-index:0;filter:blur(8px)}}
+.res-bar{flex-direction:column;align-items:center}
+.res-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.res-hint{color:var(--muted);font-size:13px;text-align:center;margin-bottom:10px}
+.res-auto{margin:0 auto 12px;padding:8px 16px;border-radius:999px;background:rgba(74,222,128,.14);border:1px solid rgba(74,222,128,.4);color:#86efac;font-weight:800;display:inline-flex;gap:6px;align-items:center}
+.res-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
+.res-chip{position:relative;width:112px;padding:10px 6px 8px;border-radius:14px;border:2px solid color-mix(in srgb,var(--rc) 35%,transparent);background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--rc) 18%,transparent),rgba(10,14,26,.9) 75%);text-align:center;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.res-chip:hover{transform:translateY(-3px)}.res-chip small{font-size:11px;font-weight:700;max-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.res-chip b{color:var(--gold);font-size:13px}
+.res-chip i{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.25);font-style:normal;font-size:12px;line-height:16px;color:transparent;transition:all .2s}
+.res-chip.sel{border-color:var(--rc);box-shadow:0 0 18px color-mix(in srgb,var(--rc) 55%,transparent)}.res-chip.sel i{background:var(--rc);border-color:var(--rc);color:#000}
+.pf-best{display:flex;gap:16px;align-items:center;padding:14px 18px;margin-bottom:18px;border-radius:20px;border:1px solid color-mix(in srgb,var(--rc) 45%,transparent);background:radial-gradient(circle at 8% 50%,color-mix(in srgb,var(--rc) 22%,transparent),rgba(10,15,28,.9) 60%)}
+.pf-best small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}.pf-best b{display:block;font-size:20px}.pf-best span{color:var(--gold);font-weight:700}
 </style>
 </head>
 <body>
@@ -1244,6 +1272,7 @@ const ITEMS = [
 ];
 
 const CASES=[
+  {"id":"free_daily","name":"Фри кейс","icon":"🆓","img":"brainrots/Garamadundung.png","desc":"Бесплатно раз в сутки · монеты или Гарама","price":0,"category":"free","free":true,"cooldownH":24,"items":[{"id":"coin_5","c":38},{"id":"coin_8","c":25},{"id":"coin_10","c":15},{"id":"coin_15","c":10},{"id":"coin_20","c":6},{"id":"coin_30","c":3.5},{"id":"coin_45","c":1.5},{"id":"garama","c":1}]},
   {"id":"bronze","name":"Бронзовый кейс","icon":"📦","img":"cases/bronze.png","desc":"Стартовый кейс для новичков · доступный вход","price":92,"category":"standard","items":[{"id":"cashcard","c":199.55074},{"id":"garama","c":199.55074},{"id":"la_secret","c":60.3832},{"id":"pizza_ranch","c":59.95646},{"id":"la_food","c":55.57043},{"id":"fragola","c":55.25378},{"id":"popcuru","c":54.79686},{"id":"jolly","c":54.03927},{"id":"burguro","c":46.5594},{"id":"la_fuse","c":44.36343},{"id":"fragrama","c":43.60503},{"id":"capitano_moby","c":43.10563},{"id":"cooki_milki","c":42.3665},{"id":"globa","c":4.39712},{"id":"spooky","c":4.28579},{"id":"cerberus","c":4.22672},{"id":"los_chillis","c":3.80173},{"id":"los_amigos","c":3.80173},{"id":"fortunu","c":3.68726},{"id":"rubrikiko","c":3.685},{"id":"examen","c":1.8585},{"id":"la_breakfast","c":1.8585},{"id":"guest666_divine","c":1.56509},{"id":"guest666_galaxy","c":1.54275},{"id":"guest666_bloodrot","c":1.45682},{"id":"guest666_phantom","c":1.43876},{"id":"guest666_crystal","c":1.43371},{"id":"bunny_eggy","c":0.34062},{"id":"dragonc","c":0.3242},{"id":"tirilikalika","c":0.30304},{"id":"pancake","c":0.27105},{"id":"moby_bros","c":0.21428},{"id":"lasupreme","c":0.20504},{"id":"kraken","c":0.20079}]},
   {"id":"silver","name":"Серебряный кейс","icon":"🎁","img":"cases/silver.png","desc":"Сбалансированный дроп с редкими призами","price":135,"category":"standard","items":[{"id":"la_secret","c":101.72802},{"id":"pizza_ranch","c":101.00909},{"id":"la_food","c":93.6199},{"id":"fragola","c":93.08645},{"id":"popcuru","c":54.24159},{"id":"jolly","c":53.49167},{"id":"burguro","c":49.15546},{"id":"la_fuse","c":46.83705},{"id":"fragrama","c":46.03635},{"id":"capitano_moby","c":45.50911},{"id":"cooki_milki","c":44.72876},{"id":"sammyni_fat","c":33.31448},{"id":"globa","c":33.09312},{"id":"spooky","c":32.25518},{"id":"cerberus","c":31.81062},{"id":"reinito","c":30.56607},{"id":"los_admins","c":30.06081},{"id":"guest666","c":28.89972},{"id":"los_chillis","c":5.41527},{"id":"los_amigos","c":5.41527},{"id":"guest666_gold","c":5.28771},{"id":"guest666_diamond","c":5.12288},{"id":"los_sekolahs","c":4.90713},{"id":"examen","c":4.19257},{"id":"foxini","c":4.12953},{"id":"rosy","c":2.38961},{"id":"dugdug","c":2.30474},{"id":"guest666_divine","c":2.19239},{"id":"guest666_crystal","c":2.00835},{"id":"grabatron","c":1.66364},{"id":"sammyni_cak","c":1.62217},{"id":"dragonc","c":1.60723},{"id":"ginger","c":0.39387},{"id":"hydra","c":0.38707},{"id":"moby_bros","c":0.32361},{"id":"kalika","c":0.32031},{"id":"digi_narwhal","c":0.3171},{"id":"kraken","c":0.30323},{"id":"dragon_aquanini","c":0.25283}]},
   {"id":"gold","name":"Золотой кейс","icon":"👑","img":"cases/gold.png","desc":"Эпические призы с редким топ-дропом","price":1328,"category":"standard","badge":{"text":"HOT","cls":"badge-hot"},"items":[{"id":"duggy","c":52.87629},{"id":"guest666_yinyang","c":51.39161},{"id":"guest666_bloodrot","c":50.73795},{"id":"guest666_phantom","c":50.10909},{"id":"guest666_rainbow","c":50.10909},{"id":"bumbatron","c":48.38282},{"id":"los_secret","c":43.13063},{"id":"sammyni_cak","c":73.86592},{"id":"dragonc","c":73.18568},{"id":"tirilikalika","c":68.40907},{"id":"jelly_moby","c":63.35239},{"id":"pancake","c":61.18694},{"id":"ginger","c":75.60076},{"id":"hydra","c":74.29573},{"id":"hydra_bunny","c":70.10351},{"id":"moby_bros","c":9.65262},{"id":"kalika","c":9.55401},{"id":"digi_narwhal","c":9.45835},{"id":"lasupreme","c":9.2364},{"id":"fishino","c":9.10058},{"id":"kraken","c":9.04462},{"id":"dragon_aquanini","c":7.54149},{"id":"griffin","c":5.02453},{"id":"los_dragons","c":4.79106},{"id":"antonio","c":4.59602},{"id":"lovebear","c":3.98027},{"id":"arcadragon","c":3.57499},{"id":"elefanto","c":3.46837},{"id":"skibidi","c":1.17857},{"id":"johnpork","c":1.11482},{"id":"meowl","c":1.0604},{"id":"signore","c":0.88541}]},
@@ -1318,7 +1347,7 @@ async function demoApi(path, body) {
   const money = x => Math.round(x * 100) / 100;
   const ok = extra => Object.assign({ success: true, balance: state.balance, inventory: state.inventory }, extra);
   const isCoin = id => id.indexOf('coin_') === 0;
-  const give = itemId => { const e = { uid: uuid(), itemId, date: Date.now() }; state.inventory.push(e); return e; };
+  const give = itemId => { if (isCoin(itemId)) { const ci = itemById(itemId); state.balance = money(state.balance + ci.price); return { uid: null, date: Date.now(), auto: true }; } const e = { uid: uuid(), itemId, date: Date.now() }; state.inventory.push(e); return e; };
   const owned = (uids, allowCoins) => {
     if (!Array.isArray(uids) || !uids.length) throw new Error('Выберите предметы');
     if (new Set(uids).size !== uids.length) throw new Error('Повторяющиеся предметы');
@@ -1335,6 +1364,14 @@ async function demoApi(path, body) {
   if (path === '/api/case/open') {
     const c = CASES.find(x => x.id === body.caseId); if (!c) throw new Error('Кейс не найден');
     const results = [], hist = []; let charged = 0;
+    if (c.free) {
+      const f = (state.free || {})[c.id]; if (f && f.next > Date.now()) throw new Error('Бесплатный кейс ещё недоступен');
+      const it = itemById(F.pickWeighted(c.items, rnd()).id), e = give(it.id), nxt = Date.now() + (c.cooldownH || 24) * 3600e3;
+      (state.free = state.free || {})[c.id] = { next: nxt };
+      results.push({ id: it.id, uid: e.uid, date: e.date, price: it.price, rarity: it.rarity, auto: !!e.auto });
+      hist.push({ type: 'case', caseId: c.id, caseName: c.name, itemId: it.id, uid: e.uid, date: e.date, paid: 0, itemPrice: it.price, rarity: it.rarity });
+      return ok({ results, charged: 0, allIn: false, hist, freeNext: nxt });
+    }
     if (c.isAllIn) {
       const bet = Math.floor(state.balance);
       if (bet < F.ALLIN_MIN) throw new Error('ALL IN доступен от ' + F.ALLIN_MIN + ' монет');
@@ -1342,7 +1379,7 @@ async function demoApi(path, body) {
       state.balance = money(state.balance - bet); charged = bet;
       const pick = F.pickItemForTarget(PRICE_LIST, bet * F.allInMultiplier(rnd(), rnd()), rnd(), rnd());
       const it = itemById(pick.id), e = give(it.id);
-      results.push({ id: it.id, uid: e.uid, date: e.date, price: it.price, rarity: it.rarity });
+      results.push({ id: it.id, uid: e.uid, date: e.date, price: it.price, rarity: it.rarity, auto: !!e.auto });
       hist.push({ type: 'case', caseId: c.id, caseName: c.name, itemId: it.id, uid: e.uid, date: e.date, paid: bet, itemPrice: it.price, rarity: it.rarity });
     } else {
       const count = Math.floor(Number(body.count) || 1);
@@ -1355,7 +1392,7 @@ async function demoApi(path, body) {
       const pool = c.isVip ? (vip ? c.vipItems : c.normalItems) : c.items;
       for (let k = 0; k < count; k++) {
         const it = itemById(F.pickWeighted(pool, rnd()).id), e = give(it.id);
-        results.push({ id: it.id, uid: e.uid, date: e.date, price: it.price, rarity: it.rarity });
+        results.push({ id: it.id, uid: e.uid, date: e.date, price: it.price, rarity: it.rarity, auto: !!e.auto });
         hist.push({ type: 'case', caseId: c.id, caseName: c.name, itemId: it.id, uid: e.uid, date: e.date, paid: unit, itemPrice: it.price, rarity: it.rarity });
       }
     }
@@ -1470,6 +1507,7 @@ function addHist(list){ if(Array.isArray(list)) list.forEach(h => state.history.
 function applyServerState(d){
   if(d && d.balance != null) state.balance = Number(d.balance);
   if(d && Array.isArray(d.inventory)) state.inventory = d.inventory;
+  if(d && d.best) state.best = d.best;
   updateBalance(state.balance);
 }
 
@@ -1483,6 +1521,7 @@ async function apiSync() {
     if (data.banned) { showBan(data.banReason); return; }
     state.balance = data.balance || 0;
     state.inventory = data.inventory || [];
+    if (data.best) state.best = data.best;
     try {
       const hres = await secureFetch(`${SERVER_URL}/api/history`);
       if (hres.ok) {
@@ -1833,9 +1872,10 @@ async function settlePendingCase(){
   const pending=__pendingCase;
   if(!pending||pending.settled)return[];
   pending.settled=true;
-  const added=[];
+  const added=[];added.auto=0;
   for(const r of pending.results){
     const it=itemById(r.id);if(!it)continue;
+    if(r.auto||!r.uid){added.auto+=it.price;continue;}
     added.push({uid:r.uid,itemId:it.id,date:r.date||Date.now()});
   }
   __pendingCase=null;
@@ -1884,10 +1924,13 @@ function dropletFor(c,actSel,key,cls,bar){
   if(!b){b=document.createElement('i');b.className='drop-blob '+cls;c.insertBefore(b,c.firstChild);}
   c.classList.add('has-blob');
   const to=bar?{l:a.offsetLeft,t:a.offsetTop+a.offsetHeight-2,w:a.offsetWidth,h:2}:{l:a.offsetLeft,t:a.offsetTop,w:a.offsetWidth,h:a.offsetHeight};
-  const from=__dp[key]||to,set=o=>{b.style.left=o.l+'px';b.style.top=o.t+'px';b.style.width=o.w+'px';b.style.height=o.h+'px';};
+  const prev=__dp[key],now=Date.now();
+  let from=prev?prev.to:to,t0=now;
+  if(prev&&now-prev.t<700&&prev.to.l===to.l&&prev.to.w===to.w){from=prev.from;t0=prev.t;}   /* повторный рендер во время движения — не телепортируем */
+  const set=o=>{b.style.left=o.l+'px';b.style.top=o.t+'px';b.style.width=o.w+'px';b.style.height=o.h+'px';};
   b.style.transition='none';set(from);void b.offsetWidth;b.style.transition='';set(to);
   if(from.l!==to.l){b.classList.remove('go');void b.offsetWidth;b.classList.add('go');}
-  __dp[key]=to;
+  __dp[key]={to,from,t:from.l!==to.l?t0:now};
 }
 function dropletInit(){
   try{dropletFor(document.getElementById('nav'),'.nav-item.active','nav','blob-nav');
@@ -2286,8 +2329,14 @@ async function updateLiveDrops() {
 
 /* ===== реальные шансы и RTP берём с сервера: показанное = то, что крутится ===== */
 let RTP_PCT=90, RTP_ALLIN_PCT=90;
+state.free=state.free||{};
+function freeLeft(c){const f=(state.free||{})[c.id];return f&&f.next>Date.now()?f.next-Date.now():0;}
+function freeFmt(ms){const t=Math.ceil(ms/1000),h=Math.floor(t/3600),m=Math.floor(t/60)%60,s=t%60;return [h,m,s].map(x=>String(x).padStart(2,'0')).join(':');}
+async function loadFree(){if(state.isDemo||!state.user)return;try{const d=await api('/api/free');state.free=d.cases||{};if(state.tab==='cases')preserveScroll(()=>render(false));}catch(_){}}
+setInterval(()=>{document.querySelectorAll('[data-free]').forEach(el=>{const c=CASES.find(x=>x.id===el.getAttribute('data-free'));if(!c)return;const l=freeLeft(c);if(l<=0){if(state.tab==='cases')render(false);return;}const pre=el.getAttribute('data-pre')||'⏳ ';el.textContent=pre+freeFmt(l);});},1000);
 let CUSTOM_CATS=[];
 async function loadOdds(){
+  loadFree();
   try{
     const r=await fetch(SERVER_URL+'/api/odds'); if(!r.ok) return;
     const d=await r.json(); if(!d||!d.odds) return;
@@ -2872,6 +2921,7 @@ function renderProfile(){
     <div><b>${itemsCount}</b><small>Предметов</small></div>
     <div><b>${fmt(totalWithdrawn)}</b><small>Выведено</small></div>
   </div>
+  ${(()=>{const b=state.best&&itemById(state.best.itemId)?{it:itemById(state.best.itemId),date:state.best.date}:(bestDropItem?{it:bestDropItem,date:null}:null);if(!b)return '';const col=(RARITY[b.it.rarity]||RARITY.common).color;return `<div class="pf-best" style="--rc:${col}"><div class="pf-best-ico">${itemIcon(b.it,64)}</div><div><small>⭐ Лучший дроп за всё время</small><b>${esc(b.it.name)}</b><span>${coin(16)} ${fmt(b.it.price)}${b.date?' · '+new Date(b.date).toLocaleDateString('ru-RU'):''}</span></div></div>`;})()}
   <div class="pf-tabs">${[['inv','🎒 Инвентарь'],['drops','🏆 Дропы'],['ops','🧾 Операции']].map(t=>`<button class="${(state.pfTab||'inv')===t[0]?'on':''}" onclick="setPfTab('${t[0]}')">${t[1]}</button>`).join('')}</div>
   <div class="pf-section">${(state.pfTab||'inv')==='inv'?renderInventory():state.pfTab==='drops'?dropHistoryHtml(histToDrops(state.history,60)):renderHistory()}</div>`;
 }
@@ -3125,10 +3175,10 @@ function filterCases(q){
   document.querySelectorAll('.case-category').forEach(sec=>{const any=[...sec.querySelectorAll('.bc-card')].some(e=>e.style.display!=='none');sec.style.display=any?'':'none';});
 }
 function renderCases(){
-  const categories={newyear:'🎄 Серийные кейсы',standard:'📦 Кейсы',special:'⭐ Особые кейсы',mutagen:'🧬 Мутагенные кейсы'};
-  const barCol={newyear:'#f87171',standard:'#58a6ff',special:'#ffc94a',mutagen:'#34d399'};
-  const catRgb={newyear:'248,113,113',standard:'88,166,255',special:'255,201,74',mutagen:'52,211,153'};
-  const catOrder=['newyear','standard','special','mutagen'];
+  const categories={free:'🆓 Бесплатные кейсы',newyear:'🎄 Серийные кейсы',standard:'📦 Кейсы',special:'⭐ Особые кейсы',mutagen:'🧬 Мутагенные кейсы'};
+  const barCol={free:'#4ade80',newyear:'#f87171',standard:'#58a6ff',special:'#ffc94a',mutagen:'#34d399'};
+  const catRgb={free:'74,222,128',newyear:'248,113,113',standard:'88,166,255',special:'255,201,74',mutagen:'52,211,153'};
+  const catOrder=['free','newyear','standard','special','mutagen'];
   CUSTOM_CATS.forEach(c=>{categories[c.id]=(c.emoji||'📦')+' '+c.name;catOrder.push(c.id);});
   const grouped=CASES.reduce((acc,c)=>{(acc[c.category]=acc[c.category]||[]).push(c);return acc;},{});
   const cards=Object.entries(grouped).sort((a,b)=>(catOrder.indexOf(a[0])+1||99)-(catOrder.indexOf(b[0])+1||99)).map(([cat,catCases])=>{
@@ -3136,7 +3186,7 @@ function renderCases(){
       const imgHtml=c.img?`<img src="${c.img}" alt="${esc(c.name)}" onerror="this.style.display='none';this.parentElement.textContent='${c.icon}'">`:`<span>${c.icon}</span>`;
       const mx=c.isAllIn?0:caseMaxDrop(c);
       const sub=c.isAllIn?'весь баланс':(mx?`до ${fmt(mx)}`:'');
-      const priceStr=c.isAllIn?`${coin(18)} ${fmt(state.balance)}`:`${coin(18)} ${fmt(c.price)}`;
+      const priceStr=c.isAllIn?`${coin(18)} ${fmt(state.balance)}`:c.free?(freeLeft(c)>0?`<span data-free="${c.id}">⏳ ${freeFmt(freeLeft(c))}</span>`:'🆓 Бесплатно'):`${coin(18)} ${fmt(c.price)}`;
       const bc=c.isAllIn?'#f87171':(barCol[cat]||'#58a6ff');
       return `<div class="bc-card${c.isAllIn?' allin':''}" data-name="${esc(c.name).toLowerCase()}" style="--bar:${bc}" onclick="openCase('${c.id}')"><div class="bc-bar"></div>${c.badge?`<div class="bc-badge">${esc(c.badge.text)}</div>`:''}<div class="bc-img">${imgHtml}</div><div class="bc-name">${esc(c.name)}</div><div class="bc-sub">${sub}</div><div class="bc-price">${priceStr}</div></div>`;
     }).join('');
@@ -3195,12 +3245,14 @@ function renderCaseDetail(id,stage){
     return `<div class="cd-card rarity-${esc(it.rarity||'common')}" style="--rc:${rarity.color}"><span class="cd-pct">${pct}%</span><span class="cd-dot"></span><div class="cd-ico">${itemIcon(it,92)}</div><div class="cd-nm">${esc(it.name)}</div><div class="cd-pr">${coin(16)} ${fmt(it.price)}</div></div>`;
   }).join('');
   const fast=state.settings.spinType==='fast';
+  const bgCards=[...sortedItems].sort(()=>.5-((c.id.length*7+1)%3?Math.random():.4)).slice(0,14).map(ci=>{const it=itemById(ci.id);if(!it)return '';return `<div class="cd-bgcard" style="--rc:${(RARITY[it.rarity]||RARITY.common).color}">${itemIcon(it,84)}<small>${esc(it.name)}</small></div>`;}).join('');
+  const fl=c.free?freeLeft(c):0;
   return `<button class="case-back" onclick="backToCases()">← Назад к кейсам</button>
-  ${stage?stage:`<div class="cd-hero"><div class="cd-img">${imgHtml}</div><div class="cd-title">${esc(c.name)}</div></div>`}
+  ${stage?stage:`<div class="cd-hero cd-hero2"><div class="cd-bgreel"><div class="cd-bgtrack">${bgCards}${bgCards}</div></div><div class="cd-img cd-front">${imgHtml}</div><div class="cd-title">${esc(c.name)}</div><div class="cd-sub2">${c.free?'Бесплатно раз в '+(c.cooldownH||24)+' ч':rawItems.length+' предметов'}</div></div>`}
   ${c.isVip ? `<div class="cd-vip"><button class="${!state.vipMode?'on':''}" onclick="if(leaveStage()){state.vipMode=false;render(false);}">Обычный (${fmt(c.price)})</button><button class="${state.vipMode?'on':''}" onclick="if(leaveStage()){state.vipMode=true;render(false);}">VIP (${fmt(c.vipPrice)})</button></div>` : ''}
   <div class="cd-controls">
-    <div class="cd-tabs">${[1,3,5,10].map(n=>`<button class="${state.caseOpens===n?'on':''}" onclick="setCaseOpens(${n})"><b>×${n}</b><span>${coin(14)} ${fmt(activePrice*n)}</span></button>`).join('')}</div>
-    <button class="btn-blue cd-open" ${!canAfford?'disabled':''} onclick="openCaseNow()">${canAfford?`Открыть за ${coin(20)} ${fmt(total)}`:'Недостаточно монет'}</button>
+    ${c.free?'':`<div class="cd-tabs">${[1,3,5,10].map(n=>`<button class="${state.caseOpens===n?'on':''}" onclick="setCaseOpens(${n})"><b>×${n}</b><span>${coin(14)} ${fmt(activePrice*n)}</span></button>`).join('')}</div>`}
+    <button class="btn-blue cd-open" ${c.free?(fl>0?'disabled':''):(!canAfford?'disabled':'')} ${c.free?`data-free="${c.id}" data-pre="⏳ Доступно через "`:''} onclick="openCaseNow()">${c.free?(fl>0?'⏳ Доступно через '+freeFmt(fl):'🆓 Открыть бесплатно'):(canAfford?`Открыть за ${coin(20)} ${fmt(total)}`:'Недостаточно монет')}</button>
     <button class="cd-fast${fast?' on':''}" title="${fast?'Быстрая крутка: включена':'Быстрая крутка: выключена'}" onclick="if(leaveStage()){state.settings.spinType=state.settings.spinType==='fast'?'normal':'fast';saveLocalState();render(false);}">⚡<span>быстро</span></button>
   </div>
   <div class="cd-sub">ЧТО МОЖЕТ ВЫПАСТЬ</div>
@@ -3215,12 +3267,13 @@ let __openingCase=false;
 async function openCaseNow(){
   if(__pendingCase||__openingCase)return;
   const c=CASES.find(x=>x.id===state.currentCase);if(!c)return;
-  const count=c.isAllIn?1:state.caseOpens;
+  const count=(c.isAllIn||c.free)?1:state.caseOpens;
+  if(c.free&&freeLeft(c)>0){toast('Бесплатный кейс будет доступен через '+freeFmt(freeLeft(c)),'err');return;}
   const unitPrice=c.isVip&&state.vipMode?c.vipPrice:c.price;
   const total=c.isAllIn?Math.floor(state.balance):unitPrice*count;
-  if(!(total>0)){toast('У вас нет монет для открытия','err');haptic('error');return;}
+  if(!(total>0)&&!c.free){toast('У вас нет монет для открытия','err');haptic('error');return;}
   if(c.isAllIn&&(total<F.ALLIN_MIN||total>F.ALLIN_MAX)){toast(`ALL IN доступен при балансе от ${fmt(F.ALLIN_MIN)} до ${fmt(F.ALLIN_MAX)}`,'err');return;}
-  if(!c.isAllIn&&state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
+  if(!c.isAllIn&&!c.free&&state.balance<total){toast('Недостаточно монет','err');haptic('error');return;}
 
   const executeOpen=async()=>{
     if(__openingCase)return;
@@ -3228,12 +3281,13 @@ async function openCaseNow(){
     try{
       const data=await api('/api/case/open',{caseId:c.id,count,vipMode:!!state.vipMode});
       applyServerState(data);
-      const results=(data.results||[]).filter(r=>itemById(r.id)).map(r=>({id:r.id,uid:r.uid,date:r.date,price:r.price,rarity:r.rarity}));
+      const results=(data.results||[]).filter(r=>itemById(r.id)).map(r=>({id:r.id,uid:r.uid,date:r.date,price:r.price,rarity:r.rarity,auto:!!r.auto}));
+      if(data.freeNext){(state.free=state.free||{})[c.id]={next:data.freeNext};}
       if(!results.length)throw new Error('Сервер не вернул результат');
       addHist(data.hist);
       const paid=Number(data.charged)||total;
       __pendingCase={case:c,opens:results.length,results,total:paid,unitPrice:paid/results.length,settled:false};
-      saveLocalState();renderHeader();await caseIntro(c);startRoulette(c,results,!!data.allIn);
+      saveLocalState();renderHeader();startRoulette(c,results,!!data.allIn);
     }catch(e){
       toast(esc(e.message||'Ошибка открытия кейса'),'err');haptic('error');
       try{await apiSync();}catch(_){}
@@ -3248,17 +3302,6 @@ function reelFiller(c,isAllIn,bet){
   return F.pickWeighted(raw,Math.random()).id;
 }
 
-function caseIntro(c){
-  return new Promise(res=>{
-    try{
-      const fast=state.settings.spinType==='fast',d=document.createElement('div');d.className='ci-ov';
-      const im=c.img?`<img src="${c.img}" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${c.icon||'🎁'}'}))">`:`<span>${c.icon||'🎁'}</span>`;
-      d.innerHTML=`<div class="ci-rays"></div><div class="ci-box${fast?' fast':''}">${im}</div><div class="ci-flash"></div>`;
-      document.body.appendChild(d);haptic('medium');
-      setTimeout(()=>{d.classList.add('out');setTimeout(()=>{d.remove();res();},260);},fast?520:1350);
-    }catch(e){res();}
-  });
-}
 function startRoulette(c,results, isAllIn){
   const opens=results.length;
   // каждая крутка уникальна: длина ленты, время, манера остановки и точка внутри предмета
@@ -3266,7 +3309,7 @@ function startRoulette(c,results, isAllIn){
   const MODES=['smooth'];
   const spinCfg=results.map(()=>{const winIdx=30+Math.floor(Math.random()*10);return{winIdx,len:winIdx+14,time:fastSpin?300:7500+Math.floor(Math.random()*3500),mode:fastSpin?'smooth':MODES[Math.floor(Math.random()*MODES.length)],jitter:(Math.random()-.5)*0.7};});
   
-  let html=(isAllIn?`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button>`:'')+`<div class="stage"><div class="stage-head">${esc(c.name)}</div><div style="display:flex;flex-direction:column;gap:24px;margin-bottom:18px;">`;
+  let html=(isAllIn?`<button class="case-back" onclick="goBackToCase('${c.id}')">← Назад к кейсу</button>`:'')+`<div class="stage"><div class="stage-head">${esc(c.name)}</div>${isAllIn?'':`<div class="stage-case">${c.img?`<img src="${c.img}" onerror="this.style.display='none'">`:`<span>${c.icon||'🎁'}</span>`}</div>`}<div style="display:flex;flex-direction:column;gap:24px;margin-bottom:18px;">`;
   
   results.forEach((win,idx)=>{
     const ids=[];
@@ -3296,7 +3339,7 @@ function startRoulette(c,results, isAllIn){
   });
   
   html+=`</div><div id="spinHint"><div style="text-align:center;color:${isAllIn?'var(--red)':'var(--muted)'};font-size:${isAllIn?'24px':'16px'};font-weight:900;margin-bottom:12px">${state.settings.spinType==='fast'?'':'Крутим...'}</div><div style="text-align:center"><button class="btn-dark" onclick="skipCaseAnim()">⏩ Пропустить</button></div></div><div id="resBar" class="res-bar"></div></div>`;
-  const stageHtml=html;
+  const stageHtml=html.replace(/<div class="stage-case">[\s\S]*?<\/div>/,'');
   const paidTotal=__pendingCase?__pendingCase.total:0;
   state.openingView=html;
   { const ce=document.getElementById('content'); if(ce) ce.dataset.live=''; }
@@ -3367,19 +3410,17 @@ function startRoulette(c,results, isAllIn){
     if(bestItem && (isAllIn || totalVal>=(c.isVip&&state.vipMode?c.vipPrice:c.price)*opens)) sndWinRarity(bestItem.rarity);
     else sndLose();
     haptic(totalVal >= (c.isVip&&state.vipMode?c.vipPrice:c.price)*opens ? 'success' : 'light');
-    if(!addedItems.length){state.openingView=null;render(true);renderHeader();return;}
+    const autoSum=addedItems.auto||0;
+    const note=autoSum?`<div class="res-auto">💰 ${coin(16)} +${fmt(autoSum)} зачислено на баланс</div>`:'';
+    __resCtx={caseId:c.id,items:addedItems,auto:autoSum,base:stageHtml};__resSel=new Set();
     let bar;
-    if(opens===1){
+    if(!addedItems.length){
+      bar=note+`<div class="res-actions"><button class="btn-blue res-btn" onclick="goBackToCase('${c.id}')">Отлично</button></div>`;
+    }else if(addedItems.length===1){
       const inv1=addedItems[0],it1=itemById(inv1.itemId);
-      bar=`<button class="btn-blue res-btn" onclick="sellResult('${inv1.uid}','${c.id}')">Продать за ${coin(18)} ${fmt(it1?it1.price:0)}</button><button class="btn-dark res-btn" onclick="goBackToCase('${c.id}')">Оставить</button>`;
-    }else{
-      const uidsStr=addedItems.map(i=>i.uid).join(',');
-      bar=`<button class="btn-blue res-btn" onclick="sellMultiResult('${uidsStr}','${c.id}')">Продать всё за ${coin(18)} ${fmt(totalVal)}</button><button class="btn-dark res-btn" onclick="goBackToCase('${c.id}')">Оставить</button>`;
-    }
-    state.openingView=stageHtml.replace(/<div id="spinHint">[\s\S]*?<\/div><\/div><div id="resBar"/,'<div id="resBar"').replace('<div id="resBar" class="res-bar"></div>','<div id="resBar" class="res-bar show">'+bar+'</div>');
-    const sh=document.getElementById('spinHint');if(sh)sh.remove();
-    const rb=document.getElementById('resBar');
-    if(rb){rb.innerHTML=bar;rb.classList.add('show');}
+      bar=note+`<div class="res-actions"><button class="btn-blue res-btn" onclick="sellResult('${inv1.uid}','${c.id}')">Продать за ${coin(18)} ${fmt(it1?it1.price:0)}</button><button class="btn-dark res-btn" onclick="goBackToCase('${c.id}')">Оставить</button></div>`;
+    }else bar=resBarHtml();
+    setResBar(bar);
     renderHeader();
     renderLiveStrip(true);updateLiveDrops();
     const unitP=isAllIn?paidTotal:(c.isVip&&state.vipMode?c.vipPrice:c.price);
@@ -3390,6 +3431,22 @@ function startRoulette(c,results, isAllIn){
 }
 
 
+let __resCtx=null,__resSel=new Set();
+function resBarHtml(){
+  const x=__resCtx;if(!x)return '';
+  const sel=x.items.filter(i=>__resSel.has(i.uid)),sum=sel.reduce((t,i)=>t+((itemById(i.itemId)||{}).price||0),0);
+  const chips=x.items.map(i=>{const it=itemById(i.itemId);if(!it)return '';return `<div class="res-chip${__resSel.has(i.uid)?' sel':''}" style="--rc:${(RARITY[it.rarity]||RARITY.common).color}" onclick="resToggle('${i.uid}')"><i>✓</i><div class="res-ico">${itemIcon(it,52)}</div><small>${esc(it.name)}</small><b>${fmt(it.price)}</b></div>`;}).join('');
+  return (x.auto?`<div class="res-auto">💰 ${coin(16)} +${fmt(x.auto)} зачислено на баланс</div>`:'')+`<div class="res-hint">Отметь, что продать. Остальное останется в инвентаре.</div><div class="res-chips">${chips}</div><div class="res-actions"><button class="btn-blue res-btn" ${sel.length?'':'disabled'} onclick="resSellSel()">${sel.length?`Продать (${sel.length}) за ${coin(18)} ${fmt(sum)}`:'Выбери, что продать'}</button><button class="btn-dark res-btn" onclick="resSelAll()">${sel.length===x.items.length?'Снять всё':'Выбрать все'}</button><button class="btn-dark res-btn" onclick="goBackToCase('${x.caseId}')">Оставить всё</button></div>`;
+}
+function setResBar(bar){
+  const x=__resCtx;if(!x)return;
+  state.openingView=x.base.replace(/<div id="spinHint">[\s\S]*?<\/div><\/div><div id="resBar"/,'<div id="resBar"').replace('<div id="resBar" class="res-bar"></div>','<div id="resBar" class="res-bar show">'+bar+'</div>');
+  const sh=document.getElementById('spinHint');if(sh)sh.remove();
+  const rb=document.getElementById('resBar');if(rb){rb.innerHTML=bar;rb.classList.add('show');}
+}
+function resToggle(uid){if(__resSel.has(uid))__resSel.delete(uid);else __resSel.add(uid);setResBar(resBarHtml());}
+function resSelAll(){const x=__resCtx;if(!x)return;if(__resSel.size===x.items.length)__resSel.clear();else x.items.forEach(i=>__resSel.add(i.uid));setResBar(resBarHtml());}
+function resSellSel(){const x=__resCtx;if(!x||!__resSel.size)return;sellMultiResult([...__resSel].join(','),x.caseId);}
 function goBackToCases(){cancelAnimations();state.currentCase=null;state.openingView=null;render(true);window.scrollTo({top:0,behavior:'smooth'});}
 
 function sellResult(uid,caseId){
